@@ -27,7 +27,6 @@ describe Topic do
         topic = Factory.create(:topic)
         duplicate_topic = Factory.build(:topic, :key => topic.key)
         duplicate_topic.should_not be_valid
-        topic.destroy
       end
     end
   end

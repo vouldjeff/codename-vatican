@@ -1,8 +1,5 @@
 require 'spec_helper'
 
-Type.all.each(&:destroy)
-Topic.all.each(&:destroy)
-
 describe Property do
   describe "validation" do    
     it "everything is ok" do
@@ -66,9 +63,6 @@ describe Property do
           lambda { Property.initialize_from_type("/errors/error", topic) }.should raise_error(UnknownTypeError)
         end
       end
-      type.destroy
-      type0.destroy
-      topic.destroy
     end
   end
 end

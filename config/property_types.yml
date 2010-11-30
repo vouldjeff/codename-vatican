@@ -14,5 +14,5 @@
   name: "Date"
   ruby_type: "Date"
 "/base/ref": 
-  value: "Other document"
+  name: "Other document"
   ruby_type: "DocumentRef"

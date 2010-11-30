@@ -1,7 +1,7 @@
 Factory.define :type_definition_property, :default_strategy => :build do |f|
-  f.name "Test name"
+  f.sequence(:name) { |n| "name#{n}" }
   f.description "blah"
-  f.type_name PropertyTypes.keys.first
+  f.type_name PropertyTypes.get_type(String)
   f.is_array false
   f.schema []
 end
@@ -16,9 +16,13 @@ Factory.define :type, :parent => :type_without_associations do |f|
   f.after_build { |type| type.type_definition_properties << Factory.build(:type_definition_property) }
 end
 
+Factory.define :type_with_ref, :parent => :type do |f|
+  f.after_build { |type| type.type_definition_properties << Factory.build(:type_definition_property, :type_name => PropertyTypes.get_type(DocumentRef), :name => "ref") }
+end
+
 Factory.define :inner_property, :default_strategy => :build do |f|
-  f.name "Test name"
-  f.type_name PropertyTypes.keys.first
+  f.sequence(:name) { |n| "name#{n}" }
+  f.type_name PropertyTypes.get_type(String)
   f.is_array false
   f.schema []
 end
