@@ -4,6 +4,10 @@ module PropertyTypes
   def self.load_conf
     raw_config = File.read(Rails.root.to_s + "/config/property_types.yml")
     @config = YAML.load(raw_config)
+    @reverse = Hash.new
+    @config.each do |key, value|
+        @reverse[value["ruby_type"].constantize] = key
+      end
     end
   
   def self.[](key)
@@ -19,6 +23,13 @@ module PropertyTypes
     else
       nil
     end
+  end
+  
+  def self.get_type(type)
+    if @config.nil?
+        load_conf
+    end
+    @reverse.key?(type) ? @reverse[type] : nil
   end
   
   def self.keys

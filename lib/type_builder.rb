@@ -36,9 +36,9 @@ class TypeBuilder
   end
   
   def add_definition_property(base_type, name, is_array = false, description = nil)
-    schema = PropertyTypes[base_type].respond_to?(:get_schema) ? PropertyTypes[base_type].get_schema : nil
+    schema = base_type.respond_to?(:get_schema) ? base_type.get_schema : nil
     
-    type.add_new_type_definition_property(name, base_type, is_array, schema, description)
+    type.add_new_type_definition_property(name, PropertyTypes.get_type(base_type), is_array, schema, description)
     return self
   end
   
