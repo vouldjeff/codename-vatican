@@ -1,0 +1,2 @@
+class UnknownTypeError < StandardError
+end

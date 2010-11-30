@@ -1,0 +1,18 @@
+"/base/text": 
+  name: "Text"
+  ruby_type: "String"
+"/base/integer": 
+  name: "Integer"
+  ruby_type: "Fixnum"
+"/base/float": 
+  name: "Floating point number"
+  ruby_type: "Float"
+"/base/time": 
+  name: "Time"
+  ruby_type: "Time"
+"/base/date": 
+  name: "Date"
+  ruby_type: "Date"
+"/base/ref": 
+  value: "Other document"
+  ruby_type: "DocumentRef"

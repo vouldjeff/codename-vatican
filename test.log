@@ -1,0 +1,10 @@
+# Logfile created on Sun Nov 28 11:37:48 -0800 2010 by logger.rb
+admin['$cmd'].find({:ismaster=>1}, {}).limit(-1)
+vatican_dev['$cmd'].find({"count"=>"topics", "query"=>{:key=>"key1", :_id=>{"$ne"=>BSON::ObjectId('4cf2affe1d41c8395b000004')}}, "fields"=>nil}, {}).limit(-1)
+vatican_dev['$cmd'].find({"count"=>"topics", "query"=>{:key=>"key2", :_id=>{"$ne"=>BSON::ObjectId('4cf2affe1d41c8395b000006')}}, "fields"=>nil}, {}).limit(-1)
+vatican_dev['$cmd'].find({"count"=>"topics", "query"=>{:key=>"key3", :_id=>{"$ne"=>BSON::ObjectId('4cf2affe1d41c8395b000008')}}, "fields"=>nil}, {}).limit(-1)
+vatican_dev['$cmd'].find({"count"=>"topics", "query"=>{:key=>nil, :_id=>{"$ne"=>BSON::ObjectId('4cf2affe1d41c8395b00000a')}}, "fields"=>nil}, {}).limit(-1)
+vatican_dev['$cmd'].find({"count"=>"topics", "query"=>{:key=>"key4", :_id=>{"$ne"=>BSON::ObjectId('4cf2affe1d41c8395b00000c')}}, "fields"=>nil}, {}).limit(-1)
+MONGODB vatican_dev['topics'].update({:_id=>BSON::ObjectId('4cf2affe1d41c8395b00000c')}, {"ids"=>[], "title"=>"Title", "_id"=>BSON::ObjectId('4cf2affe1d41c8395b00000c'), "callbacks"=>[], "description"=>"Long description", "aliases"=>[], "key"=>"key4", "image"=>nil, "properties"=>[{"name"=>"Property", "_id"=>BSON::ObjectId('4cf2affe1d41c8395b00000d'), "type_name"=>"/base/date", "inner_properties"=>[]}], "instance_of"=>[]})
+vatican_dev['$cmd'].find({"count"=>"topics", "query"=>{:key=>"key4", :_id=>{"$ne"=>BSON::ObjectId('4cf2affe1d41c8395b00000e')}}, "fields"=>nil}, {}).limit(-1)
+MONGODB vatican_dev['topics'].remove({:_id=>{"$in"=>[BSON::ObjectId('4cf2affe1d41c8395b00000c')]}})

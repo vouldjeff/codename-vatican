@@ -1,0 +1,1 @@
+AVAILABLE_LANGUAGE_CODES = [:bg, :en] # TODO: make to dynamiclly load
