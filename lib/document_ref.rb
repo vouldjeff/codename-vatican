@@ -1,8 +1,8 @@
 class DocumentRef
-  attr_reader :type, :referenced_type, :referenced_property, :url, :text
-  attr_writer :type, :referenced_type, :referenced_property, :url, :text
+  attr_reader :type, :referenced_type, :referenced_property, :is_array, :url, :text
+  attr_writer :type, :referenced_type, :referenced_property, :is_array, :url, :text
   
-  def self.build(type_param, referenced_type_param, referenced_property_param)
+  def self.build(type_param, referenced_type_param, referenced_property_param, is_array = false)
     if type_param.nil?
       raise ArgumentError, "type_param must not be nil"
     end
@@ -22,6 +22,7 @@ class DocumentRef
     
     obj.referenced_type = referenced_type_param
     obj.referenced_property = referenced_property_param
+    obj.is_array = is_array
     
     obj
   end
@@ -34,7 +35,7 @@ class DocumentRef
   end 
   
   def get_schema
-    { "type" => @type, "referenced_type" => @referenced_type, "referenced_property" => @referenced_property }
+    { "type" => @type, "referenced_type" => @referenced_type, "referenced_property" => @referenced_property, "is_array" => @is_array }
   end
   
   def to_s

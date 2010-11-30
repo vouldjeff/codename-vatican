@@ -7,6 +7,7 @@ class Topic
   key :image, String
   key :aliases, Array
   key :instance_of, Array
+  key :callbacks, Array
   
   validates_presence_of :title
   validates_presence_of :description
@@ -15,7 +16,6 @@ class Topic
   validates_presence_of :properties
   
   validates_associated :properties
-  validates_associated :callbacks
   validates_associated :ids
   
   many :properties
