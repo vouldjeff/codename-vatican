@@ -19,7 +19,7 @@ describe Topic do
     
     describe "key" do
       it "requires presence" do
-        topic = Factory.build(:topic, :key => nil)
+        topic = Factory.build(:topic, :key => "")
         topic.should_not be_valid
       end
       

@@ -7,6 +7,8 @@ gem 'mongo_mapper', :branch => 'rails3', :git => 'git://github.com/jnunemaker/mo
 gem 'bson_ext', '1.1'
 gem 'bson', '1.1'
 
+gem 'rdf'
+
 group :test, :development do
   gem "rspec-rails", "~> 2.0.1"
 end
