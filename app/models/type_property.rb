@@ -20,8 +20,9 @@ class TypeProperty
 
   attr_accessible :nil
   
-  def self.uniqueness?(type, property, is_unique = true) # if returns false, the document may not even exist
-    Type.collection.find({"key" => type, "properties" => {property.to_s => {"unique" => is_unique}}}, {"key" => 1}).count == 1
+  # if returns false, the document may not even exist
+  def self.uniqueness?(type, property, is_unique = true)
+    Type.collection.find({"key" => type, "properties" => {property.to_s => {"unique" => is_unique}}}).count == 1
   end
   
   def uniqueness?

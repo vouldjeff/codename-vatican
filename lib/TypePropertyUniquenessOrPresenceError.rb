@@ -1,0 +1,2 @@
+class TypePropertyUniquenessOrPresenceError < StandardError
+end

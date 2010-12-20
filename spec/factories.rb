@@ -20,5 +20,5 @@ Factory.define :topic, :class => Topic do |f|
   f.sequence(:key) { |n| "key-#{n}" }
   f.title "Title"
   f.description "Long description"
-  f.properties [1, 2, {}]
+  f.properties Hash["test", true]
 end

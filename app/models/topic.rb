@@ -4,7 +4,7 @@ class Topic
   key :key, String
   key :title, String
   key :description, String
-  key :properties, Array
+  key :properties, Hash
   key :aliases, Array
   key :image, String
   
@@ -16,32 +16,57 @@ class Topic
   
   attr_accessible :nil
   
-  def self.add_new_type(topic, type) # TODO: could be optimized in the future 
-    type_definition = Type.collection.find({"key" => type}, 
-      {"name" => 1, "inherits" => 1, "type_properties.key" => 1, "type_properties.label" => 1})
-    collection.update({"key" => topic, "properties" => {type.to_s => {"$exist" => false}}, "$atomic" => true}, 
-      {"$set" => {"properties" => {type.to_s => type_definition}}})
-  end
-  
-  def self.set_property(topic, type, property, value) # TODO: could be optimized by replacing the unqueness with "safe=true" or "getLastError"
-    unless TypeProperty.unqueness?(type, property)
-      raise TypePropertyUniqunessOrPresenceError, 
-        "The property (#{topic}-#{type}\\#{property}) is not unique (or the document may not even exist)!"
-    end
-    collection.update({"key" => topic, "properties" => {type.to_s => {property.to_s => {"$exist" => true}}}, "$atomic" => true},
-      {"$set" => {"properties" => {type.to_s => {"value" => {property.to_s => value}}}}})
-  end
-  
-  def self.add_property(topic, type, property, value) # TODO: could be optimized by replacing the unqueness with "safe=true" or "getLastError"
-    unless TypeProperty.unqueness?(type, property, false)
-      raise TypePropertyUniqunessOrPresenceError, 
-        "The property (#{topic}-#{type}\\#{property}) is unique (or the document may not even exist)!"
-    end
-    collection.update({"key" => topic, "properties" => {type.to_s => {property.to_s => {"$exist" => true}}}, "$atomic" => true},
-      {"$push" => {"properties" => {type.to_s => {"value" => {property.to_s => value}}}}})
-  end
-  
-  def self.remove_property(topic, type, property, value) # This methods removes value from array property on index...
+  def self.add_new_type(topic, type)
+    type_definition = Type.collection.find_one({"key" => type}, 
+      :fields => ["name", "inherits", "type_properties.key", "type_properties.label"])
+    if type_definition.nil?
+      raise ResourceNotFoundError, "The type provided (#{type}) was not found."
+    end  
     
+    collection.update({"key" => topic, "properties." + type => {"$exists" => false}, "$atomic" => true}, 
+      {"$set" => {"properties" => {type => type_definition}}}, :safe => true)
+      
+    unless result[0][0]["updatedExisting"]
+      raise ResourceNotFoundError, "The topic (#{topic}) was not found."
+    end
+  end
+  
+  def self.set_unique_property(topic, type, property, value)
+    unless TypeProperty.uniqueness?(type, property)
+      raise TypePropertyUniquenessOrPresenceError, 
+        "The property (#{topic}-#{type}\\#{property}) is not unique (or it may not even exist)."
+    end
+    
+    property_path = "properties." + type + "." + property
+    result = collection.update({"key" => topic, property_path => {"$exists" => true}, "$atomic" => true},
+      {"$set" => {property_path => {"value" => value}}}, :safe => true)
+      
+    unless result[0][0]["updatedExisting"]
+      raise ResourceNotFoundError, "The property (#{topic}-#{type}\\#{property}) does not exist (or the topic itself)."
+    end
+  end
+  
+  def self.add_value_to_non_unique_property(topic, type, property, value)
+    unless TypeProperty.uniqueness?(type, property, false)
+      raise TypePropertyUniquenessOrPresenceError, 
+        "The property (#{topic}-#{type}\\#{property}) is unique (or it may not even exist)."
+    end
+    
+    property_path = "properties." + type + "." + property
+    begin
+      result = collection.update({"key" => topic, property_path => {"$exists" => true}, "$atomic" => true}, 
+        {"$push" => {property_path + ".value" => value}}, :safe => true)
+    rescue Mongo::OperationFailure
+      raise TypePropertyUniquenessOrPresenceError, 
+        "The property (#{topic}-#{type}\\#{property}) is unique."
+    end
+        
+    unless result[0][0]["updatedExisting"]
+      raise ResourceNotFoundError, "The property (#{topic}-#{type}\\#{property}) does not exist (or the topic itself)."
+    end
+  end
+  
+  def self.remove_non_unique_property_at_position(topic, type, property, position)
+    # TODO: write
   end
 end
