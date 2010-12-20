@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# TODO: fix my texts
 describe Topic do
   describe "validation" do    
     it "everything is ok" do
@@ -17,9 +18,14 @@ describe Topic do
       topic.should_not be_valid
     end
     
+    it "properties requires presence" do
+      topic = Factory.build(:topic, :properties => nil)
+      topic.should_not be_valid
+    end
+    
     describe "key" do
       it "requires presence" do
-        topic = Factory.build(:topic, :key => "")
+        topic = Factory.build(:topic, :key => nil)
         topic.should_not be_valid
       end
       

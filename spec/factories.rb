@@ -1,5 +1,6 @@
 Factory.define :type_property, :default_strategy => :build do |f|
   f.sequence(:label) { |n| "name-#{n}" }
+  f.sequence(:key) { |n| "key-#{n}" }
   f.comment "blah"
   f.range "RDF::URI"
 end
@@ -8,6 +9,7 @@ Factory.define :type_without_associations, :class => Type, :default_strategy => 
   f.sequence(:key) { |n| "key-#{n}" }
   f.name "Person"
   f.comment "blah"
+  f.namespace "type"
 end
 
 Factory.define :type, :parent => :type_without_associations do |f|
