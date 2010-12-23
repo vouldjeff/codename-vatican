@@ -20,6 +20,16 @@ class Type
   
   attr_accessible :nil
   
+  def self.get_skeleton(type)
+    skeleton = collection.find_one({"key" => type}, 
+      :fields => ["name", "inherits", "type_properties.key", "type_properties.label"])
+      
+    if skeleton.nil?
+      raise ResourceNotFoundError, "The type provided was not found."
+    end
+    skeleton
+  end
+  
   private
   def create_key
     if key.nil?
