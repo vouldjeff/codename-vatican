@@ -16,7 +16,7 @@ Factory.define :type, :parent => :type_without_associations do |f|
   f.after_build { |type| type.type_properties << Factory.build(:type_property) }
 end
 
-Factory.define :topic, :class => Topic do |f|
+Factory.define :entity, :class => Entity do |f|
   f.sequence(:key) { |n| "key-#{n}" }
   f.title "Title"
   f.description "Long description"

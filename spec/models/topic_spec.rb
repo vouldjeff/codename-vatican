@@ -1,38 +1,33 @@
 require 'spec_helper'
 
 # TODO: fix my texts
-describe Topic do
+describe Entity do
   describe "validation" do    
     it "everything is ok" do
-      topic = Factory.build(:topic)
-      topic.should be_valid
+      entity = Factory.build(:entity)
+      entity.should be_valid
     end
     
     it "title requires presence" do
-      topic = Factory.build(:topic, :title => nil)
-      topic.should_not be_valid
+      entity = Factory.build(:entity, :title => nil)
+      entity.should_not be_valid
     end
     
     it "description requires presence" do
-      topic = Factory.build(:topic, :description => nil)
-      topic.should_not be_valid
-    end
-    
-    it "properties requires presence" do
-      topic = Factory.build(:topic, :properties => nil)
-      topic.should_not be_valid
+      entity = Factory.build(:entity, :description => nil)
+      entity.should_not be_valid
     end
     
     describe "key" do
       it "requires presence" do
-        topic = Factory.build(:topic, :key => nil)
-        topic.should_not be_valid
+        entity = Factory.build(:entity, :key => nil)
+        entity.should_not be_valid
       end
       
       it "requires uniqueness" do
-        topic = Factory.create(:topic)
-        duplicate_topic = Factory.build(:topic, :key => topic.key)
-        duplicate_topic.should_not be_valid
+        entity = Factory.create(:entity)
+        duplicate_entity = Factory.build(:entity, :key => entity.key)
+        duplicate_entity.should_not be_valid
       end
     end
   end
