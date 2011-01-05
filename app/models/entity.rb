@@ -1,17 +1,32 @@
 class Entity
   include MongoMapper::Document
   
-  key :key, String, :required => true, :unique => true
+  key :key, String
   key :namespace, String, :required => true
   key :title, String, :required => true
   key :description, String, :required => true
-  key :properties, Hash # {:key => {:name => nil, :property-key => {:label => nil, :value => nil, :range => nil}}}
+  key :properties, Hash # {:key => {:name => nil, :type_properties => {:property-key => {:label => nil, :value => nil, :range => nil}}}}
   key :aliases, Array
   key :image, String
   
-  before_validation_on_create :create_key
+  before_validation :create_key, :on => :create
+  
+  validates_presence_of :key
+  validates_uniqueness_of :key, :allow_nil => false
   
   attr_accessible :nil
+  
+  def to_triples
+    triples = RdfTriplesBuilder.new key # TODO: fix to append domain name
+    
+    properties.each do |type_key, type|
+      type.each do |property_key, property|
+        triples.add(property_key, property["value"])
+      end
+    end
+    
+    triples.to_a
+  end
   
   def self.add_new_type(entity, type)
     type_skeleton = Type.get_skeleton(type)  
@@ -23,67 +38,51 @@ class Entity
     type_skeleton.delete("inherits")
     
     result = collection.update({"key" => entity, "properties." + type => {"$exists" => false}, "$atomic" => true}, 
-      {"$set" => {"properties" => {type => type_skeleton}}}, :safe => true)
+      {"$set" => {"properties." + type => type_skeleton}}, :safe => true)
       
     successful_update? result
   end
   
   def self.set_or_add_property_value(entity, type, property, value)
-    is_child = false # TODO: write a method to figure it out
-    
-    child = (is_child) ? ".range" : ""
-    
-    type_definition = Type.collection.find_one({"key" => type, "type_properties" + child + ".key" => property},
-      :fields => ["type_properties" + child + ".range", "type_properties" + child + ".unique", "type_properties" + child + ".key"])
+    type_definition = Type.collection.find_one({"key" => type, "type_properties.key" => property},
+      :fields => ["type_properties.range", "type_properties.unique", "type_properties.key"])
       
-    if type_definition.nil?
-      raise_error!
-    end
+    raise_error! if type_definition.nil?
     
     type_property = nil
     type_definition["type_properties"].each do |p|
-      if is_child
-        if p["range"]["key"] == property
-          type_property = p
-          break
-        end
-      else
-        if p["key"] == property
-          type_property = p
-          break
-        end
+      if p["key"] == property
+        type_property = p
+        break
       end
     end
     
-    if type_property.nil?
-      raise_error!
-    end
+    raise_error! if type_property.nil?
     
     if type_property["range"].kind_of?(Array)
-      unless value.kind_of?(Hash)
-        raise_error!
-      end
+      raise_error! unless value.kind_of?(Hash)
+      
       keys = type_property["range"].collect(&:key)
       value_keys = value.keys
       result = (keys | value_keys) - (keys & value_keys)
-      unless result.length == 0
-        raise_error!
-      end
+      
+      raise_error! unless result.length == 0
     elsif type_property["range"].kind_of?(Hash)
       if type_property["range"]["type"] == "/base/ref" || type_property["range"]["type"] == "/base/reverse_ref"
         referenced_entity = collection.find_one({"key" => value, "properties." + type => {"$exists" => true}},
           :fields => ["key", "title"])
-        if referenced_entity.nil?
-          raise_error!
-        end
+        raise_error! if referenced_entity.nil?
+        
         value_to_set = {"key" => referenced_entity["key"], "text" => referenced_entity["title"]}
+      else
+        value_to_set = value
       end
     end
     
-    operation = (referenced_entity["unique"] == true) ? "set" : "push"
-    property_path = "properties." + type + "." + property
+    operation = (type_property["unique"] == true) ? "set" : "push"
+    property_path = "properties." + type + ".type_properties." + property
     result = collection.update({"key" => entity, property_path => {"$exists" => true}, "$atomic" => true}, 
-      {"$" + operation => {property_path + ".value" => value_to_set}}, :safe => true)
+      {"$" + operation => {property_path + ".value" => value_to_set}}, :safe => true) # TODO: fix to update only if old_value is still value
         
     successful_update? result
   end

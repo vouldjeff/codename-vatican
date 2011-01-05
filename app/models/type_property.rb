@@ -7,15 +7,15 @@ class TypeProperty
   key :range, :required => true
   key :unique, Boolean, :default => false
   
-  before_validation_on_create :generate_key
+  before_validation :create_key, :on => :create
   
   embedded_in :type
 
   attr_accessible :nil
   
   private  
-  def generate_key
-    if key.nil? and !label.nil?
+  def create_key
+    if key.nil? and !label.nil? and !type.nil?
       self.key = type.key + "/" + KeyGenerator.generate_from_string(label)
     end
   end

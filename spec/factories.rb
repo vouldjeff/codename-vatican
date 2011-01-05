@@ -21,4 +21,5 @@ Factory.define :entity, :class => Entity do |f|
   f.title "Title"
   f.description "Long description"
   f.properties Hash["test", true]
+  f.namespace "test"
 end
