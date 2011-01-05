@@ -87,6 +87,71 @@ class Entity
     successful_update? result
   end
   
+  def manipulate_property_value(value, options)
+    actions = [:add, :edit]
+    
+    if value.nil? or value = {}
+      raise ArgumentError, "value must not be empty"
+    end
+    
+    [:type, :property, :action].each do |field|
+      if options[field].nil?
+        raise ArgumentError, field + "must not be nil"
+      end
+    end
+    
+    unless actions.include?(options[:action])
+      raise ArgumentError, ":action must be :add or :edit"
+    end
+    
+    type_definition = Type.collection.find_one({"key" => type, "type_properties.key" => property},
+      :fields => ["type_properties.range", "type_properties.unique", "type_properties.key"])
+      
+    raise_error! if type_definition.nil?
+    
+    type_property = nil
+    type_definition["type_properties"].each do |p|
+      if p["key"] == property
+        type_property = p
+        break
+      end
+    end
+    
+    raise_error! if type_property.nil?
+    
+    if type_property["range"].kind_of?(Array)
+      raise_error! unless value.kind_of?(Hash)
+      
+      keys = type_property["range"].collect(&:key)
+      value_keys = value.keys
+      result = (keys | value_keys) - (keys & value_keys)
+      
+      raise_error! unless result.length == 0
+    elsif type_property["range"].kind_of?(Hash)
+      if type_property["range"]["type"] == "/base/ref" || type_property["range"]["type"] == "/base/reverse_ref"
+        referenced_entity = collection.find_one({"key" => value, "properties." + type => {"$exists" => true}},
+          :fields => ["key", "title"])
+        raise_error! if referenced_entity.nil?
+        
+        value_to_set = {"key" => referenced_entity["key"], "text" => referenced_entity["title"]}
+      else
+        value_to_set = value
+      end
+    end
+    
+    operation = (type_property["unique"] == true) ? "set" : "push"
+    property_path = "properties." + type + ".type_properties." + property
+    result = collection.update({"key" => entity, "properties." + type => {"$exists" => true}, "$atomic" => true}, 
+      {"$" + operation => {property_path + ".value" => value_to_set}}, :safe => true) # TODO: fix to update only if old_value is still value
+    successful_update? result
+    if type_property["range"]["type"] == "/base/reverse_ref"
+      property_path = "properties." + type_property["range"]["ref_type"] + ".type_properties." + type_property["range"]["property_ref"]
+      value_to_set = {"key" => entity, "text" => referenced_entity["title"]}
+      result_reference = collection.update({"key" => referenced_entity["key"], "properties." + type_property["range"]["ref_type"] => {"$exists" => true}, "$atomic" => true},
+        {"$" + operation => {property_path + ".value" => value_to_set}}, :safe => true)
+    end
+  end
+  
   def self.raise_error!
     raise WrongOperationError, 
         "Wrong operation on the provided property."

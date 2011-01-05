@@ -1,0 +1,19 @@
+<h1><%= @entity.title %></h1>
+<div class="image">
+  <% unless @entity.image.nil? or @entity.image == "" %>
+    <img src="<%= @entity.image %>" alt="<%= @entity.title %> image" />
+  <% end %>
+</div>
+<div class="description">
+  <%= @entity.description %>
+</div>
+<div class="aliases">
+  <ul>
+  <% @entity.aliases.each do |a| %>
+    <li><%= a %></li>
+  <% end %>
+  </ul>
+</div>
+<div class="properties">
+  <%= @entity.properties.inspect %>
+</div>
