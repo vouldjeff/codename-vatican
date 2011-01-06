@@ -20,8 +20,14 @@ class Entity
     triples = RdfTriplesBuilder.new key # TODO: fix to append domain name
     
     properties.each do |type_key, type|
-      type.each do |property_key, property|
-        triples.add(property_key, property["value"])
+      type["type_properties"].each do |property_key, property|
+        unless property.kind_of? Array
+          triples.add(property_key, property["value"])
+        else
+          property.each do |property|
+            triples.add(property_key, property["value"])
+          end
+        end
       end
     end
     
@@ -153,13 +159,12 @@ class Entity
   end
   
   def self.raise_error!
-    raise WrongOperationError, 
-        "Wrong operation on the provided property."
+    raise WrongOperationError, "Wrong operation on the provided property."
   end
   
   def self.successful_update?(result)
     unless result[0][0]["updatedExisting"]
-      raise ResourceNotFoundError, "entity with the provided criteria was not found."
+      raise ResourceNotFoundError, "Entity with the provided criteria was not found."
     end
   end
   

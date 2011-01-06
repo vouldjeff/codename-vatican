@@ -1,0 +1,198 @@
+body {
+    background-color: #FFF;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px;
+    background: url(../images/bg.gif) repeat-x;
+    color: #333;
+}
+
+a img {
+    border: none;    
+}
+
+a:link, a:visited, a:active {
+    color: #2266BB;
+    text-decoration: none;
+    outline: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#wrapper {
+    width: 960px;
+    margin: 0 auto;
+    padding: 0px;
+    padding-bottom: 30px;
+}
+
+#inner {
+	padding: 0 10px;
+}
+
+#header {
+	height: 24px;
+    width: 100%;
+    overflow: hidden;
+    background: url(../images/logo.gif) no-repeat 1px 5px;
+    padding-top: 9px;
+    margin-bottom: 10px;
+    color: #2266bb;
+}
+
+#flashes {
+}
+
+#flash_notice, #flash_error {
+	border: solid 3px #bbccdd;
+    display: block;
+    padding: 9px 10px;
+    padding-top: 10px;
+    position: fixed;
+    top: 31px;
+    right: 40px;
+}
+
+#flash_notice {
+    background-color: #CFC;
+}
+
+#flash_error {
+    background-color: #FCC;
+}
+
+.delimiter {
+	background: url(../images/splitter-bg.png) repeat-x scroll left center;
+}
+
+.delimiter span {
+	background: #fff;
+	color: #888;
+	text-transform: uppercase;
+	font-size: 11px;
+	padding-right: 5px;
+	font-weight: bold;
+}
+
+textarea, input, select {
+	border: 1px solid #ddd;
+	padding: 3px;
+	color: #555;
+}
+
+select {
+	color: #000;
+}
+
+input[type="text"], input[type="password"], textarea, select {
+	width: 750px;
+	display: block;
+	float: left;
+}
+
+.error-field input, .error-field textarea, .error-field select {
+	border: 1px solid #ff0000;
+}
+
+.question input[type="text"], .question textarea, .question select {
+	width: 700px;
+}
+
+.answer input[type="text"], .answer textarea, .answer select {
+	width: 650px;
+}
+
+input[type="submit"], input[type="button"] {
+	background: #eee;
+	padding: 3px 10px;
+}
+
+input[type="submit"]:active, input[type="button"]:active {
+	border-top: 2px solid #2266bb;
+	border-left: 2px solid #2266bb;
+}
+
+textarea:hover, textarea:focus, input:hover, input:focus {
+	border: 1px solid #2266bb;
+	color: #000;
+}
+
+label {
+	width: 150px;
+	float: left;
+	margin-top: 4px;
+}
+
+.clear {
+    clear: both;
+}
+
+#errorExplanation {
+    width: 400px;
+    border: 2px solid #CF0000;
+    padding: 0px;
+    padding-bottom: 12px;
+    margin: 20px 0;
+    background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+	display: block !important;
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    margin: 0px;
+    background-color: #c00;
+    color: #fff;
+}
+
+#errorExplanation p {
+    color: #333;
+    margin-bottom: 0;
+    padding: 8px;
+}
+
+#errorExplanation ul {
+    margin: 2px 24px;
+}
+
+#errorExplanation ul li {
+    font-size: 12px;
+    list-style: disc;
+}
+
+h1, h2 {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+h1 {
+	font-size: 32px;
+}
+
+h2 {
+	font-size: 24px;
+}
+
+h1, h2 {
+	font-family: Georgia, serif;
+	text-shadow:0 1px 1px rgba(64, 64, 64, 0.13);
+	font-weight: normal;
+	color:#222;
+}
+
+h1 a, h2 a {
+	display: inline;
+	color: #2266bb;
+	font-family: Georgia, serif;
+	text-shadow:0 1px 1px rgba(64, 64, 64, 0.13);
+	font-weight: normal;
+}
+
+h1 a:hover, h2 a:hover {
+	color:#222;
+	background:#EEF4FF;
+	text-decoration: none;
+}

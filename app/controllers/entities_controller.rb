@@ -7,7 +7,15 @@ class EntitiesController < ApplicationController
       render :template => 'error_pages/404', :layout => false, :status => :not_found
       return
     end
-    respond_with @entity
+    
+    @properties = {}
+    @entity.properties.each do |key, value|
+      namespace = key.split("/")[1]
+      @properties[namespace] = [] if @properties[namespace].nil?
+      @properties[namespace] << value
+    end
+    
+    respond_with @entity, @properties
   end
   
   def show_rdf

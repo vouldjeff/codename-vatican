@@ -14,6 +14,34 @@
   <% end %>
   </ul>
 </div>
-<div class="properties">
-  <%= @entity.properties.inspect %>
+<div class="namespaces">
+  <% @properties.each do |namespace, types| %>
+    <h2><%= namespace.capitalize %></h2>
+    <div class="types">
+      <div class="type">
+        <% types.each do |type| %>
+          <h3><%= type["name"] || "Untitled..." %></h3>
+          <ul>
+            <% type["type_properties"].each do |name, property| %>
+              <li>
+                <% if property.kind_of? Array %>
+                  <ul>
+                    <% property.each do |property| %>
+                      <li>  
+                        <span class="type-property-name"><%= property["label"] %></span>: 
+                        <span class="type-property-value"><%= property["value"] %></span>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% else %>
+                  <span class="type-property-name"><%= property["label"] %></span>: 
+                  <span class="type-property-value"><%= property["value"] %></span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>
