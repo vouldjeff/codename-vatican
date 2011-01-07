@@ -5,7 +5,7 @@ class Entity
   key :namespace, String, :required => true
   key :title, String, :required => true
   key :description, String, :required => true
-  key :properties, Hash # {:key => {:name => nil, :type_properties => {:property-key => {:label => nil, :value => nil, :range => nil}}}}
+  key :properties, Hash
   key :aliases, Array
   key :image, String
   

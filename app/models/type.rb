@@ -17,7 +17,7 @@ class Type
   
   attr_accessible :nil
   
-  def self.get_skeleton(type)
+  def self.get_skeleton(type) # TODO: rewrite this method, because this would not work with the stuff implemented so far.... Pfff
     type = collection.find_one({"key" => type}, 
       :fields => ["name", "inherits", "type_properties.key", "type_properties.label", "type_properties.range"])
     if type.nil?
