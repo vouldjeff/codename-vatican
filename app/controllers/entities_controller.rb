@@ -2,29 +2,31 @@ class EntitiesController < ApplicationController
   respond_to :html
   
   def show
-    @entity = Entity.where(:key => "/" + params[:namespace] + "/" + params[:key]).limit(1).first
-    if @entity.nil?
-      render :template => 'error_pages/404', :layout => false, :status => :not_found
-      return
-    end
+    @entity = Entity.one_by_key(params[:namespace], params[:key])
     
-    @properties = {}
+    @namespaces = {}
     @entity.properties.each do |key, value|
       namespace = key.split("/")[1]
-      @properties[namespace] = [] if @properties[namespace].nil?
-      @properties[namespace] << value
+      @namespaces[namespace] = [] if @namespaces[namespace].nil?
+      @namespaces[namespace] << value
     end
     
-    respond_with @entity, @properties
+    respond_with @entity, @namespaces
   end
   
   def show_rdf
-    entity = Entity.where(:key => "/" + params[:namespace] + "/" + params[:key]).limit(1).first
-    if entity.nil?
-      render :template => 'error_pages/404', :layout => false, :status => :not_found
-      return
-    end
+    entity = Entity.one_by_key(params[:namespace], params[:key])
+
     @triples = entity.to_triples
-    respond_with @triples
+    render :text => @triples.join("\r\n")
+  end
+  
+  def list
+    @type = Type.one_by_key(params[:namespace], params[:key], true)
+    
+    options = {:sort => "description".to_sym.desc}
+    @entities = Entity.with_type(params[:namespace], params[:key], options)
+    
+    respond_with @entities
   end
 end

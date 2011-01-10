@@ -1,0 +1,2 @@
+class UpdateError < StandardError
+end

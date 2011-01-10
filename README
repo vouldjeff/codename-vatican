@@ -3,38 +3,48 @@ Here is a demo of Entity.properties format:
 {
   "/people/actor"=>{ 
     "name"=>"Actor", 
-    "type_properties"=>{
-      "/people/actor/played_in"=>[
-        {
-          "label"=>"Play", 
-          "value"=>"The swan princes"
-        }, 
-        {
-          "label"=>"Play", 
-          "value"=>"Arthur"
-        }, 
-        {
-          "label"=>"Play", 
-          "value"=>"Rapunzel"
-        }
-      ]
-    }
+    "type_properties"=>[
+      {
+        "key"=>"/people/actor/played_in",
+        "label"=>"Play",
+        "value"=>[
+          {
+            "text"=>"The swan princes"
+          },
+          {
+            "text"=>"Rapunzel"
+          },
+          {
+            "text"=>"Arthur"
+          }
+        ]
+      }
+    ]
   }, 
   "/people/person"=>{
     "name"=>"Person", 
-    "type_properties"=>{
-      "/people/person/mother"=>{
+    "type_properties"=>[
+      {
+        "key"=>"/people/person/mother",
         "label"=>"Mother", 
-        "value"=>"Angelina"
+        "value"=>{
+          "text"=>"Angelina"
+        }
       }, 
-      "/people/person/father"=>{
+      {
+        "key"=>"/people/person/father",
         "label"=>"Father", 
-        "value"=>"Marin"
+        "value"=>{
+          "text"=>"Marin",
+        }
       }, 
-      "/people/person/birth_place"=>{
+      {
+        "key"=>"/people/person/birth_place",
         "label"=>"Birth place", 
-        "value"=>"Sofia"
+        "value"=>{
+          "text"=>"Sofia",
+        }
       }
-    }
+    ]
   }
 }

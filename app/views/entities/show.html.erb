@@ -1,47 +1,60 @@
+<% title @entity.title %>
+
+
 <h1><%= @entity.title %></h1>
-<div class="image">
+
+<div class="page-info">   
+  <div class="description">
+    <%= @entity.description %>
+  </div>
+  
+  <% unless @entity.aliases.nil? or @entity.aliases == []%>
+    <div class="aliases">
+      <span>Други имена: </span>
+      <% i = 1; @entity.aliases.each do |a| %>
+        <%= a %><%= (i < @entity.aliases.count) ? ',' : nil %>
+      <% i = i + 1; end; %>
+      </ul>
+    </div>
+  <% end %>
+</div>
+
+<div class="page-image">
   <% unless @entity.image.nil? or @entity.image == "" %>
     <img src="<%= @entity.image %>" alt="<%= @entity.title %> image" />
   <% end %>
 </div>
-<div class="description">
-  <%= @entity.description %>
-</div>
-<div class="aliases">
-  <ul>
-  <% @entity.aliases.each do |a| %>
-    <li><%= a %></li>
-  <% end %>
-  </ul>
-</div>
+
+<div style="clear:both;"></div>
+
 <div class="namespaces">
-  <% @properties.each do |namespace, types| %>
-    <h2><%= namespace.capitalize %></h2>
-    <div class="types">
-      <div class="type">
-        <% types.each do |type| %>
+  <% @namespaces.each do |namespace, types| %>
+    <fieldset class="namespace">
+    <legend><h2><%= namespace.capitalize %></h2></legend>
+      <% types.each do |type| %>
+        <div class="type">
           <h3><%= type["name"] || "Untitled..." %></h3>
-          <ul>
-            <% type["type_properties"].each do |name, property| %>
-              <li>
-                <% if property.kind_of? Array %>
-                  <ul>
-                    <% property.each do |property| %>
-                      <li>  
-                        <span class="type-property-name"><%= property["label"] %></span>: 
-                        <span class="type-property-value"><%= property["value"] %></span>
-                      </li>
-                    <% end %>
-                  </ul>
-                <% else %>
-                  <span class="type-property-name"><%= property["label"] %></span>: 
-                  <span class="type-property-value"><%= property["value"] %></span>
-                <% end %>
-              </li>
+          <div class="type-properties">
+            <% type["type_properties"].each do |property| %>
+              <div class="type-property">
+                <div class="property-label">
+                  <strong><%= property["label"] %>:</strong>
+                </div>
+                <div class="property-values">
+                  <% unless property["values"].kind_of?(Array); property["values"] = [property["values"]]; end; %>
+                  <% property["values"].each do |value| %>
+                    <div class="property-value">
+                      <%= visualize_value value %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
             <% end %>
-          </ul>
-        <% end %>
-      </div>
-    </div>
+          </div>
+        </div>
+      <% end %>
+    </fieldset>
   <% end %>
 </div>
+
+<a href="/rdf/entity/<%= @entity.namespace %>/<%= @entity.key.split('/')[2] %>" class="rdf-link">RDF тройки</a>

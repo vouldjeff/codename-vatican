@@ -17,25 +17,40 @@ class Type
   
   attr_accessible :nil
   
-  def self.get_skeleton(type) # TODO: rewrite this method, because this would not work with the stuff implemented so far.... Pfff
-    type = collection.find_one({"key" => type}, 
-      :fields => ["name", "inherits", "type_properties.key", "type_properties.label", "type_properties.range"])
-    if type.nil?
-      raise ResourceNotFoundError, "The type provided was not found."
+  def self.one_by_key(namespace, key, no_schema = false)
+    response = where(:key => "/" + namespace + "/" + key).limit(1)
+    if no_schema
+      response = response.only(:name, :comment, :key)
     end
+    response = response.first
+    raise MongoMapper::DocumentNotFound if response.nil?
+    
+    response
+  end
+  
+  def self.get_skeleton(type) # TODO: rewrite this method, because this would not work with the stuff implemented so far.... Pfff
+    skeleton = collection.find_one({"key" => type}, 
+      :fields => ["name", "inherits", "type_properties.label", "type_properties.key", "type_properties.values"])
+    raise UpdateError, "The type provided was not found." if type.nil?
     
     skeleton
   end
   
-  def add_new_type_property(label, range, unique = false, comment = "")
-    errors.add :base, "Type property alredy exists" if type_properties.collect{|p| p.label}.include?(label)
-    property = TypeProperty.new(:label => label, :range => range, :unique => unique, :comment => comment)
-    type_properties << property
+  def <<(type_property)
+    raise ArgumentError, "TypeProperty not given" unless type_property.kind_of?(TypeProperty)
+    type_property.generate_key(self)
+    raise ArgumentError, "Type property alredy exists" if type_properties.collect(&:key).include?(type_property.key)
+    raise ArgumentError, "TypeProperty is not valid" unless type_property.valid?
+    
+    type_properties << type_property
   end
   
   private
   def create_key
-    if key.nil? and !namespace.nil? and !name.nil?
+    raise UpdateError, "Type namespace must not be nil" if namespace.nil?
+    raise UpdateError, "Type name must not be nil" if name.nil?
+    
+    if key.nil?
       self.key = "/" + namespace + "/" + KeyGenerator.generate_from_string(name) 
     end
   end

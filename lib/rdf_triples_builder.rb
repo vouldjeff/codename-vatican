@@ -8,21 +8,19 @@ class RdfTriplesBuilder
   end  
     
   def add(predicate, value, options = {})
-    if value.kind_of?(Hash)
-      raise StandartError, "Cannot convert Hash to RDF triples." # TODO: not finished, for now StandartError
-    else
-      if value.kind_of?(String)
-        if options[:lang].nil?
-          value = "\"" + value + "\"@" + DEFAULT_LANG
-        elsif options[:lang] == false
-          value = "\"" + value + "\""
-        else
-          value = "\"" + value + "\"@" + options[:lang]
-        end
+    if value["key"].nil? and value["value"].kind_of? String
+      if options[:lang].nil?
+        value = "\"" + value["value"] + "\"@" + DEFAULT_LANG
+      elsif options[:lang] == false
+        value = "\"" + value["value"] + "\""
+      else
+        value = "\"" + value["value"] + "\"@" + options[:lang]
       end
-              
-      @triples << [@subject, predicate, value]
+    else
+      value = value["value"] # TODO: fix.. add other cases
     end
+            
+    @triples << "#{@subject} #{predicate} #{value} ."
   end
   
   def to_a

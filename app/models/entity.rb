@@ -10,22 +10,38 @@ class Entity
   key :image, String
   
   before_validation :create_key, :on => :create
+  before_save :save_referenced
   
   validates_presence_of :key
   validates_uniqueness_of :key, :allow_nil => false
   
   attr_accessible :nil
   
+  def self.one_by_key(namespace, key) 
+    response = where(:key => "/" + namespace + "/" + key).limit(1).first
+    raise MongoMapper::DocumentNotFound if response.nil?
+    
+    response
+  end
+  
+  def self.with_type(namespace, key, options = {}) 
+    response = where("properties./" + namespace + "/" + key => {"$exists" => true}).limit(options[:limit] || 20).sort(:title)
+    response = response.skip(options[:skip]) unless options[:skip].nil?
+    response = response.sort(options[:sort]) unless options[:sort].nil?
+    
+    response
+  end
+  
   def to_triples
     triples = RdfTriplesBuilder.new key # TODO: fix to append domain name
     
     properties.each do |type_key, type|
-      type["type_properties"].each do |property_key, property|
-        unless property.kind_of? Array
-          triples.add(property_key, property["value"])
+      type["type_properties"].each do |property|
+        unless property["values"].kind_of? Array
+          triples.add(property["key"], property["values"]) # TODO: append type view url
         else
-          property.each do |property|
-            triples.add(property_key, property["value"])
+          property["values"].each do |property_parent|
+            triples.add(property["key"], property_parent) # TODO: append type view url
           end
         end
       end
@@ -48,123 +64,54 @@ class Entity
       
     successful_update? result
   end
-  
-  def self.set_or_add_property_value(entity, type, property, value)
-    type_definition = Type.collection.find_one({"key" => type, "type_properties.key" => property},
-      :fields => ["type_properties.range", "type_properties.unique", "type_properties.key"])
-      
-    raise_error! if type_definition.nil?
+ 
+  def manipulate_property_value(value, options)    
+    raise ArgumentError, "value must not be empty" if value.nil?
+    raise ArgumentError, ":action must be :add or :edit" unless [:add, :edit].include?(options[:action])
+    [:type, :property].each do |field|
+      raise ArgumentError, field.to_s + " must not be nil" if options[field].nil?
+    end
     
+    property_key = options[:type] + "/" + options[:properties]
     type_property = nil
-    type_definition["type_properties"].each do |p|
-      if p["key"] == property
+    properties[options[:type]]["type_properties"].each do |p|
+      if p["key"].eql?(property_key)
         type_property = p
         break
       end
     end
     
-    raise_error! if type_property.nil?
-    
-    if type_property["range"].kind_of?(Array)
-      raise_error! unless value.kind_of?(Hash)
-      
-      keys = type_property["range"].collect(&:key)
-      value_keys = value.keys
-      result = (keys | value_keys) - (keys & value_keys)
-      
-      raise_error! unless result.length == 0
-    elsif type_property["range"].kind_of?(Hash)
-      if type_property["range"]["type"] == "/base/ref" || type_property["range"]["type"] == "/base/reverse_ref"
-        referenced_entity = collection.find_one({"key" => value, "properties." + type => {"$exists" => true}},
+    case type_property["range"]["type"]
+      when "/base/ref", "/base/reverse_ref"
+        referenced_entity = collection.find_one({"key" => value, "properties." + options[:type] => {"$exists" => true}},
           :fields => ["key", "title"])
-        raise_error! if referenced_entity.nil?
+        Entity.raise_error!("Referenced Entity was not found") if referenced_entity.nil?
         
-        value_to_set = {"key" => referenced_entity["key"], "text" => referenced_entity["title"]}
+        value_to_set = {"key" => referenced_entity["key"], "value" => referenced_entity["title"]}
       else
-        value_to_set = value
-      end
+        value_to_set = {"value" => value.to_s}
     end
     
-    operation = (type_property["unique"] == true) ? "set" : "push"
-    property_path = "properties." + type + ".type_properties." + property
-    result = collection.update({"key" => entity, property_path => {"$exists" => true}, "$atomic" => true}, 
-      {"$" + operation => {property_path + ".value" => value_to_set}}, :safe => true) # TODO: fix to update only if old_value is still value
-        
-    successful_update? result
-  end
-  
-  def manipulate_property_value(value, options)
-    actions = [:add, :edit]
-    
-    if value.nil? or value = {}
-      raise ArgumentError, "value must not be empty"
+    if type_property["unique"]
+      type_property["values"] = value_to_set
+    else
+      type_property["values"] = [] unless type_property["values"].kind_of? Array
+      type_property["values"] << value_to_set
     end
     
-    [:type, :property, :action].each do |field|
-      if options[field].nil?
-        raise ArgumentError, field + "must not be nil"
-      end
-    end
-    
-    unless actions.include?(options[:action])
-      raise ArgumentError, ":action must be :add or :edit"
-    end
-    
-    type_definition = Type.collection.find_one({"key" => type, "type_properties.key" => property},
-      :fields => ["type_properties.range", "type_properties.unique", "type_properties.key"])
-      
-    raise_error! if type_definition.nil?
-    
-    type_property = nil
-    type_definition["type_properties"].each do |p|
-      if p["key"] == property
-        type_property = p
-        break
-      end
-    end
-    
-    raise_error! if type_property.nil?
-    
-    if type_property["range"].kind_of?(Array)
-      raise_error! unless value.kind_of?(Hash)
-      
-      keys = type_property["range"].collect(&:key)
-      value_keys = value.keys
-      result = (keys | value_keys) - (keys & value_keys)
-      
-      raise_error! unless result.length == 0
-    elsif type_property["range"].kind_of?(Hash)
-      if type_property["range"]["type"] == "/base/ref" || type_property["range"]["type"] == "/base/reverse_ref"
-        referenced_entity = collection.find_one({"key" => value, "properties." + type => {"$exists" => true}},
-          :fields => ["key", "title"])
-        raise_error! if referenced_entity.nil?
-        
-        value_to_set = {"key" => referenced_entity["key"], "text" => referenced_entity["title"]}
-      else
-        value_to_set = value
-      end
-    end
-    
-    operation = (type_property["unique"] == true) ? "set" : "push"
-    property_path = "properties." + type + ".type_properties." + property
-    result = collection.update({"key" => entity, "properties." + type => {"$exists" => true}, "$atomic" => true}, 
-      {"$" + operation => {property_path + ".value" => value_to_set}}, :safe => true) # TODO: fix to update only if old_value is still value
-    successful_update? result
     if type_property["range"]["type"] == "/base/reverse_ref"
-      property_path = "properties." + type_property["range"]["ref_type"] + ".type_properties." + type_property["range"]["property_ref"]
-      value_to_set = {"key" => entity, "text" => referenced_entity["title"]}
-      result_reference = collection.update({"key" => referenced_entity["key"], "properties." + type_property["range"]["ref_type"] => {"$exists" => true}, "$atomic" => true},
-        {"$" + operation => {property_path + ".value" => value_to_set}}, :safe => true)
+      @references = {} if @references.nil?
+      
     end
   end
   
-  def self.raise_error!
-    raise WrongOperationError, "Wrong operation on the provided property."
+  def self.raise_error!(message = "Wrong operation on the provided property.")
+    raise UpdateError, message
   end
   
   def self.successful_update?(result)
     unless result[0][0]["updatedExisting"]
-      raise ResourceNotFoundError, "Entity with the provided criteria was not found."
+      raise UpdateError, "Entity with the provided criteria was not found."
     end
   end
   
@@ -174,8 +121,20 @@ class Entity
   
   private
   def create_key
-    if key.nil? and !namespace.nil? and !title.nil?
+    raise UpdateError, "Entity namespace must not be nil" if namespace.nil?
+    raise UpdateError, "Entity title must not be nil" if title.nil?
+    
+    if key.nil?
       self.key = "/" + namespace + "/" + KeyGenerator.generate_from_string(title) 
+    end
+  end
+
+  def save_referenced
+    return if @references.nil?
+    
+    @references.each do |ref|
+      #collection.update({"key" => ref[0], "properties." + type => {"$exists" => false}, "$atomic" => true}, 
+      #  {"$set" => {"properties." + type => type_skeleton}})
     end
   end
 end

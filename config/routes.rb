@@ -7,8 +7,10 @@ Vatican::Application.routes.draw do
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:
-  match 'view/:namespace/:key' => 'entities#show', :as => :entity
-  match 'view/:namespace/:key/rdf' => 'entities#show_rdf', :as => :entity_rdf
+  match 'entities/show/:namespace/:key' => 'entities#show', :as => :entity
+  match 'rdf/entity/:namespace/:key' => 'entities#show_rdf', :as => :entity_rdf
+  match 'entities/list/:namespace/:key' => 'entities#list', :as => :entities_list
+  
   # This route can be invoked with purchase_url(:id => product.id)
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):

@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Vatican</title>
+  <title><%= content_for(:title) || "codename Vatican" %></title>
   <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag :defaults, 'jquery.tablesorter.min.js' %>
   <%= csrf_meta_tag %>
 </head>
 <body>
+<div id="header">
+  <div class="inner">
+    <span class="logo">codename Vatican</span>
+    <div class="search">
+      <form method="GET">
+        <input class="default-text" type="text" name="search" title="Търсене..." />
+      </end>
+    </div>
+  </div>
+</div>
 
 <div id="wrapper">
   <%= yield %>
 </div>
+
+<script language="javascript">
+<!--
+$(document).ready(function()
+{
+    $(".default-text").focus(function(srcc)
+    {
+        if ($(this).val() == $(this)[0].title)
+        {
+            $(this).removeClass("default-text-active");
+            $(this).val("");
+        }
+    });
+    
+    $(".default-text").blur(function()
+    {
+        if ($(this).val() == "")
+        {
+            $(this).addClass("default-text-active");
+            $(this).val($(this)[0].title);
+        }
+    });
+    
+    $(".default-text").blur();        
+});
+//-->
+</script>
 
 </body>
 </html>

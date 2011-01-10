@@ -17,14 +17,5 @@ describe TypeProperty do
       type_property = Factory.build(:type_property, :key => nil)
       type_property.should_not be_valid
     end
-    
-    describe "range" do
-      it "requires presence" do
-        type_property = Factory.build(:type_property, :range => nil)
-        type_property.should_not be_valid
-      end
-      
-      # TODO: when the other validation is put, add specs
-    end
   end
 end

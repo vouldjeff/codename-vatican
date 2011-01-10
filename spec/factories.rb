@@ -2,7 +2,6 @@ Factory.define :type_property, :default_strategy => :build do |f|
   f.sequence(:label) { |n| "name-#{n}" }
   f.sequence(:key) { |n| "key-#{n}" }
   f.comment "blah"
-  f.range "RDF::URI"
 end
 
 Factory.define :type_without_associations, :class => Type, :default_strategy => :build do |f|

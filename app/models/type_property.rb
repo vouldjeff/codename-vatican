@@ -4,18 +4,22 @@ class TypeProperty
   key :key, String, :required => true
   key :label, String, :required => true
   key :comment, String
-  key :range, :required => true
+  key :range, :default => {:type => "/base/text"}, :required => true
   key :unique, Boolean, :default => false
-  
-  before_validation :create_key, :on => :create
+  key :values, Hash, :default => {}
   
   embedded_in :type
+  
+  before_create lambda { value = [] unless unique }
 
   attr_accessible :nil
-  
-  private  
-  def create_key
-    if key.nil? and !label.nil? and !type.nil?
+
+  def generate_key(type)
+    raise ArgumentError, "Type must not be nil" if type.nil?
+    raise ArgumentError, "Type must be valid" unless type.valid?
+    raise UpdateError, "TypeProperty label must not be nil" if label.nil?
+    
+    if key.nil?
       self.key = type.key + "/" + KeyGenerator.generate_from_string(label)
     end
   end
