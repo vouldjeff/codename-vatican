@@ -5,7 +5,7 @@ class Namespace
   key :description, String, :required => true
   
   validates_uniqueness_of :key
-  before_validate :check_key_format
+  before_validation :check_key_format
   
   private
   def check_key_format
