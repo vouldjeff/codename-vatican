@@ -29,4 +29,8 @@ class EntitiesController < ApplicationController
     
     respond_with @entities
   end
+  
+  def index
+    
+  end
 end
