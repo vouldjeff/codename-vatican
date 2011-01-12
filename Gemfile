@@ -9,7 +9,9 @@ gem 'bson', '1.1'
 gem 'jquery-rails', '>= 0.2.6'
 
 #gem 'rdf'
-gem 'google-translate'
+gem 'to_lang'
+gem 'ken'
+gem 'unidecode'
 
 group :test do
   gem "rspec-rails", "~> 2.0.1"

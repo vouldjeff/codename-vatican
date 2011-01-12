@@ -1,60 +1,65 @@
 <% title @entity.title %>
 
-
 <h1><%= @entity.title %></h1>
 
-<div class="page-info">   
-  <div class="description">
-    <%= @entity.description %>
+<% unless @entity.is_ok? %>
+  <div class="no-info">Този обект още няма никаква информация.</div>
+<% else %>
+  
+  <div class="page-info">   
+    <div class="description">
+      <%= @entity.description %>
+    </div>
+    
+    <% unless @entity.aliases.nil? or @entity.aliases == []%>
+      <div class="aliases">
+        <span>Други имена: </span>
+        <% i = 1; @entity.aliases.each do |a| %>
+          <%= a %><%= (i < @entity.aliases.count) ? ',' : nil %>
+        <% i = i + 1; end; %>
+        </ul>
+      </div>
+    <% end %>
   </div>
   
-  <% unless @entity.aliases.nil? or @entity.aliases == []%>
-    <div class="aliases">
-      <span>Други имена: </span>
-      <% i = 1; @entity.aliases.each do |a| %>
-        <%= a %><%= (i < @entity.aliases.count) ? ',' : nil %>
-      <% i = i + 1; end; %>
-      </ul>
-    </div>
-  <% end %>
-</div>
-
-<div class="page-image">
-  <% unless @entity.image.nil? or @entity.image == "" %>
-    <img src="<%= @entity.image %>" alt="<%= @entity.title %> image" />
-  <% end %>
-</div>
-
-<div style="clear:both;"></div>
-
-<div class="namespaces">
-  <% @namespaces.each do |namespace, types| %>
-    <fieldset class="namespace">
-    <legend><h2><%= namespace.capitalize %></h2></legend>
-      <% types.each do |type| %>
-        <div class="type">
-          <h3><%= type["name"] || "Untitled..." %></h3>
-          <div class="type-properties">
-            <% type["type_properties"].each do |property| %>
-              <div class="type-property">
-                <div class="property-label">
-                  <strong><%= property["label"] %>:</strong>
+  <div class="page-image">
+    <% unless @entity.image.nil? or @entity.image == "" %>
+      <img src="<%= @entity.image %>" alt="<%= @entity.title %> image" />
+    <% end %>
+  </div>
+  
+  <div style="clear:both;"></div>
+  
+  <div class="namespaces">
+    <% @namespaces.each do |namespace, types| %>
+      <fieldset class="namespace">
+      <legend><h2><%= namespace.capitalize %></h2></legend>
+        <% types.each do |type| %>
+          <div class="type">
+            <h3><%= type["name"] || "Untitled..." %></h3>
+            <div class="type-properties">
+              <% type["type_properties"].each do |property| %>
+                <div class="type-property">
+                  <div class="property-label">
+                    <strong><%= property["label"] %>:</strong>
+                  </div>
+                  <div class="property-values">
+                    <% unless property["values"].kind_of?(Array); property["values"] = [property["values"]]; end; %>
+                    <% property["values"].each do |value| %>
+                      <div class="property-value">
+                        <%= visualize_value value %>
+                      </div>
+                    <% end %>
+                  </div>
                 </div>
-                <div class="property-values">
-                  <% unless property["values"].kind_of?(Array); property["values"] = [property["values"]]; end; %>
-                  <% property["values"].each do |value| %>
-                    <div class="property-value">
-                      <%= visualize_value value %>
-                    </div>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
+              <% end %>
+            </div>
           </div>
-        </div>
-      <% end %>
-    </fieldset>
-  <% end %>
-</div>
-
-<a href="/rdf/entity/<%= @entity.namespace %>/<%= @entity.key.split('/')[2] %>" class="rdf-link">RDF тройки</a>
+        <% end %>
+      </fieldset>
+    <% end %>
+  </div>
+  
+  <a href="/rdf/entity/<%= @entity.key.split('/').drop(1) %>" class="rdf-link">RDF тройки</a>
+  
+<% end %>

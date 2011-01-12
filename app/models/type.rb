@@ -1,11 +1,13 @@
 class Type
   include MongoMapper::Document
 
-  key :key, String
+  key :key, String, :required => true
   key :namespace, String, :required => true
   key :name, String, :required => true
-  key :comment, String, :required => true
-  key :inherits, Array
+  key :comment, String
+  key :inherits, Array, :default => []
+  key :instances, Integer, :default => 0
+  key :is_ok, Boolean, :default => false
   
   many :type_properties
   validates_associated :type_properties

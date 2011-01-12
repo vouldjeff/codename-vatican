@@ -8,18 +8,26 @@ class RdfTriplesBuilder
   end  
     
   def add(predicate, value, options = {})
-    if value["key"].nil? and value["value"].kind_of? String
-      if options[:lang].nil?
-        value = "\"" + value["value"] + "\"@" + DEFAULT_LANG
-      elsif options[:lang] == false
-        value = "\"" + value["value"] + "\""
+    if value.kind_of? Time
+      value = value
+    elsif value.kind_of? Hash
+      
+      if value["key"].nil? and value["value"].kind_of? String
+        if options[:lang].nil?
+          value = "\"" + value["value"] + "\"@" + DEFAULT_LANG
+        elsif options[:lang] == false
+          value = "\"" + value["value"] + "\""
+        else
+          value = "\"" + value["value"] + "\"@" + options[:lang]
+        end
       else
-        value = "\"" + value["value"] + "\"@" + options[:lang]
+        value = value["value"] # TODO: fix.. add other cases
       end
+      
     else
-      value = value["value"] # TODO: fix.. add other cases
-    end
-            
+      value = value
+    end     
+         
     @triples << "#{@subject} #{predicate} #{value} ."
   end
   

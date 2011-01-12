@@ -1,13 +1,18 @@
 class Entity
   include MongoMapper::Document
   
-  key :key, String
+  key :key, String, :required => true
   key :namespace, String, :required => true
   key :title, String, :required => true
-  key :description, String, :required => true
-  key :properties, Hash
-  key :aliases, Array
+  key :description, String
+  key :properties, Hash, :default => {}
+  key :aliases, Array, :default => []
   key :image, String
+  key :same_as, Array, :default => []
+  key :last_edited, Time, :default => Time.now.utc
+  key :is_ok, Boolean, :default => false
+  
+  key :freebase, String
   
   before_validation :create_key, :on => :create
   before_save :save_referenced
@@ -17,8 +22,8 @@ class Entity
   
   attr_accessible :nil
   
-  def self.one_by_key(namespace, key) 
-    response = where(:key => "/" + namespace + "/" + key).limit(1).first
+  def self.one_by_key(key)
+    response = where(:key => "/" + key).limit(1).first
     raise MongoMapper::DocumentNotFound if response.nil?
     
     response
@@ -34,6 +39,15 @@ class Entity
   
   def to_triples
     triples = RdfTriplesBuilder.new key # TODO: fix to append domain name
+    
+    {"title" => title, "description" => description, "date" => last_edited, "identifier" => key}.each do |k, v|
+      triples.add("http://purl.org/dc/elements/1.1/" + k, v)
+    end
+    
+    same_as.each do |s|
+      triples.add("http://www.w3.org/2002/07/owl#sameAs", s["url"])
+    end
+    
     
     properties.each do |type_key, type|
       type["type_properties"].each do |property|
@@ -121,11 +135,14 @@ class Entity
   
   private
   def create_key
-    raise UpdateError, "Entity namespace must not be nil" if namespace.nil?
+    #raise UpdateError, "Entity namespace must not be nil" if namespace.nil?
     raise UpdateError, "Entity title must not be nil" if title.nil?
     
     if key.nil?
-      self.key = "/" + namespace + "/" + KeyGenerator.generate_from_string(title) 
+      self.key = "/" + KeyGenerator.generate_from_string(title) 
+      unless collection.find_one({:key => key}, :fields => [:key]).nil?
+        self.key = key + "-" + Time.now.to_i.to_s 
+      end
     end
   end
 

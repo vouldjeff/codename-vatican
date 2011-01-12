@@ -9,7 +9,7 @@
   <thead> 
     <tr> 
       <th>Image</th> 
-      <th>Title</th> 
+      <th width="150px">Title</th> 
       <th>Description</th> 
     </tr> 
   </thead> 
@@ -22,7 +22,7 @@
           <% end %>
         </td>
         <td><a href="/entities/show/<%= entity.namespace %>/<%= entity.key.split('/')[2] %>"><span class="entity-link"><%= entity.title %></span></td>
-        <td><%= entity.description %></td>
+        <td><%= entity.description[0..300] + "..." %></td>
       </tr>
     <% end %>
   </tbody>

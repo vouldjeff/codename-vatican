@@ -7,15 +7,15 @@ Here is a demo of Entity.properties format:
       {
         "key"=>"/people/actor/played_in",
         "label"=>"Play",
-        "value"=>[
+        "values"=>[
           {
-            "text"=>"The swan princes"
+            "value"=>"The swan princes"
           },
           {
-            "text"=>"Rapunzel"
+            "value"=>"Rapunzel"
           },
           {
-            "text"=>"Arthur"
+            "value"=>"Arthur"
           }
         ]
       }
@@ -27,22 +27,22 @@ Here is a demo of Entity.properties format:
       {
         "key"=>"/people/person/mother",
         "label"=>"Mother", 
-        "value"=>{
-          "text"=>"Angelina"
+        "values"=>{
+          "value"=>"Angelina"
         }
       }, 
       {
         "key"=>"/people/person/father",
         "label"=>"Father", 
-        "value"=>{
-          "text"=>"Marin",
+        "values"=>{
+          "value"=>"Marin",
         }
       }, 
       {
         "key"=>"/people/person/birth_place",
         "label"=>"Birth place", 
-        "value"=>{
-          "text"=>"Sofia",
+        "values"=>{
+          "value"=>"Sofia",
         }
       }
     ]

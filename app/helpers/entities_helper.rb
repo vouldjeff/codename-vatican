@@ -3,7 +3,7 @@ module EntitiesHelper
     if field["key"].nil?
       return field["value"]
     else
-      # TODO...
+      link_to field["value"], "/entities/show" + field["key"]
     end
   end
 end
