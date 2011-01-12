@@ -21,7 +21,7 @@
             <img src="<%= entity.image %>" alt="<%= entity.title %>" />
           <% end %>
         </td>
-        <td><a href="/entities/show/<%= entity.namespace %>/<%= entity.key.split('/')[2] %>"><span class="entity-link"><%= entity.title %></span></td>
+        <td><a href="/entities/show/<%= entity.key.split('/')[1] %>"><span class="entity-link"><%= entity.title %></span></td>
         <td><%= entity.description[0..300] + "..." %></td>
       </tr>
     <% end %>
