@@ -31,9 +31,10 @@
   <div style="clear:both;"></div>
   
   <div class="namespaces">
+    <% if @entity.to_bg; ToLang.start("AIzaSyBWoOI7KM0fyI70N_NWn47ieEJ3W084BSs"); end; %>
     <% @namespaces.each do |namespace, types| %>
       <fieldset class="namespace">
-      <legend><h2><%= namespace.capitalize %></h2></legend>
+      <legend><h2><%= namespace.capitalize.tr("_", " ").to_bulgarian_from_english %></h2></legend>
         <% types.each do |type| %>
           <div class="type">
             <h3><%= type["name"] || "Untitled..." %></h3>

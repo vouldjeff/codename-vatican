@@ -11,6 +11,7 @@ class Entity
   key :same_as, Array, :default => []
   key :last_edited, Time, :default => Time.now.utc
   key :is_ok, Boolean, :default => false
+  key :to_bg, Boolean, :default => false
   
   key :freebase, String
   

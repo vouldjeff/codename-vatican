@@ -25,10 +25,10 @@ class EntitiesController < ApplicationController
     begin
       @type = Type.one_by_key(params[:namespace], params[:key], true)
     rescue MongoMapper::DocumentNotFound
-      @type = FakeType.new(params[:key].capitalize)
+      @type = FakeType.new(params[:key].capitalize.tr("_", " "))
     end  
       
-    options = {:sort => "description".to_sym.desc}
+    options = {:sort => "title".to_sym.desc}
     @entities = Entity.with_type(params[:namespace], params[:key], options)
     
     respond_with @entities
