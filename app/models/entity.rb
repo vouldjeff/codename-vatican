@@ -39,7 +39,9 @@ class Entity
   end
   
   def to_triples
-    triples = RdfTriplesBuilder.new key # TODO: fix to append domain name
+    domain = "http://vatican.npmg.org"    
+
+    triples = RdfTriplesBuilder.new domain + key # TODO: fix to append domain name
     
     {"title" => title, "description" => description, "date" => last_edited, "identifier" => key}.each do |k, v|
       triples.add("http://purl.org/dc/elements/1.1/" + k, v)
@@ -49,14 +51,13 @@ class Entity
       triples.add("http://www.w3.org/2002/07/owl#sameAs", s["url"])
     end
     
-    
     properties.each do |type_key, type|
       type["type_properties"].each do |property|
         unless property["values"].kind_of? Array
-          triples.add(property["key"], property["values"]) # TODO: append type view url
+          triples.add(property["key"], property["values"], :bp => domain, :br => domain)
         else
           property["values"].each do |property_parent|
-            triples.add(property["key"], property_parent) # TODO: append type view url
+            triples.add(property["key"], property_parent, :bp => domain, :br => domain)
           end
         end
       end

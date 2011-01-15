@@ -1,7 +1,7 @@
 class Extractor
-  ToLang.start("AIzaSyBWoOI7KM0fyI70N_NWn47ieEJ3W084BSs")
+  ToLang.start("AIzaSyC_5o2n6KuvAzPrQzQ5DAwpmRuyqKoNR8k")
   
-  def self.process_value(value, property, to_bg = false)
+  def self.process_value(value, property, to_bg = false)  
     if property.expected_type == "/type/datetime"
       {"value" => value, "date" => true} 
     elsif value.kind_of? Ken::Resource

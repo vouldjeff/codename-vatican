@@ -128,6 +128,3 @@ DEPENDENCIES
   rspec-rails (~> 2.0.1)
   to_lang
   unidecode
-
-METADATA
-  version: 1.0.6

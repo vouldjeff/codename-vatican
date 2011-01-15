@@ -20,6 +20,8 @@ class RdfTriplesBuilder
         else
           value = "\"" + value["value"] + "\"@" + options[:lang]
         end
+      elsif !value["key"].nil? and value["value"].kind_of? String
+	value = "#{(options[:br] || "") + value["key"]}"
       else
         value = value["value"] # TODO: fix.. add other cases
       end
@@ -27,8 +29,8 @@ class RdfTriplesBuilder
     else
       value = value
     end     
-         
-    @triples << "#{@subject} #{predicate} #{value} ."
+    @counter = @counter + 1
+    @triples << "#{@subject} #{(options[:bp] || "") + predicate} #{value} ."
   end
   
   def to_a
