@@ -13,12 +13,22 @@
     <div class="search">
       <form method="GET">
         <input class="default-text" type="text" name="search" title="Търсене..." />
-      </end>
+      </form>
     </div>
   </div>
 </div>
 
 <div id="wrapper">
+  <div id="user_nav" style="float: right;">
+    <% if user_signed_in? %>
+      Signed in as <%= current_user.email %>. <br />
+      Not you?
+      <%= link_to "Sign out", destroy_user_session_path %>
+    <% else %>
+      <%= link_to "Authentications", authentications_path %>
+    <% end %>
+  </div>
+
   <%= yield %>
 </div>
 

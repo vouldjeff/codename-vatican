@@ -8,6 +8,11 @@ gem 'bson_ext', '1.1'
 gem 'bson', '1.1'
 gem 'jquery-rails', '>= 0.2.6'
 
+gem 'devise'
+gem 'omniauth'
+
+gem 'devise-mongo_mapper', :git => 'git://github.com/collectiveidea/devise-mongo_mapper'
+
 #gem 'rdf'
 gem 'to_lang'
 gem 'ken'
