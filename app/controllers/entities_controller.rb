@@ -2,7 +2,7 @@ class EntitiesController < ApplicationController
   respond_to :html
   
   def show
-    @entity = Entity.one_by_key(params[:key])
+    @entity = Entity.one_by_key(params[:id])
     
     @namespaces = {}
     @entity.properties.each do |key, value|
@@ -14,8 +14,8 @@ class EntitiesController < ApplicationController
     respond_with @entity, @namespaces
   end
   
-  def show_rdf
-    entity = Entity.one_by_key(params[:key])
+  def rdf
+    entity = Entity.one_by_key(params[:id])
 
     @triples = entity.to_triples
     render :text => @triples.join("\r\n")

@@ -24,14 +24,14 @@ class Entity
   attr_accessible :nil
   
   def self.one_by_key(key)
-    response = where(:key => "/" + key).limit(1).first
+    response = where(:key => key).limit(1).first
     raise MongoMapper::DocumentNotFound if response.nil?
     
     response
   end
   
   def self.with_type(namespace, key, options = {}) 
-    response = where("properties./" + namespace + "/" + key => {"$exists" => true}).limit(options[:limit] || 20).sort(:title)
+    response = where("properties./" + namespace + "/" + key => {"$exists" => true}).where(:is_ok => true).limit(options[:limit] || 20).sort(:title)
     response = response.skip(options[:skip]) unless options[:skip].nil?
     response = response.sort(options[:sort]) unless options[:sort].nil?
     
@@ -135,13 +135,17 @@ class Entity
     # TODO: write
   end
   
+  def to_param
+    key
+  end
+  
   private
   def create_key
     #raise UpdateError, "Entity namespace must not be nil" if namespace.nil?
     raise UpdateError, "Entity title must not be nil" if title.nil?
     
     if key.nil?
-      self.key = "/" + KeyGenerator.generate_from_string(title) 
+      self.key = KeyGenerator.generate_from_string(title) 
       unless collection.find_one({:key => key}, :fields => [:key]).nil?
         self.key = key + "-" + Time.now.to_i.to_s 
       end

@@ -3,7 +3,7 @@ module EntitiesHelper
     if field["key"].nil?
       return field["value"]
     else
-      link_to field["value"], "/entities/show" + field["key"]
+      link_to field["value"], entity_path(:id => field["key"])
     end
   end
 end

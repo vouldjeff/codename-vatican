@@ -13,7 +13,6 @@ class Type
   validates_associated :type_properties
   
   validates_presence_of :key
-  validates_presence_of :comment
   
   before_validation :create_key, :on => :create
   validate :check_unique

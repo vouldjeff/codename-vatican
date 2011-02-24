@@ -6,7 +6,7 @@ class Extractor
       {"value" => value, "date" => true} 
     elsif value.kind_of? Ken::Resource
       
-      search = Entity.where(:key => "/" + KeyGenerator.generate_from_string(value.name)).first
+      search = Entity.where(:key => KeyGenerator.generate_from_string(value.name)).first
       if search.nil?
         ref = Entity.new
       else
@@ -31,7 +31,7 @@ class Extractor
     @resource = Ken::Topic.get result[0].id
     return nil if @resource.nil?
     
-    search = Entity.where(:key => "/" + KeyGenerator.generate_from_string(@resource.name)).first
+    search = Entity.where(:key => KeyGenerator.generate_from_string(@resource.name)).first
     if search.nil?
       @entity = Entity.new
     else
