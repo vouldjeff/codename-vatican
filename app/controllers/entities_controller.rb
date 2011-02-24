@@ -20,21 +20,4 @@ class EntitiesController < ApplicationController
     @triples = entity.to_triples
     render :text => @triples.join("\r\n")
   end
-  
-  def list
-    begin
-      @type = Type.one_by_key(params[:namespace], params[:key], true)
-    rescue MongoMapper::DocumentNotFound
-      @type = FakeType.new(params[:key].capitalize.tr("_", " "))
-    end  
-      
-    options = {:sort => "title".to_sym.desc}
-    @entities = Entity.with_type(params[:namespace], params[:key], options)
-    
-    respond_with @entities
-  end
-  
-  def index
-    
-  end
 end

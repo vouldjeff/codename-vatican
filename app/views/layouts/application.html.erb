@@ -24,9 +24,11 @@
       Signed in as <%= current_user.email %>. <br />
       Not you?
       <%= link_to "Sign out", destroy_user_session_path %>
+      <br />
     <% else %>
-      <%= link_to "Authentications", authentications_path %>
+      <br />
     <% end %>
+    <%= link_to "Authentications", authentications_path %>
   </div>
 
   <%= yield %>

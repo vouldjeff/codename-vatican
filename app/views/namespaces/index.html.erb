@@ -1,0 +1,29 @@
+<% title "namespaces" %>
+
+<table class="sorted-table"> 
+  <thead> 
+    <tr> 
+      <th width="150px">Title</th> 
+      <th>Description</th> 
+    </tr> 
+  </thead> 
+  <tbody> 
+    <% @namespaces.each do |namespace| %>
+      <tr>
+        <td><a href="<%= url_for namespace %>"><span class="entity-link"><%= namespace.key.capitalize.tr("_", " ") %></span></td>
+        <td><%= namespace.description[0..300] + "..." %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<script language="javascript">
+<!--
+$(document).ready(function() 
+    { 
+        $(".sorted-table").tablesorter(); 
+    } 
+); 
+//-->
+</script>

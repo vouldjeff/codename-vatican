@@ -1,0 +1,29 @@
+<% title @namespace.to_title %>
+
+<table class="sorted-table"> 
+  <thead> 
+    <tr> 
+      <th width="150px">Title</th> 
+      <th>Description</th> 
+    </tr> 
+  </thead> 
+  <tbody> 
+    <% @types.each do |type| %>
+      <tr>
+        <td><a href="<%= namespace_type_path @namespace, type %>"><span class="entity-link"><%= type.name %></span></td>
+        <td><%= type.comment[0..300] + "..." %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<script language="javascript">
+<!--
+$(document).ready(function() 
+    { 
+        $(".sorted-table").tablesorter(); 
+    } 
+); 
+//-->
+</script>

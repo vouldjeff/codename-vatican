@@ -13,16 +13,17 @@ class Type
   validates_associated :type_properties
   
   validates_presence_of :key
-  validates_uniqueness_of :key, :allow_nil => false
+  validates_presence_of :comment
   
   before_validation :create_key, :on => :create
+  validate :check_unique
   
   attr_accessible :nil
   
   def self.one_by_key(namespace, key, no_schema = false)
-    response = where(:key => "/" + namespace + "/" + key).limit(1)
+    response = where(:namespace => namespace, :key => key).limit(1)
     if no_schema
-      response = response.only(:name, :comment, :key)
+      response = response.only(:name, :comment, :namespace, :key)
     end
     response = response.first
     raise MongoMapper::DocumentNotFound if response.nil?
@@ -47,13 +48,25 @@ class Type
     type_properties << type_property
   end
   
+  def to_param
+    key
+  end
+  
   private
   def create_key
     raise UpdateError, "Type namespace must not be nil" if namespace.nil?
     raise UpdateError, "Type name must not be nil" if name.nil?
     
     if key.nil?
-      self.key = "/" + namespace + "/" + KeyGenerator.generate_from_string(name) 
+      self.key = KeyGenerator.generate_from_string(name) 
+    end
+  end
+  
+  def check_unique
+    doc_count = Type.where(:namespace => namespace).where(:key => key).where(:_id.ne => _id).count
+    
+    if doc_count > 0
+      errors.add_to_base "The key is not unique in the scope of namespace."
     end
   end
 end
