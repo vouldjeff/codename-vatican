@@ -1,23 +1,22 @@
-<% title "queue-" %>
+<% title "Опашка" %>
+<%= link_to "Нова задача", new_backend_job_path %>
 
 <table class="sorted-table"> 
   <thead> 
     <tr> 
-      <th width="70">Priority</th> 
-      <th>Run at</th> 
-      <th>Handler</th> 
+      <th width="70">Приоритет</th> 
+      <th>Кога?</th> 
+      <th>Обект</th> 
       <th></th>
     </tr> 
   </thead> 
   <tbody> 
     <% @jobs.each do |job| %>
       <tr>
-        <td>
-          <%= job.priority %>
-        </td>
+        <td><%= job.priority %></td>
         <td><abbr title="<%= l job.run_at, :format => :long %>"><%= time_ago_in_words job.run_at %></abbr></td>
         <td><%= job.handler %></td>
-        <td><%= link_to "X", backend_job_path(job), :confirm => 'Are you sure you want to remove this authentication option?', :method => :delete %></td>
+        <td><%= link_to "X", backend_job_path(job), :confirm => 'Are you sure you want to remove this job?', :method => :delete %></td>
       </tr>
     <% end %>
   </tbody>

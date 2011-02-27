@@ -12,10 +12,10 @@ class Extractor
       
       ref.title = (to_bg) ? value.name.to_bulgarian_from_english : value.name
       ref.freebase = value.id
-      if ref.save!
+      if ref.save
         {"key" => ref.key, "value" => ref.title}
       else
-        nil
+        raise ExtractError, [:ref_save_invalid, ref.errors]
       end
     else
       { "value" => value }
@@ -26,17 +26,17 @@ class Extractor
     opts[:translate] ||= false
     
     result = Ken.all(:name => name, :limit => 1)
-    return nil if result.length == 0
+    raise ExtractError, :entity_not_found if result.length == 0
     @resource = Ken::Topic.get result[0].id
-    return nil if @resource.nil?
+    raise ExtractError, :resource_not_found if @resource.nil?
     
     search = Entity.where(:key => KeyGenerator.generate_from_string(@resource.name)).first
     
     @entity = search || Entity.new
     
     @entity.title = (opts[:translate]) ? @resource.name.to_bulgarian_from_english : @resource.name
-    @entity.save!
-    
+    raise ExtractError, [:first_save_invalid, @entity.errors] unless @entity.save
+      
     {:description= => :description, :aliases= => :aliases, 
       :image= => :thumbnail, :freebase= => :url, :same_as= => :webpages}.each do |to, from|
       @entity.send(to, @resource.send(from))
@@ -67,7 +67,7 @@ class Extractor
     
     @entity.is_ok = true
     @entity.to_bg = true if opts[:translate]
-    @entity.save!
+    raise ExtractError, [:last_save_invalid, @entity.errors] unless @entity.save
     
     @entity.key
   end

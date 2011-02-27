@@ -12,8 +12,6 @@ class Type
   many :type_properties
   validates_associated :type_properties
   
-  validates_presence_of :key
-  
   before_validation :create_key, :on => :create
   validate :check_unique
   
@@ -53,11 +51,14 @@ class Type
   
   private
   def create_key
-    raise UpdateError, "Type namespace must not be nil" if namespace.nil?
-    raise UpdateError, "Type name must not be nil" if name.nil?
+    return if namespace.nil?
+    return if name.nil?
     
     if key.nil?
-      self.key = KeyGenerator.generate_from_string(name) 
+      self.key = KeyGenerator.generate_from_string(name)
+      unless collection.find_one({:key => key}, :fields => [:key]).nil?
+        self.key = key + "-" + Time.now.to_i.to_s 
+      end 
     end
   end
   

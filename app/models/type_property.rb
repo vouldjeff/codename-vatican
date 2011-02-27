@@ -15,12 +15,19 @@ class TypeProperty
   attr_accessible :nil
 
   def generate_key(type)
-    raise ArgumentError, "Type must not be nil" if type.nil?
-    raise ArgumentError, "Type must be valid" unless type.valid?
-    raise UpdateError, "TypeProperty label must not be nil" if label.nil?
+    if type.nil?
+      errors.add_to_base "Type must not be nil"
+    end
+    unless type.valid?
+      errors.add_to_base "Type must be valid"
+    end
+    return if label.nil?
     
     if key.nil?
       self.key = type.key + "/" + KeyGenerator.generate_from_string(label)
+      unless type.type_properties.index{|p| p.key == self.key }.nil?
+        self.key = key + "-" + Time.now.to_i.to_s 
+      end 
     end
   end
 end

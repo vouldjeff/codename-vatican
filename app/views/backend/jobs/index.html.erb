@@ -1,0 +1,27 @@
+<% title "Задачи" %>
+
+<%= link_to "Лог", log_backend_jobs_path %><br />
+<%= link_to "Опашка", queue_backend_jobs_path %>
+
+<p>
+На опашката чакат <strong><%= @counters[:queue] %></strong> задачи.
+</p>
+<p>  
+Всичко на всичко има <strong><%= @counters[:logs][:all] %></strong> задачи.<br />
+<% if @counters[:logs][:failed] > 0 %>
+  <strong><%= @counters[:logs][:failed] %> (<%= @counters[:logs][:failed].to_f * 100 / @counters[:logs][:all] %>%) от тях са се провалили</strong>!<br />
+  <% if @counters[:logs][:exception] == 0 %>
+    Погледенте го от добрата страна - никоя от задачите не е хвърлила Exception!
+  <% else %>
+    Като капак още <strong><%= @counters[:logs][:exception] %> (<%= @counters[:logs][:exception].to_f * 100 / @counters[:logs][:all] %>%) задачи са хвърлили Exception</strong>.
+  <% end %>
+  <br />
+<% else %>
+  <% if @counters[:logs][:exception] == 0 %>
+    Също така няма задачи, които са хвърлили Exception.
+  <% else %>
+    За жалост <strong><%= @counters[:logs][:exception] %> (<%= @counters[:logs][:exception].to_f * 100 / @counters[:logs][:all] %>%) задачи са хвърлили Exception</strong>
+  <% end %>
+<% end %>
+
+</p>

@@ -19,7 +19,6 @@ class Entity
   before_validation :create_key, :on => :create
   before_save :save_referenced
   
-  validates_presence_of :key
   validates_uniqueness_of :key, :allow_nil => false
   
   attr_accessible :nil
@@ -141,7 +140,7 @@ class Entity
   
   private
   def create_key
-    raise UpdateError, "Entity title must not be nil" if title.nil?
+    return if title.nil?
     
     if key.nil?
       self.key = KeyGenerator.generate_from_string(title) 

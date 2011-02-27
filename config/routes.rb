@@ -14,6 +14,8 @@ Vatican::Application.routes.draw do
     resources :jobs do
       collection do
         get :queue
+        get :log
+        delete :log, :action => :destroy_log
       end
     end
   end  

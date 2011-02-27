@@ -1,0 +1,15 @@
+<% title "Нова задача" %>
+
+
+<%= form_for(:jobs, :url => backend_jobs_path) do |f| %>
+  <p><%= f.label :priority %>
+  <%= f.text_field :priority %></p>
+
+  <p><%= f.label :delay %>
+  <%= f.text_field :delay %></p>
+  
+  <p><%= f.label :entities %>
+  <%= f.text_area :entities %></p>
+
+  <p><%= f.submit "В опашката" %></p>
+<% end %>

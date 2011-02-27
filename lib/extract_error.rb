@@ -1,0 +1,2 @@
+class ExtractError < StandardError
+end
