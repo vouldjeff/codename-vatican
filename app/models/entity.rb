@@ -2,7 +2,6 @@ class Entity
   include MongoMapper::Document
   
   key :key, String, :required => true
-  key :namespace, String, :required => true
   key :title, String, :required => true
   key :description, String
   key :properties, Hash, :default => {}
@@ -10,8 +9,10 @@ class Entity
   key :image, String
   key :same_as, Array, :default => []
   key :last_edited, Time, :default => Time.now.utc
-  key :is_ok, Boolean, :default => false
+  
   key :to_bg, Boolean, :default => false
+  key :is_ok, Boolean, :default => false
+  key :checked, Boolean, :default => false
   
   key :freebase, String
   
@@ -30,10 +31,9 @@ class Entity
     response
   end
   
-  def self.with_type(namespace, key, options = {}) 
-    response = where("properties./" + namespace + "/" + key => {"$exists" => true}).where(:is_ok => true).limit(options[:limit] || 20).sort(:title)
-    response = response.skip(options[:skip]) unless options[:skip].nil?
-    response = response.sort(options[:sort]) unless options[:sort].nil?
+  def self.with_type(namespace, key, opts = {}) 
+    response = where("properties./" + namespace + "/" + key => {"$exists" => true}).where(:is_ok => true).limit(opts[:limit] || 20).sort(opts[:sort] || :title)
+    response = response.skip(opts[:skip]) unless opts[:skip].nil?
     
     response
   end
@@ -81,7 +81,7 @@ class Entity
     successful_update? result
   end
  
-  def manipulate_property_value(value, options)    
+  def manipulate_property_value(value, options) # finish implementation 
     raise ArgumentError, "value must not be empty" if value.nil?
     raise ArgumentError, ":action must be :add or :edit" unless [:add, :edit].include?(options[:action])
     [:type, :property].each do |field|
@@ -141,7 +141,6 @@ class Entity
   
   private
   def create_key
-    #raise UpdateError, "Entity namespace must not be nil" if namespace.nil?
     raise UpdateError, "Entity title must not be nil" if title.nil?
     
     if key.nil?

@@ -9,6 +9,14 @@ Vatican::Application.routes.draw do
   resources :namespaces do
     resources :types
   end
+  
+  namespace :backend do
+    resources :jobs do
+      collection do
+        get :queue
+      end
+    end
+  end  
 
   root :to => "namespaces#index"
 end

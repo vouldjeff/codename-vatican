@@ -1,5 +1,7 @@
 module ApplicationHelper
-  def title(page_title)
-    content_for(:title, page_title)
+  def time_ago_in_words(time)
+    result = (time.utc - Time.now.utc > 0) ? "(+) " : "(-) "
+    result += super
+    result
   end
 end

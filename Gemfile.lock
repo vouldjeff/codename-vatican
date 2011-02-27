@@ -53,6 +53,13 @@ GEM
     bson_ext (1.1)
     builder (2.1.2)
     crack (0.1.8)
+    daemons (1.1.0)
+    delayed_job (2.1.4)
+      activesupport (~> 3.0)
+      daemons
+    delayed_job_mongo_mapper (1.0.0)
+      delayed_job (~> 2.1.1)
+      mongo_mapper (~> 0.8.6)
     devise (1.1.7)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 1.0.2)
@@ -184,6 +191,8 @@ PLATFORMS
 DEPENDENCIES
   bson (= 1.1)
   bson_ext (= 1.1)
+  delayed_job
+  delayed_job_mongo_mapper
   devise
   devise-mongo_mapper!
   factory_girl_rails

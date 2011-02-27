@@ -19,6 +19,11 @@
 </div>
 
 <div id="wrapper">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :id => "flash_#{name}" %>
+  <% end %>
+  
+  
   <div id="user_nav" style="float: right;">
     <% if user_signed_in? %>
       Signed in as <%= current_user.email %>. <br />
@@ -31,6 +36,7 @@
     <%= link_to "Authentications", authentications_path %>
   </div>
 
+  <%= content_tag :h1, (show_h1?) ? yield(:h1) : yield(:title) %>
   <%= yield %>
 </div>
 

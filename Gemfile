@@ -13,6 +13,9 @@ gem 'omniauth'
 
 gem 'devise-mongo_mapper', :git => 'git://github.com/collectiveidea/devise-mongo_mapper'
 
+gem 'delayed_job'
+gem 'delayed_job_mongo_mapper'
+
 #gem 'rdf'
 gem 'to_lang'
 gem 'ken'

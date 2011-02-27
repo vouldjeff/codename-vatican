@@ -7,12 +7,9 @@ class Extractor
     elsif value.kind_of? Ken::Resource
       
       search = Entity.where(:key => KeyGenerator.generate_from_string(value.name)).first
-      if search.nil?
-        ref = Entity.new
-      else
-        ref = search
-      end
-      ref.namespace = property.expected_type.split('/')[1]
+      
+      ref = search || Entity.new
+      
       ref.title = (to_bg) ? value.name.to_bulgarian_from_english : value.name
       ref.freebase = value.id
       if ref.save!
@@ -25,45 +22,43 @@ class Extractor
     end
   end
   
-  def self.by_name(name, to_bg = false, namespace = "unknown")
+  def self.by_name(name, opts = {})
+    opts[:translate] ||= false
+    
     result = Ken.all(:name => name, :limit => 1)
     return nil if result.length == 0
     @resource = Ken::Topic.get result[0].id
     return nil if @resource.nil?
     
     search = Entity.where(:key => KeyGenerator.generate_from_string(@resource.name)).first
-    if search.nil?
-      @entity = Entity.new
-    else
-      @entity = search
-    end
-    @entity.namespace = namespace
-    @entity.title = (to_bg) ? @resource.name.to_bulgarian_from_english : @resource.name
+    
+    @entity = search || Entity.new
+    
+    @entity.title = (opts[:translate]) ? @resource.name.to_bulgarian_from_english : @resource.name
     @entity.save!
     
-    @entity.description = @resource.description
-    @entity.aliases = @resource.aliases
-    @entity.image = @resource.thumbnail
-    @entity.freebase = @resource.url
-    @entity.same_as = @resource.webpages
+    {:description= => :description, :aliases= => :aliases, 
+      :image= => :thumbnail, :freebase= => :url, :same_as= => :webpages}.each do |to, from|
+      @entity.send(to, @resource.send(from))
+    end
     
     @resource.views.each do |view|
       next if view.name == "/common/topic"
       
       @entity.properties[view.type.id] = {}
       type = @entity.properties[view.type.id]
-      type["name"] = (to_bg) ? view.type.name.to_bulgarian_from_english : view.type.name
+      type["name"] = (opts[:translate]) ? view.type.name.to_bulgarian_from_english : view.type.name
       type["type_properties"] = []
       
       view.attributes.each do |attribute|
-        p = {"key" => attribute.property.id, "label" => (to_bg) ? attribute.property.name.to_bulgarian_from_english : attribute.property.name}
+        p = {"key" => attribute.property.id, "label" => (opts[:translate]) ? attribute.property.name.to_bulgarian_from_english : attribute.property.name}
         
         if attribute.property.unique?
-          p["values"] = process_value(attribute.values.first, attribute.property, to_bg)
+          p["values"] = process_value(attribute.values.first, attribute.property, opts[:translate])
         else
           p["values"] = []
           attribute.values.each do |v|
-            p["values"] << process_value(v, attribute.property, to_bg)
+            p["values"] << process_value(v, attribute.property, opts[:translate])
           end
         end
         type["type_properties"] << p
@@ -71,7 +66,7 @@ class Extractor
     end
     
     @entity.is_ok = true
-    @entity.to_bg = true if to_bg
+    @entity.to_bg = true if opts[:translate]
     @entity.save!
     
     @entity.key
