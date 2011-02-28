@@ -4,12 +4,17 @@ class ExtractJob < Struct.new(:resource, :opts)
   def perform
     time = Time.now
     begin
-      result = Extractor.by_name resource, opts || {}
-      
-      JobLog.create(:status => :success, :job_type => :extract, :info => result, :time => Time.now - time)
+      extractor = Extractor.new resource
+      extractor.run(opts || {})
     rescue ExtractError => e
       code, info = *e.message
+      info ||= resource
+      extractor.rollback() unless extractor.nil? 
       JobLog.create(:status => :failed, :job_type => :extract, :error_code => code, :info => info, :time => Time.now - time)
+    else
+      JobLog.create(:status => :success, :job_type => :extract, :info => extractor.result, :time => Time.now - time)
+    ensure
+      extractor = nil
     end
   end
   
