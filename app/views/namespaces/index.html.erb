@@ -3,7 +3,7 @@
 <div id="sidebar">
 <ul id="menu">
     <% @namespaces.each do |namespace| %>
-      <li><a href="<%= url_for namespace %>"><%= namespace.key.capitalize.tr("_", " ") %></a></li>
+      <li><a href="<%= url_for namespace %>"><%= namespace.get_name %></a></li>
     <% end %>
 </ul>
 </div>

@@ -32,7 +32,7 @@
     <% ToLang.start("AIzaSyC_5o2n6KuvAzPrQzQ5DAwpmRuyqKoNR8k") %>
     <% @namespaces.each do |namespace, types| %>
       <fieldset class="namespace">
-      <legend><h2><%= (@entity.to_bg) ? namespace.capitalize.tr("_", " ").to_bulgarian_from_english : namespace.capitalize.tr("_", " ") %></h2></legend>
+      <legend><h2><%= (@entity.to_bg) ? namespace.capitalize.tr("-", " ").to_bulgarian_from_english : namespace.capitalize.tr("-", " ") %></h2></legend>
         <% types.each do |type| %>
           <div class="type">
             <h3><%= type["name"] || "Untitled..." %></h3>

@@ -31,16 +31,14 @@ class Entity
   end
   
   def self.with_type(namespace, key, opts = {}) 
-    response = where("properties./" + namespace + "/" + key => {"$exists" => true}).where(:is_ok => true).limit(opts[:limit] || 20).sort(opts[:sort] || :title)
+    response = where("properties." + namespace + "/" + key => {"$exists" => true}).where(:is_ok => true).limit(opts[:limit] || 20).sort(opts[:sort] || :title)
     response = response.skip(opts[:skip]) unless opts[:skip].nil?
     
     response
   end
   
   def to_triples
-    domain = "http://vatican.npmg.org"    
-
-    triples = RdfTriplesBuilder.new domain + key # TODO: fix to append domain name
+    triples = RdfTriplesBuilder.new APP_CONFIG.domain + key
     
     {"title" => title, "description" => description, "date" => last_edited, "identifier" => key}.each do |k, v|
       triples.add("http://purl.org/dc/elements/1.1/" + k, v)

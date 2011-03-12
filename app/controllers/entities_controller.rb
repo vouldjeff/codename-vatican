@@ -6,7 +6,7 @@ class EntitiesController < ApplicationController
     
     @namespaces = {}
     @entity.properties.each do |key, value|
-      namespace = key.split("/")[1]
+      namespace = key.split("/")[0]
       @namespaces[namespace] = [] if @namespaces[namespace].nil?
       @namespaces[namespace] << value
     end

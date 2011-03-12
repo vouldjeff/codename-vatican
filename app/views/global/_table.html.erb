@@ -1,22 +1,20 @@
-<% title @namespace.get_name %>
-
 <table class="sorted-table"> 
   <thead> 
-    <tr> 
-      <th width="150px">Title</th> 
-      <th>Description</th> 
+    <tr>
+      <% columns.each do |row| %> 
+        <th<%= (row[:width]) ? " width=\"#{row[:width]}\"" : "" %>><%= row[:title] %></th> 
+      <% end %>
     </tr> 
   </thead> 
   <tbody> 
-    <% @types.each do |type| %>
+    <% rows.each do |row| %>
       <tr>
         <td><a href="<%= namespace_type_path @namespace, type %>"><span class="entity-link"><%= type.name %></span></td>
-        <td><%= (!type.comment.nil?) ? type.comment[0..300] + "..." : "..." %></td>
+        <td><%= type.comment[0..300] + "..." %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
 
 <script language="javascript">
 <!--

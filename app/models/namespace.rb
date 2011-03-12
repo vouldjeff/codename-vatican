@@ -2,7 +2,8 @@ class Namespace
   include MongoMapper::Document
   
   key :key, String, :required => true
-  key :description, String, :required => true
+  key :name, String
+  key :description, String
   key :parent, String
   
   validates_uniqueness_of :key
@@ -19,8 +20,8 @@ class Namespace
     key
   end
   
-  def to_title
-    key.capitalize.tr("_", " ")
+  def get_name
+    name || key.capitalize.tr("_", " ")
   end
   
   private

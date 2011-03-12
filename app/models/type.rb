@@ -7,7 +7,12 @@ class Type
   key :comment, String
   key :inherits, Array, :default => []
   key :instances, Integer, :default => 0
+
+  key :to_bg, Boolean, :default => false
   key :is_ok, Boolean, :default => false
+  key :checked, Boolean, :default => false
+  
+  key :freebase, String
   
   many :type_properties
   validates_associated :type_properties
@@ -38,8 +43,8 @@ class Type
   
   def <<(type_property)
     raise ArgumentError, "TypeProperty not given" unless type_property.kind_of?(TypeProperty)
-    type_property.generate_key(self)
-    raise ArgumentError, "Type property alredy exists" if type_properties.collect(&:key).include?(type_property.key)
+    type_property.generate_key
+    raise ArgumentError, "Type property alredy exists" unless type_properties.index{|p| p.key == type_property.key}.nil?
     raise ArgumentError, "TypeProperty is not valid" unless type_property.valid?
     
     type_properties << type_property
@@ -49,6 +54,10 @@ class Type
     key
   end
   
+  def full_key
+    namespace + "/" + key
+  end
+  
   private
   def create_key
     return if namespace.nil?
@@ -56,7 +65,7 @@ class Type
     
     if key.nil?
       self.key = KeyGenerator.generate_from_string(name)
-      unless collection.find_one({:key => key}, :fields => [:key]).nil?
+      unless collection.find_one({:namespace => namespace, :key => key}, :fields => [:key]).nil?
         self.key = key + "-" + Time.now.to_i.to_s 
       end 
     end
