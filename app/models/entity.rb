@@ -30,13 +30,6 @@ class Entity
     response
   end
   
-  def self.with_type(namespace, key, opts = {}) 
-    response = where("properties." + namespace + "/" + key => {"$exists" => true}).where(:is_ok => true).limit(opts[:limit] || 20).sort(opts[:sort] || :title)
-    response = response.skip(opts[:skip]) unless opts[:skip].nil?
-    
-    response
-  end
-  
   def to_triples
     triples = RdfTriplesBuilder.new APP_CONFIG.domain + key
     

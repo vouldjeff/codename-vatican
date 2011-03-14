@@ -1,5 +1,5 @@
 class Extractor  
-  ToLang.start(APP_CONFIG.google_maps.api)
+  ToLang.start(APP_CONFIG.google_maps_api)
   
   # Initializes the extraction proccess itself
   def run(opts = {})
@@ -11,7 +11,7 @@ class Extractor
     
     if search.nil?
       # Set unique key
-      @entity.key = @resource.id.split("/").last.tr("_", "-")
+      @entity.key = (@resource.id.split("/")[1] == "en") ? @resource.id.split("/").last.tr("_", "-") : nil
       unless Entity.collection.find_one({:key => @entity.key}, :fields => [:key]).nil?
         @entity.key = @entity.key + "-" + Time.now.to_i.to_s 
       end

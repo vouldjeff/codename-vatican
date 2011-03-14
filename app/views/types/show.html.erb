@@ -1,5 +1,20 @@
 <% title @type.name %>
 
+<form method="get">
+  <div id="filters">
+    <% unless params[:query].nil?; params[:query].each do |key, value| %>
+      <%= render :partial => "filter", :locals => {:tp => @type.type_properties, :opts => {:value => value, :key => key}} %>
+    <% end; end %>
+  </div>
+  
+  <a href="#" class="icon-link icon-sprite-new add-filter"><span>Добави филтър</span></a>
+  <br />
+  <br />
+  <input type="submit" value="Филтрирай">
+</form>
+
+<br />
+<br />
 <div class="description">
   <%= @type.comment %>
 </div>
@@ -30,10 +45,26 @@
 
 <script language="javascript">
 <!--
-$(document).ready(function() 
-    { 
-        $(".sorted-table").tablesorter(); 
-    } 
-); 
+$(document).ready(function(){ 
+  $(".remove-filter").live("click", function(){
+    $(this).parent().fadeOut(function(){
+      $(this).remove();
+    });
+  });
+  
+  $(".change-event").live("change", function(){
+    var parent = $(this).parent();
+    var elem = parent.children('input[type="hidden"]:first');
+    elem.attr("name", "query[" + parent.children('.field-select:first').attr("value") + "_" + parent.children('.operation-select:first').attr("value") + "]");
+    elem.attr("value", parent.children('input[type="text"]:first').attr("value"));
+  });
+  
+  $(".add-filter").click(function(){
+    $("#filters").append("<%= escape_javascript(render :partial => "filter", :locals => {:tp => @type.type_properties, :opts => {}}) %>");
+    $(".default-text").blur();
+  });
+    
+  $(".sorted-table").tablesorter(); 
+}); 
 //-->
 </script>

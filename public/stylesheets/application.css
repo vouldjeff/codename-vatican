@@ -66,6 +66,10 @@ a:hover {
   color: #ccc;
 }
 
+.default-text-active {
+  color: #555;
+}
+
 .logo {
   font-weight: bold;
   font-size: 15px;
@@ -182,6 +186,10 @@ textarea, input, select {
 	color: #555;
 }
 
+input {
+  padding: 4px;
+}
+
 textarea {
   white-space: normal; 
 }
@@ -210,17 +218,50 @@ input[type="text"], input[type="password"], textarea, select {
 
 input[type="submit"], input[type="button"] {
 	background: #eee;
-	padding: 3px 10px;
+	padding: 4px 10px;
 }
 
 input[type="submit"]:active, input[type="button"]:active {
 	border-top: 2px solid #2266bb;
 	border-left: 2px solid #2266bb;
+	padding-top: 3px;
+	padding-left: 9px;
+}
+
+@-moz-document url-prefix() {
+    input[type="submit"], input[type="button"] {
+        padding: 3px 10px;
+    }
+    
+    input[type="submit"]:active, input[type="button"]:active {
+        padding-top: 2px;
+    }
 }
 
 textarea:hover, textarea:focus, input:hover, input:focus {
 	border: 1px solid #2266bb;
 	color: #000;
+}
+
+.filter {
+  overflow: hidden;
+}
+
+.filter a {
+  margin-top: 7px;
+  margin-left: 20px;
+  display: inline-block;
+}
+
+.filter input[type="text"] {
+  width: 300px !important;
+}
+
+.filter input, .filter select {
+  width: auto;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-left: 0;
 }
 
 label {
@@ -318,7 +359,6 @@ table.sorted-table thead tr th, table.sorted-table tfoot tr th {
 	padding: 4px;
 }
 table.sorted-table thead tr .header {
-	background-image: url(bg.gif);
 	background-repeat: no-repeat;
 	background-position: center right;
 	cursor: pointer;
@@ -449,3 +489,46 @@ font-size:9px;
 color:#464646;
 }
  
+
+.icon-link span {
+    background: #fff;
+    padding-left: 3px;
+}
+
+.icon-link span:hover {
+	color:#222;
+	background:#EEF4FF;
+}
+
+.more-links .icon-link {
+    margin-left: 10px;
+}
+
+.icon-link {
+    background: url('/images/icons.png') no-repeat;
+    height: 16px;
+    padding-left: 16px;
+}
+
+.icon-link:hover {
+  text-decoration: none;
+}
+
+.icon-sprite-calendar {
+    background-position: -64px 0;
+}
+
+.icon-sprite-new {
+}
+
+.icon-sprite-remove {
+    background-position: -32px 0;
+}
+
+.icon-sprite-edit {
+    background-position: -48px 0;
+}
+
+.icon-sprite-participants {
+    background-position: -80px 0;
+}

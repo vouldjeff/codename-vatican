@@ -2,14 +2,11 @@ class TypesController < ApplicationController
   respond_to :html
   
   def show
-    begin
-      @type = Type.one_by_key(params[:namespace_id], params[:id], true)
-    rescue MongoMapper::DocumentNotFound
-      @type = FakeType.new(params[:id].capitalize.tr("_", " "))
-    end  
+    @type = Type.one_by_key(params[:namespace_id], params[:id], true)
       
-    options = {:sort => "title".to_sym.desc}
-    @entities = Entity.with_type(params[:namespace_id], params[:id], options)
+    builder = FormQueryBuilder.new params[:query]
+    builder.add_type(params[:namespace_id], params[:id])
+    @entities = builder.query
     
     respond_with @entities
   end

@@ -1,0 +1,25 @@
+<%
+  unless opts[:key].nil?
+    f = opts[:key].split("__") 
+    opts[:operation] = opts[:key].split("_").last
+    opts[:field] = (f.count > 1) ? f[1] : opts[:key].split("_").first
+  end
+%>
+
+<div class="filter">
+    <select name="" class="change-event field-select">
+        <option value="title"<%= ("title" == opts[:field]) ? " selected" : "" %>>Title</option>
+      <% tp.each do |property| %>
+        <option value="<%= property.type.full_key %>__<%= property.key %>__value"<%= (property.key == opts[:field]) ? " selected" : "" %>><%= property.label %></option>
+      <% end %>
+    </select>
+    <select name="" class="change-event operation-select">
+      <% {:e => "Е", :ne => "Не е", :like => "Като", :lt => "По-малко", :lte => "По-малко или равно", :gt => "Повече", :gte => "Повече или равно", :in => "В", :nin => "Не в"}.each do |key, value| %>
+        <option value="<%= key %>"<%= (key.to_s == opts[:operation]) ? " selected" : "" %>><%= value %></option>
+      <% end %>
+    </select> 
+    <input type="text" name="" class="change-event default-text" title="<%= opts[:value] || "Стойност" %>" />
+    <input type="hidden" class="hidden-value" name="query[<%= opts[:key] || "" %>]" value="<%= opts[:value] || "" %>" />
+    
+    <a href="#" class="icon-link icon-sprite-remove remove-filter"><span>Премахни</span></a>
+</div>

@@ -22,23 +22,13 @@ class Type
   
   attr_accessible :nil
   
-  def self.one_by_key(namespace, key, no_schema = false)
+  def self.one_by_key(namespace, key, only = nil)
     response = where(:namespace => namespace, :key => key).limit(1)
-    if no_schema
-      response = response.only(:name, :comment, :namespace, :key)
-    end
+    response = response.only(:name, :comment, :namespace, :key, "type_properties.label".to_sym, "type_properties.key", "type_properties.expected_type", "type_properties.mediator")
     response = response.first
     raise MongoMapper::DocumentNotFound if response.nil?
     
     response
-  end
-  
-  def self.get_skeleton(type) # TODO: rewrite this method, because this would not work with the stuff implemented so far.... Pfff
-    skeleton = collection.find_one({"key" => type}, 
-      :fields => ["name", "inherits", "type_properties.label", "type_properties.key", "type_properties.values"])
-    raise UpdateError, "The type provided was not found." if type.nil?
-    
-    skeleton
   end
   
   def <<(type_property)

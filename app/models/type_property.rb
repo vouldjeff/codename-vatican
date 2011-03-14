@@ -5,6 +5,7 @@ class TypeProperty
   key :label, String, :required => true
   key :comment, String
   key :unique, Boolean, :default => false
+  key :mediator, Boolean, :default => false
   key :expected_type
   key :values, Hash, :default => {}
   
