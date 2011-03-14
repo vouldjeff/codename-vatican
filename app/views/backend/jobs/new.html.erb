@@ -2,13 +2,13 @@
 
 
 <%= form_for(:jobs, :url => backend_jobs_path) do |f| %>
-  <p><%= f.label :priority %>
+  <p><%= f.label :priority, "Приоритет" %>
   <%= f.text_field :priority %></p>
 
-  <p><%= f.label :delay %>
+  <p><%= f.label :delay, "Закъснение" %>
   <%= f.text_field :delay %></p>
   
-  <p><%= f.label :entities %>
+  <p><%= f.label :entities, "Имена на обекти за извличане" %>
   <%= f.text_area :entities %></p>
 
   <p><%= f.submit "В опашката" %></p>

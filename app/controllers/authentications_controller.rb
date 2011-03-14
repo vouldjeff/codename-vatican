@@ -10,19 +10,19 @@ class AuthenticationsController < ApplicationController
     auth_user = User.all("authentications.provider" => omniauth['provider'], "authentications.uid" => omniauth['uid']).first
 
     if auth_user
-      flash[:notice] = "signed-successfully"
+      flash[:notice] = "Успешно влязохте."
       sign_in_and_redirect(:user, auth_user)
     elsif current_user
       current_user.apply_omniauth(omniauth)
       current_user.save!
 
-      flash[:notice] = "auth-successful"
+      flash[:notice] = "Успешно влязохте."
       redirect_to authentications_url
     else
       user = User.new
       user.apply_omniauth(omniauth)
       if user.save
-        flash[:notice] = "signed-in-with-provider-successfully"
+        flash[:notice] = "Успешно влязохте."
         sign_in_and_redirect(:user, user)
       else
         session[:omniauth] = omniauth.except('extra')

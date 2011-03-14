@@ -9,7 +9,7 @@
 <body>
 <div id="header">
   <div class="inner">
-    <span class="logo">codename Vatican</span>
+    <a href="/" class="logo">codename Vatican</a>
     <div class="search">
       <form method="GET">
         <input class="default-text" type="text" name="query[title_like]" title="Търсене..." />
@@ -26,14 +26,11 @@
   
   <div id="user_nav" style="float: right;">
     <% if user_signed_in? %>
-      Signed in as <%= current_user.email %>. <br />
-      Not you?
-      <%= link_to "Sign out", destroy_user_session_path %>
-      <br />
-    <% else %>
+      Влязли сте като <%= current_user.email %>.
+      <%= link_to "Изход", destroy_user_session_path %>
       <br />
     <% end %>
-    <%= link_to "Authentications", authentications_path %>
+    <%= link_to "Аутентикации", authentications_path %>
   </div>
 
   <%= content_tag :h1, (show_h1?) ? yield(:h1) : yield(:title) %>

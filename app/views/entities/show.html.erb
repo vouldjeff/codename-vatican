@@ -29,13 +29,13 @@
   <div style="clear:both;"></div>
   
   <div class="namespaces">
-    <% ToLang.start("AIzaSyC_5o2n6KuvAzPrQzQ5DAwpmRuyqKoNR8k") %>
     <% @namespaces.each do |namespace, types| %>
       <fieldset class="namespace">
-      <legend><h2><%= (@entity.to_bg) ? namespace.capitalize.tr("-", " ").to_bulgarian_from_english : namespace.capitalize.tr("-", " ") %></h2></legend>
+      <% ns = Namespace.one_by_key(namespace) %>
+      <legend><h2><%= link_to ns.get_name, ns %></h2></legend>
         <% types.each do |type| %>
           <div class="type">
-            <h3><%= type["name"] || "Untitled..." %></h3>
+            <h3><%= link_to type["name"], namespace_type_path(:namespace_id => ns.key, :id => type["key"]) %></h3>
             <div class="type-properties">
               <% type["type_properties"].each do |property| %>
                 <div class="type-property">

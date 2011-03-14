@@ -19,7 +19,7 @@
         <td><abbr title="<%= l log.created_at, :format => :long %>"><%= time_ago_in_words log.created_at %></abbr></td>
         <td><%= log.info %></td>
         <td><%= log.error_code %></td>
-        <td><%= link_to "X", log_backend_jobs_path(:id => log), :confirm => 'Are you sure you want to remove this log?', :method => :delete %></td>
+        <td><%= link_to "<span>Изтрий</span>".html_safe, log_backend_jobs_path(:id => log), :confirm => 'Are you sure you want to remove this log?', :method => :delete, :class => "icon-link icon-sprite-remove" %></td>
       </tr>
     <% end %>
   </tbody>

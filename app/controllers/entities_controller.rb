@@ -6,8 +6,9 @@ class EntitiesController < ApplicationController
     
     @namespaces = {}
     @entity.properties.each do |key, value|
-      namespace = key.split("/")[0]
+      namespace, type_key = *key.split("/")
       @namespaces[namespace] = [] if @namespaces[namespace].nil?
+      value["key"] = type_key
       @namespaces[namespace] << value
     end
     

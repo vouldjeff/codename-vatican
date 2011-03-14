@@ -16,12 +16,12 @@ class Backend::JobsController < ApplicationController
   
   def create
     if params[:jobs].nil?
-      flash[:error] = "no params"
+      flash[:error] = "Грешна заявка!"
       redirect_to new_backend_job_path 
     end
         
     if params[:jobs][:entities].nil?
-      flash[:error] = "no entities filled."
+      flash[:error] = "Не са посочени имена на ресурси за извличане!"
       redirect_to new_backend_job_path
     end
     
@@ -36,7 +36,7 @@ class Backend::JobsController < ApplicationController
       i += 1
     end
     
-    flash[:notice] = "#{i} jobs added to queue."
+    flash[:notice] = "#{i} задачи бяха добавени в опашката."
     redirect_to queue_backend_jobs_path
   end
   
@@ -49,9 +49,9 @@ class Backend::JobsController < ApplicationController
     raise MongoMapper::DocumentNotFound if @log.nil?
     
     if @log.destroy
-      flash[:notice] = "succ-destroy-job-log"
+      flash[:notice] = "Успешно изтрихте лога."
     else
-      flash[:error] = "error"
+      flash[:error] = "Грешка!"
     end
     redirect_to log_backend_jobs_path
   end
@@ -65,9 +65,9 @@ class Backend::JobsController < ApplicationController
     raise MongoMapper::DocumentNotFound if @job.nil?
     
     if @job.destroy
-      flash[:notice] = "succ-destroy-job"
+      flash[:notice] = "Успешно премахнахте задачата."
     else
-      flash[:error] = "error"
+      flash[:error] = "Грешка!"
     end
     redirect_to queue_backend_jobs_path
   end
