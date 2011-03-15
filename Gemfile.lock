@@ -52,6 +52,7 @@ GEM
     bson (1.1)
     bson_ext (1.1)
     builder (2.1.2)
+    chronic (0.3.0)
     crack (0.1.8)
     daemons (1.1.0)
     delayed_job (2.1.4)
@@ -191,6 +192,7 @@ PLATFORMS
 DEPENDENCIES
   bson (= 1.1)
   bson_ext (= 1.1)
+  chronic
   delayed_job
   delayed_job_mongo_mapper
   devise

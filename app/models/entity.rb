@@ -44,10 +44,10 @@ class Entity
     properties.each do |type_key, type|
       type["type_properties"].each do |property|
         unless property["values"].kind_of? Array
-          triples.add(property["key"], property["values"], :bp => domain, :br => domain)
+          triples.add(property["key"], property["values"], :bp => APP_CONFIG.domain, :br => APP_CONFIG.domain)
         else
           property["values"].each do |property_parent|
-            triples.add(property["key"], property_parent, :bp => domain, :br => domain)
+            triples.add(property["key"], property_parent, :bp => APP_CONFIG.domain, :br => APP_CONFIG.domain)
           end
         end
       end

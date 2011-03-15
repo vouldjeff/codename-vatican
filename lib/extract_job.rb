@@ -1,10 +1,10 @@
 Delayed::Worker.logger = ActiveSupport::BufferedLogger.new(File.join(RAILS_ROOT, '/log/', "#{Rails.env}_delayed_jobs.log"), Rails.logger.level) 
 
-class ExtractJob < Struct.new(:resource, :opts)
+class ExtractJob < Struct.new(:resource, :opts, :by_key)
   def perform
     time = Time.now
     begin
-      extractor = Extractor.new resource
+      extractor = Extractor.new resource, by_key || false
       extractor.run(opts || {})
     rescue ExtractError => e
       code, info = *e.message

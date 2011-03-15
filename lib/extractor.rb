@@ -9,11 +9,11 @@ class Extractor
     @old_entity = !search.nil?
     @entity = search || Entity.new
     
-    if search.nil?
+    unless @entity.is_ok?
       # Set unique key
       @entity.key = (@resource.id.split("/")[1] == "en") ? @resource.id.split("/").last.tr("_", "-") : nil
       unless Entity.collection.find_one({:key => @entity.key}, :fields => [:key]).nil?
-        @entity.key = @entity.key + "-" + Time.now.to_i.to_s 
+        @entity.key = @entity.key + "-" + Time.now.to_i.to_s if search.nil?
       end
       
       @entity.title = (opts[:translate]) ? @resource.name.to_bulgarian_from_english : @resource.name
@@ -31,7 +31,7 @@ class Extractor
       type_search = Type.where(:freebase => view.type.id).first
       type_obj = type_search || Type.new
       
-      if type_search.nil?
+      unless type_obj.is_ok?
         type_obj.namespace = view.type.id.split("/")[1].tr("_", "-")
         
         # Create Namespace if it does not exist
@@ -47,7 +47,7 @@ class Extractor
         # Set unique type_obj.key
         type_obj.key = view.type.id.split("/").last.tr("_", "-")
         unless Type.collection.find_one({:namespace => type_obj.namespace, :key => type_obj.key}, :fields => [:key]).nil?
-          type_obj.key = type_obj.key + "-" + Time.now.to_i.to_s 
+          type_obj.key = type_obj.key + "-" + Time.now.to_i.to_s if type_search.nil?
         end
         
         type_obj.name = (opts[:translate]) ? view.type.name.to_bulgarian_from_english : view.type.name
@@ -136,7 +136,12 @@ class Extractor
   # Proccesses a particular type_property
   def process_value(value, property, to_bg = false)  
     if property.expected_type == "/type/datetime"
-      {"value" => value, "date" => true} 
+      time = Chronic.parse(value)
+      {"value" => (!time.nil?) ? Date.to_mongo(time.to_date) : nil, "type" => "date"} 
+    elsif property.expected_type == "/type/float"
+      {"value" => value.to_f}
+    elsif property.expected_type == "/type/integer"
+      {"value" => value.to_i}
     elsif value.kind_of? Ken::Resource
       search = Entity.where(:key => KeyGenerator.generate_from_string(value.name)).first
       ref = search || Entity.new
@@ -145,7 +150,7 @@ class Extractor
       ref.freebase = value.id
       if ref.save
         add_entity(ref) if search.nil?
-        {"key" => ref.key, "value" => ref.title}
+        {"key" => ref.key, "value" => ref.title, "type" => "ref"}
       else
         raise ExtractError, [:ref_save_invalid, ref.errors]
       end

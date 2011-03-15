@@ -20,9 +20,11 @@ class FormQueryBuilder
     case key
       when "title" then where("title", nil, value)
       when /^sort_(asc|desc)$/ then sort(value, $1)
-      when /^([\w|\/]+)_(lt|gt|lte|gte)$/ then where($1, $2, value.to_i, true)
-      when /^([\w|\/]+)_(ne|e|like)$/ then where($1, $2, value)
-      when /^([\w|\/]+)_(in|nin)$/ then where_in($1, $2, value)
+      when /^([\w|\/-]+)_date_(lt|gt|lte|gte)$/ then where($1, $2, value, true, {:type => "date"})
+      when /^([\w|\/-]+)_(lt|gt|lte|gte)$/ then where($1, $2, value, true, {:type => "float"})
+      when /^([\w|\/-]+)_date_(ne|e|like)$/ then where($1, $2, value, true, {:type => "date"})
+      when /^([\w|\/-]+)_(ne|e|like)$/ then where($1, $2, value)
+      when /^([\w|\/-]+)_(in|nin)$/ then where_in($1, $2, value)
       else return
     end
   end
@@ -39,10 +41,17 @@ class FormQueryBuilder
     end
   end
   
-  def where(field, operation, value, numeric = false)
+  def where(field, operation, value, non_string = false, opts = {})
+    case opts[:type]
+      when "date" then
+        time = Chronic.parse(value)
+        value = (!time.nil?) ? Date.to_mongo(time.to_date) : nil
+      when "float" then value = value.to_f
+    end
+      
     case field
-      when "title" then (!numeric) ? add_or(:title, :aliases, proccess_operation(operation, value)) : nil
-      when /^([\w|\/]+)$/ then 
+      when "title" then (!non_string) ? add_or(:title, :aliases, proccess_operation(operation, value)) : nil
+      when /^([\w|\/-]+)$/ then 
         f = $1.split("__")
         @query = @query.where("properties." + f[0] + ".type_properties" => {"$elemMatch" => {"key" => f[1], "values" + ((f.count > 2) ? "." + f.from(2).join(".") : "") => proccess_operation(operation, value)}})
     end
@@ -55,7 +64,7 @@ class FormQueryBuilder
   def sort(field, operation)
     case field
       when "title" then @query = @query.sort(:title.send(operation))
-      when /^([\w|\/]+)$/ then @query = @query # Will not work
+      when /^([\w|\/-]+)$/ then @query = @query # Will not work
     end
   end
 end

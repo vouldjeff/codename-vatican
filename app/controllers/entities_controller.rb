@@ -4,6 +4,10 @@ class EntitiesController < ApplicationController
   def show
     @entity = Entity.one_by_key(params[:id])
     
+    unless @entity.is_ok?
+      Delayed::Job.enqueue ExtractJob.new(@entity.freebase, {}, true)
+    end
+    
     @namespaces = {}
     @entity.properties.each do |key, value|
       namespace, type_key = *key.split("/")
