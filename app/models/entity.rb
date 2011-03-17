@@ -1,5 +1,7 @@
 class Entity
   include MongoMapper::Document
+  plugin MongoMapper::Plugins::Timestamps
+  timestamps!
   
   key :key, String, :required => true
   key :title, String, :required => true
@@ -8,7 +10,6 @@ class Entity
   key :aliases, Array, :default => []
   key :image, String
   key :same_as, Array, :default => []
-  key :last_edited, Time, :default => Time.now.utc
   
   key :to_bg, Boolean, :default => false
   key :is_ok, Boolean, :default => false
@@ -21,7 +22,7 @@ class Entity
   
   validates_uniqueness_of :key, :allow_nil => false
   
-  attr_accessible :nil
+  attr_accessible :title, :description, :image, :aliases_string, :checked
   
   def self.one_by_key(key)
     response = where(:key => key).limit(1).first
@@ -127,6 +128,14 @@ class Entity
   
   def to_param
     key
+  end
+  
+  def aliases_string
+    self.aliases.join(", ")
+  end
+  
+  def aliases_string=(value)
+    self.aliases = value.split(", ")
   end
   
   private

@@ -3,7 +3,10 @@
 <% unless @entity.is_ok? %>
   <div class="no-info">Все още няма информация за този обект. Очаквайте в най-скоро време обновления.</div>
 <% else %>
-  
+  <%= link_to "<span>Промени</span>".html_safe, edit_entity_path, :class => "icon-link icon-sprite-new" %>  
+  <div style="clear:both;"></div>
+  <br />
+
   <div class="page-info">   
     <div class="description">
       <%= @entity.description %>

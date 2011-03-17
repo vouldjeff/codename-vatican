@@ -39,27 +39,24 @@
 
 <script language="javascript">
 <!--
-$(document).ready(function()
-{
-    $(".default-text").live("focus", function(srcc)
+$(document).ready(function(){
+  $(".default-text").live("focus", function(){
+    if ($(this).val() == $(this)[0].title)
     {
-        if ($(this).val() == $(this)[0].title)
-        {
-            $(this).addClass("default-text-active");
-            $(this).val("");
-        }
-    });
-    
-    $(".default-text").live("blur", function()
+      $(this).addClass("default-text-active");
+      $(this).val("");
+    }
+  });
+  
+  $(".default-text").live("blur", function(){
+    if ($(this).val() == "" || $(this).val() == $(this)[0].title)
     {
-        if ($(this).val() == "" || $(this).val() == $(this)[0].title)
-        {
-            $(this).removeClass("default-text-active");
-            $(this).val($(this)[0].title);
-        }
-    });
+      $(this).removeClass("default-text-active");
+      $(this).val($(this)[0].title);
+    }
+  });
     
-    $(".default-text").blur();        
+  $(".default-text").blur();        
 });
 //-->
 </script>

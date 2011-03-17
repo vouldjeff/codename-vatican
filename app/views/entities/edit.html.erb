@@ -1,0 +1,98 @@
+<% title @title %>
+
+<% form_for @entity do |f| %>
+  <% if @entity.errors.any? %>
+  <fieldset id="save-errors">  
+    <legend><h2>Грешки</h2></legend>
+  <ul>
+      <% @entity.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+    </fieldset>
+  <% end %>
+  
+  <fieldset name="basic-info">
+    <legend><h2><a href="#" class="fieldset-content-toggle">(покажи)</a> Основна информация</h2></legend>
+    <div class="content-toggle">
+      <p>
+        <%= f.label :checked %>
+        <%= f.check_box :checked %>
+      </p>
+      
+      <p>
+        <%= f.label :title %>
+        <%= f.text_field :title %>
+      </p>
+      
+      <p>
+        <%= f.label :aliases_string, "Други имена" %>
+        <%= f.text_field :aliases_string %>
+      </p>
+      
+      <p>
+        <%= f.label :description %>
+        <%= f.text_area :description %>
+      </p>
+      
+      <p>
+        <%= f.label :image %>
+        <%= f.text_field :image %>
+      </p>
+    </div>
+  </fieldset>
+    
+  <fieldset name="types">
+    <legend><h2><a href="#" class="fieldset-content-toggle">(покажи)</a> Онтологии</h2></legend>
+    <div class="content-toggle">
+      <% @entity.properties.each do |type, value| %>
+        <fieldset name="type" class="entity-type-info">
+          <legend><h3><%= value["name"] %></h3></legend>
+        </fieldset>
+      <% end %>
+    </div>
+  </fieldset>
+  
+  <%= f.submit "Обнови" %>
+<% end %>
+
+<br />
+<br />
+<%= link_to "Допълнителна информация", "#", :id => "toggle-entity-info" %>
+
+<div id="entity-info">
+  <% unless @entity.freebase.nil? %>
+    <div class="extraction-info">
+      <strong>Този ресурс е бил извлечен от <i>Freebase</i>.</strong>
+      <p>
+        Идентификатор: <strong><%= @entity.freebase %></strong>
+      </p>
+      <p>
+        Състояние: <strong><%= (@entity.is_ok?) ? "Извлечен" : "Само създаден" %>. <%= (@entity.to_bg?) ? "Преведен чрез Google Translate" : "Не е преведен" %>.</strong>
+      </p>
+    </div>
+  <% end %>
+  
+  <p>
+    Последна редакция: <strong><%= @entity.updated_at || "Няма" %></strong>  
+  </p>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#entity-info").hide();
+    $(".content-toggle").hide();
+    $(".fieldset-content-toggle").click(function(){
+      if($(this).html() == "(покажи)")
+        $(this).html("(скрии)");
+      else
+        $(this).html("(покажи)");
+        
+      $(this).parents("fieldset:first").children(".content-toggle:first").slideToggle();  
+    });
+    
+    $("#toggle-entity-info").click(function(){
+      $("#entity-info").slideToggle();
+    });
+  });
+</script>

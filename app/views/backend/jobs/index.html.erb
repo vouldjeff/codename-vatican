@@ -1,7 +1,9 @@
 <% title "Задачи" %>
 
-<%= link_to "Лог", log_backend_jobs_path %><br />
-<%= link_to "Опашка", queue_backend_jobs_path %>
+<div id="admin-nav">
+  <h2 class="first"><%= link_to "Лог", log_backend_jobs_path %></h2> | <h2><%= link_to "Опашка", queue_backend_jobs_path %></h2>
+</div>
+<%= link_to "Назад", "/backend" %>
 
 <p>
 На опашката чакат <strong><%= @counters[:queue] %></strong> задачи.

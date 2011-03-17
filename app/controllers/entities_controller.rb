@@ -19,6 +19,23 @@ class EntitiesController < ApplicationController
     respond_with @entity, @namespaces
   end
   
+  def edit
+    @entity = Entity.one_by_key(params[:id])
+    @title = @entity.title
+    
+    respond_with @entity
+  end
+  
+  def update
+    @entity = Entity.one_by_key(params[:id])
+    @title = @entity.title
+    
+    if @entity.update_attributes(params[:entity])  
+      flash[:notice] = "Успешно обновите ресурс."
+    end
+    respond_with @entity
+  end
+  
   def rdf
     entity = Entity.one_by_key(params[:id])
 

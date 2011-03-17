@@ -18,6 +18,14 @@ Vatican::Application.routes.draw do
         delete :log, :action => :destroy_log
       end
     end
+    
+    resource :main do
+      collection do
+        get :index
+        get :entities_to_check
+      end
+    end
+    root :to => "main#index"
   end  
 
   root :to => "namespaces#index"

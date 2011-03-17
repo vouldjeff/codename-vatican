@@ -105,6 +105,10 @@ fieldset h3 {
   font-size: 15px;
 }
 
+h2 .fieldset-content-toggle {
+  font-size: 12px;
+}
+
 .type-property {
   border-left: 1px solid #eee;
   margin-bottom: 5px;
@@ -280,39 +284,28 @@ label {
     clear: both;
 }
 
-#errorExplanation {
-    width: 400px;
-    border: 2px solid #CF0000;
-    padding: 0px;
-    padding-bottom: 12px;
-    margin: 20px 0;
-    background-color: #f0f0f0;
+#save-errors {
+  border: 1px solid red;
+  border-right: 2px solid red;
 }
 
-#errorExplanation h2 {
-	display: block !important;
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
-    margin: 0px;
-    background-color: #c00;
-    color: #fff;
+#save-errors ul {
+  margin: 0px;
+  padding-left: 20px;
 }
 
-#errorExplanation p {
-    color: #333;
-    margin-bottom: 0;
-    padding: 8px;
+#admin-nav {
+  margin: 5px 0;
 }
 
-#errorExplanation ul {
-    margin: 2px 24px;
+#admin-nav h2 {
+  display: inline-block;
+  margin: 0 20px;
+  font-size: 18px;
 }
 
-#errorExplanation ul li {
-    font-size: 12px;
-    list-style: disc;
+#admin-nav h2.first {
+  margin-left: 0;
 }
 
 h1, h2 {
