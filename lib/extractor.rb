@@ -10,7 +10,7 @@ class Extractor
     @entity = search || Entity.new
     
     unless @entity.is_ok?
-      if search.nil?
+      if @entity.key.nil?
         # Set unique key
         @entity.key = (@resource.id.split("/")[1] == "en") ? @resource.id.split("/").last.tr("_", "-") : nil
         unless Entity.collection.find_one({:key => @entity.key}, :fields => [:key]).nil?
@@ -45,7 +45,7 @@ class Extractor
           raise ExtractError, [:namespace_save_invalid, namespace.errors] unless namespace.save
         end
         
-        if type_search.nil?
+        if type_obj.key.nil?
           # Set unique type_obj.key
           type_obj.key = view.type.id.split("/").last.tr("_", "-")
           unless Type.collection.find_one({:namespace => type_obj.namespace, :key => type_obj.key}, :fields => [:key]).nil?
