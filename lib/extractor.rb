@@ -10,13 +10,14 @@ class Extractor
     @entity = search || Entity.new
     
     unless @entity.is_ok?
-      # Set unique key
-      @entity.key = (@resource.id.split("/")[1] == "en") ? @resource.id.split("/").last.tr("_", "-") : nil
-      unless Entity.collection.find_one({:key => @entity.key}, :fields => [:key]).nil?
-        @entity.key = @entity.key + "-" + Time.now.to_i.to_s if search.nil?
+      if search.nil?
+        # Set unique key
+        @entity.key = (@resource.id.split("/")[1] == "en") ? @resource.id.split("/").last.tr("_", "-") : nil
+        unless Entity.collection.find_one({:key => @entity.key}, :fields => [:key]).nil?
+          @entity.key = @entity.key + "-" + Time.now.to_i.to_s
+        end
+        @entity.title = (opts[:translate]) ? @resource.name.to_bulgarian_from_english : @resource.name
       end
-      
-      @entity.title = (opts[:translate]) ? @resource.name.to_bulgarian_from_english : @resource.name
       
       {:description= => :description, :aliases= => :aliases, 
         :image= => :thumbnail, :freebase= => :id, :same_as= => :webpages}.each do |to, from|
@@ -40,16 +41,18 @@ class Extractor
         rescue MongoMapper::DocumentNotFound => e
           namespace = Namespace.new 
           namespace.key = type_obj.namespace
-          namespace.name = type_obj.namespace.capitalize.tr("_", " ")
+          namespace.name = (opts[:translate]) ? type_obj.namespace.capitalize.tr("_", " ").to_bulgarian_from_english : type_obj.namespace.capitalize.tr("_", " ")
           raise ExtractError, [:namespace_save_invalid, namespace.errors] unless namespace.save
         end
         
-        # Set unique type_obj.key
-        type_obj.key = view.type.id.split("/").last.tr("_", "-")
-        unless Type.collection.find_one({:namespace => type_obj.namespace, :key => type_obj.key}, :fields => [:key]).nil?
-          type_obj.key = type_obj.key + "-" + Time.now.to_i.to_s if type_search.nil?
+        if type_search.nil?
+          # Set unique type_obj.key
+          type_obj.key = view.type.id.split("/").last.tr("_", "-")
+          unless Type.collection.find_one({:namespace => type_obj.namespace, :key => type_obj.key}, :fields => [:key]).nil?
+            type_obj.key = type_obj.key + "-" + Time.now.to_i.to_s
+          end
         end
-        
+          
         type_obj.name = (opts[:translate]) ? view.type.name.to_bulgarian_from_english : view.type.name
         type_obj.to_bg = opts[:translate]
         type_obj.freebase = view.type.id
