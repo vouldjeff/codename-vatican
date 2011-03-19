@@ -56,6 +56,7 @@ class Extractor
         type_obj.name = (opts[:translate]) ? view.type.name.to_bulgarian_from_english : view.type.name
         type_obj.to_bg = opts[:translate]
         type_obj.freebase = view.type.id
+        type_obj.is_ok = true
         
         raise ExtractError, [:first_type_save_invalid, type_obj.errors] unless type_obj.save
         add_type(type_obj)
