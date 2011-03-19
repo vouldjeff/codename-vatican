@@ -2,7 +2,7 @@ class Namespace
   include MongoMapper::Document
   
   key :key, String, :required => true
-  key :name, String
+  key :name, String, :required => true
   key :description, String
   key :parent, String
   key :show, Boolean, :default => true

@@ -29,37 +29,28 @@ a:hover {
     padding-bottom: 30px;
 }
 
-#inner {
-	padding: 0 10px;
-}
-
 #header {
-	height: 40px;
-  width: 100%;
+	height: 70px;
+	padding: 5px;
   overflow: hidden;
-  background: #ccc;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c8e5f7', endColorstr='#8ab0d1'); /* for IE */
-  background: -webkit-gradient(linear, left top, left bottom, from(#c8e5f7), to(#8ab0d1)); /* for webkit browsers */
-  background: -moz-linear-gradient(top, #c8e5f7, #8ab0d1); /* for firefox 3.6+ */
+  background: #D8EAF9;
   margin-bottom: 10px;
   color: #2266bb;
-  border-bottom: #ddd solid 1px;
+  border-bottom: #31B8DA solid 2px;
 }
 
-#header .inner {
-  width: 960px;
-  margin: 0 auto;
-  height: 30px;
-  padding-top: 11px;
+#header .header-inner {
+  margin: 10px;
+  width: auto;
 }
 
-#header .inner .search {
+#header .header-inner .left, #header .header-inner .right {
+  display: inline-block;
+}
+
+#header .header-inner .right {
   float: right;
-}
-
-#header .inner .search input {
-  width: 150px;
-  margin-top: -3px;
+  width: auto;
 }
 
 .default-text {
@@ -446,16 +437,42 @@ background-color: #8dbdd8;
 
 
 
-
-
  
 .menu-container {
-height:300px;
+width: 190px;
+height: 300px;
 padding: 0px;
 overflow:hidden;
 position:relative;
 border-left: 1px solid #ddd;
 padding-left: 5px;
+float: left;
+}
+
+.menu-context-container {
+  border: 1px solid #31b8da;
+  border-right: 0;
+  width: 500px;
+  float: left;
+  padding: 5px;
+  height: 287px;
+  overflow: hidden;
+}
+
+.inner-menu-context {
+  float: left;
+  width: 490px;
+  margin-left: 20px;
+}
+
+.menu-context-description {
+  
+}
+
+.menu-context-container .menu-container {
+  border: 0px;
+  padding: 0px;
+  height: 288px;
 }	
  
 .menu-slider {
@@ -477,14 +494,21 @@ cursor:pointer;
 }
  
 .menu-slider li a {
-background:#ddd;
+background:#eee;
 color:#1f1f1f;
 font-weight:bold;
 font-size: 16px;
 display:inline-block;
-padding:10px 20px 8px 8px;
+padding:10px 10px 8px 10px;
 text-decoration:none;
 width: 150px;
+}
+
+.menu-context-container .menu-slider li a {
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 5px;
+  font-size: 14px;
 }
  
 .menu-slider li span {

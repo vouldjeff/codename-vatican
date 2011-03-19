@@ -28,7 +28,7 @@ class Backend::JobsController < ApplicationController
     priority = params[:jobs][:priority].to_i unless params[:jobs][:priority].nil?
     delay = params[:jobs][:delay].to_i.seconds.from_now unless params[:jobs][:delay].nil?
       
-    opts = {}
+    opts = {:translate => params[:jobs][:translate]}
     i = 0
     
     params[:jobs][:entities].split("\r\n").each do |line|

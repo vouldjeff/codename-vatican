@@ -2,6 +2,9 @@
 
 
 <%= form_for(:jobs, :url => backend_jobs_path) do |f| %>
+  <p><%= f.label :translate, "Превод" %>
+  <%= f.check_box :translate %></p>
+  
   <p><%= f.label :priority, "Приоритет" %>
   <%= f.text_field :priority %></p>
 

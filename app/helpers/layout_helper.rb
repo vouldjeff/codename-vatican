@@ -11,4 +11,12 @@ module LayoutHelper
   def show_h1?
     @show_h1 == true
   end
+  
+  def h1?
+    @h1.nil? ? true : false
+  end
+  
+  def h1(value)
+    @h1 = value
+  end
 end

@@ -16,7 +16,9 @@ class Backend::NamespacesController < ApplicationController
     
     if @namespace.update_attributes(params[:namespace])  
       flash[:notice] = "Успешно обновите тип."
+      redirect_to backend_namespaces_path
+    else
+      render :action => :edit
     end
-    respond_with @namespace
   end
 end

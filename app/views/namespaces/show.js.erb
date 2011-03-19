@@ -1,0 +1,6 @@
+$(".inner-menu-context").html("<%= escape_javascript("<h2>".html_safe + @namespace.get_name + "</h2><div class=\"menu-context-description\">".html_safe + @namespace.description + "</div>".html_safe) %>")
+$(".fill-me-up").html("");
+
+<% @types.each do |type| %>
+  $(".fill-me-up").append("<li><a data-add=\"5\" data-color=\"#fff\" href=\"<%= namespace_type_path @namespace, type %>\"><%= type.name %></a></li>");
+<% end %>

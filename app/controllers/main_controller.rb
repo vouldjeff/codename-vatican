@@ -1,6 +1,6 @@
 class MainController < ApplicationController
   def index
-  	@namespaces = Namespace.all
+  	@namespaces = Namespace.where(:show => true)
   	@types = Type.all
   end
 end

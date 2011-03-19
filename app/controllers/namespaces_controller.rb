@@ -8,5 +8,5 @@ class NamespacesController < ApplicationController
     @children = Namespace.all(:parent => @namespace.key)
     
     @types = Type.all(:namespace => @namespace.key)
-  end
+  end  
 end

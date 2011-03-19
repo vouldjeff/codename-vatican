@@ -8,23 +8,12 @@
 </head>
 <body>
 <div id="header">
-  <div class="inner">
-    <a href="/" class="logo">allus.in</a>
-    <div class="search">
-      <form method="GET">
-        <input class="default-text" type="text" name="query[title_like]" title="Търсене..." />
-      </form>
+  <div class="header-inner">
+    <div class="left">
+      <a href="/" class="logo"><img src="/images/logo.png" alt="allus.in" height="50px" /></a>
     </div>
-  </div>
-</div>
-
-<div id="wrapper">
-  <% flash.each do |name, msg| %>
-    <%= content_tag :div, msg, :id => "flash_#{name}" %>
-  <% end %>
-  
-  
-  <div id="user_nav" style="float: right;">
+    <div class="right">
+      <div id="user_nav">
     <% if user_signed_in? %>
       Влязли сте като <%= current_user.email %>.
       <%= link_to "Изход", destroy_user_session_path %>
@@ -32,8 +21,16 @@
     <% end %>
     <%= link_to "Аутентикации", authentications_path %>
   </div>
+  </div>
+</div>
+</div>
 
-  <%= content_tag :h1, (show_h1?) ? yield(:h1) : yield(:title) %>
+<div id="wrapper">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :id => "flash_#{name}" %>
+  <% end %>
+  
+  <%= (h1?) ? (content_tag :h1, (show_h1?) ? yield(:h1) : yield(:title)) : "" %>
   <%= yield %>
 </div>
 

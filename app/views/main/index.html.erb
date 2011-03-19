@@ -1,76 +1,82 @@
 <% title "Начало" %>
+<% h1(false) %>
 
+<div style="text-align: center;">
+  <img src="/images/people.png" height="150px" />
+</div>
+<br />
+<br />
 <div class="menu-container">
-<ul class="menu-slider">
-    <% @namespaces.each do |namespace| %>
-      <li><a href="<%= url_for namespace %>"><%= namespace.get_name %></a></li>
-    <% end %>
-</ul>
+  <ul class="menu-slider">
+      <% @namespaces.each do |namespace| %>
+        <li><a data-remote="true" data-add="10" data-color="#eee" href="<%= url_for namespace %>"><%= namespace.get_name %></a></li>
+      <% end %>
+  </ul>
+</div>
+
+<div class="menu-context-container">
+  <div class="menu-container">
+    <ul class="menu-slider fill-me-up">
+    </ul>
+  </div>
+  <div class="inner-menu-context">
+  </div>  
 </div>
 
 <script type="text/javascript"> 
-$(document).ready(function() {	
- 
-	//Background color, mouseover and mouseout
-	var colorOver = '#31b8da';
-	var colorOut = '#ddd';
- 
-	//Padding, mouseover
-	var padLeft = '20px';
-	var padRight = '20px';
-	
-	//Default Padding
-	var defpadLeft = $('.menu-slider:first li a').css('paddingLeft');
-	var defpadRight = $('.menu-slider:first li a').css('paddingRight');
-		
-	//Animate the LI on mouse over, mouse out
-	$('.menu-slider li').click(function () {	
-		//Make LI clickable
-		window.location = $(this).find('a').attr('href');
-		
-	}).mouseover(function (){
-		
-		//mouse over LI and look for A element for transition
-		$(this).find('a')
-		.animate( { paddingLeft: padLeft, paddingRight: padRight}, { queue:false, duration:100 } )
-		.animate( { backgroundColor: colorOver }, { queue:false, duration:200 });
- 
-	}).mouseout(function () {
-	
-		//mouse oout LI and look for A element and discard the mouse over transition
-		$(this).find('a')
-		.animate( { paddingLeft: defpadLeft, paddingRight: defpadRight}, { queue:false, duration:100 } )
-		.animate( { backgroundColor: colorOut }, { queue:false, duration:200 });
-	});	
-	
-	$(function(){
-    //Get our elements for faster access and set overlay width
-    var div = $('div.menu-container'),
-                 ul = $('ul.menu-slider'),
-                 // unordered list's left margin
-                 ulPadding = 10;
-
-    //Get menu width
-    var divHeight = div.height();
-
-    //Remove scrollbars
-    div.css({overflow: 'hidden'});
-
-    //Find last image container
-    var lastLi = ul.find('li:last-child');
-
-    //When user move mouse over menu
-    div.mousemove(function(e){
-
-      //As images are loaded ul width increases,
-      //so we recalculate it each time
+  $(document).ready(function() {	
+    hideContext();
+    
+  	var colorOver = '#31b8da';
+  	var padLeft = '20px';
+  	var padRight = '20px';
+  		
+  	//Animate the LI on mouse over, mouse out
+  	//$('.menu-slider li').click(function(){ return false; });
+  	$('.menu-slider li').click(function(){
+  	  hideContext();
+  		showContext();
+  	  
+  	  //window.location = $(this).find('a').attr('href');
+  	})
+  	.live("mouseover", function(){
+  		$(this).find('a')
+  		.animate( { paddingLeft: padLeft, paddingRight: padRight}, { queue:false, duration:100 } )
+  		.animate( { backgroundColor: colorOver }, { queue:false, duration:200 });
+  	})
+  	.live("mouseout", function(){
+  		$(this).find('a')
+  		.animate( { paddingLeft: $(this).find('a').attr("data-add"), paddingRight: $(this).find('a').attr("data-add")}, { queue:false, duration:100 } )
+  		.animate( { backgroundColor: $(this).find('a').attr("data-color") }, { queue:false, duration:200 });
+  	});	
+  	
+    var ulPadding = 10;
+    $('div.menu-container').css({overflow: 'hidden'});
+  
+    $('div.menu-container').mousemove(function(e){
+      var lastLi = $(this).children("ul.menu-slider:first").children("li:last-child");
       var ulHeight = lastLi[0].offsetTop + lastLi.outerHeight() + ulPadding;
-
-      var top = (e.pageY - div.offset().top) * (ulHeight-divHeight) / divHeight;
-      div.scrollTop(top);
+  
+      var top = (e.pageY - $(this).offset().top) * (ulHeight-$(this).height()) / $(this).height();
+      $(this).scrollTop(top);
     });
-});
- 
-	
-});
+  });
+  
+  var hideContext = function(){  
+    $('.menu-context-container').stop(true); 
+    $(".menu-context-container").hide().css("width", "0px").css("height", "1px").css("margin-top", "143px").css("padding", "0px");
+    $(".inner-menu-context").hide(); 
+  }
+  
+  var showContext = function(){
+    $(".menu-context-container").show().animate({marginTop: "1px", height: "287px"}, {duration: 1000, complete: function(){ 
+      $(".menu-context-container").animate({padding: "5px"}, {duration: 100, complete: function(){
+        $(".menu-context-container").animate({ width: "750px"}, {duration: 2000, complete: function(){
+          $(".inner-menu-context").fadeIn();
+        }
+      });
+      }
+    });
+  }});
+  }
 </script> 

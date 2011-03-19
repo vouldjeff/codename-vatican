@@ -1,6 +1,17 @@
 <% title @title %>
 
-<%= form_for @namespace do |f| %>
+<% form_for @namespace, :url =>backend_namespace_path(@namespace) do |f| %>
+   <% if @namespace.errors.any? %>
+  <fieldset id="save-errors">  
+    <legend><h2>Грешки</h2></legend>
+  <ul>
+      <% @namespace.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+    </fieldset>
+  <% end %>
+  
   <p>
     <%= f.label :show, "Показвай в навигация" %>
     <%= f.check_box :show %>

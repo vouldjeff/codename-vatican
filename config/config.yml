@@ -4,4 +4,4 @@ development:
   
 production:
   google_maps_api: AIzaSyC_5o2n6KuvAzPrQzQ5DAwpmRuyqKoNR8k
-  domain: http://allus.in
+  domain: http://allus.in/
