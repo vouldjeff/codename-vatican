@@ -10,6 +10,9 @@ Vatican::Application.routes.draw do
     resources :types
   end
   
+  resources :main do
+  end
+  
   namespace :backend do
     resources :jobs do
       collection do
@@ -18,6 +21,8 @@ Vatican::Application.routes.draw do
         delete :log, :action => :destroy_log
       end
     end
+    
+    resources :namespaces
     
     resource :main do
       collection do
@@ -28,5 +33,5 @@ Vatican::Application.routes.draw do
     root :to => "main#index"
   end  
 
-  root :to => "namespaces#index"
+  root :to => "main#index"
 end

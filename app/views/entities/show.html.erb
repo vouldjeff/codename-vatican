@@ -25,7 +25,7 @@
   
   <div class="page-image">
     <% unless @entity.image.nil? or @entity.image == "" %>
-      <img src="<%= @entity.image %>" alt="<%= @entity.title %> image" />
+      <img src="<%= @entity.image %>" alt="<%= @entity.title %> image" style="max-height: 150px; max-width: 150px;" />
     <% end %>
   </div>
   

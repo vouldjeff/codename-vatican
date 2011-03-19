@@ -1,3 +1,7 @@
 development:
   google_maps_api: AIzaSyC_5o2n6KuvAzPrQzQ5DAwpmRuyqKoNR8k
   domain: http://vatican.local/
+  
+production:
+  google_maps_api: AIzaSyC_5o2n6KuvAzPrQzQ5DAwpmRuyqKoNR8k
+  domain: http://allus.in

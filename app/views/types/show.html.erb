@@ -32,7 +32,7 @@
       <tr>
         <td>
           <% unless entity.image.nil? %>
-            <img src="<%= entity.image %>" alt="<%= entity.title %>" />
+            <img src="<%= entity.image %>" alt="<%= entity.title %>" style="max-width: 100px; max-height: 100px;" />
           <% end %>
         </td>
         <td><a href="<%= url_for entity %>"><span class="entity-link"><%= entity.title %></span></td>

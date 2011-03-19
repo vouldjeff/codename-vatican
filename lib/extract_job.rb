@@ -2,19 +2,21 @@ Delayed::Worker.logger = ActiveSupport::BufferedLogger.new(File.join(RAILS_ROOT,
 
 class ExtractJob < Struct.new(:resource, :opts, :by_key)
   def perform
-    time = Time.now
+    @extractor = nil
     begin
-      extractor = Extractor.new resource, by_key || false
-      extractor.run(opts || {})
+      time = Benchmark.realtime do
+        @extractor = Extractor.new resource, by_key || false
+        @extractor.run(opts || {})
+      end
     rescue ExtractError => e
       code, info = *e.message
       info ||= resource
-      extractor.rollback() unless extractor.nil? 
-      JobLog.create(:status => :failed, :job_type => :extract, :error_code => code, :info => info, :time => Time.now - time)
+      @extractor.rollback() unless @extractor.nil? 
+      JobLog.create(:status => :failed, :job_type => :extract, :error_code => code, :info => info, :time => nil)
     else
-      JobLog.create(:status => :success, :job_type => :extract, :info => extractor.result, :time => Time.now - time)
+      JobLog.create(:status => :success, :job_type => :extract, :info => @extractor.result, :time => time)
     ensure
-      extractor = nil
+      @extractor = nil
     end
   end
   

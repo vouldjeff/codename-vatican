@@ -5,6 +5,7 @@ class Namespace
   key :name, String
   key :description, String
   key :parent, String
+  key :show, Boolean, :default => true
   
   validates_uniqueness_of :key
   before_validation :check_key_format

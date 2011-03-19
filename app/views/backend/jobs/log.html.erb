@@ -1,4 +1,5 @@
 <% title "Лог" %>
+<%= link_to "Назад", backend_jobs_path %>
 
 <table class="sorted-table"> 
   <thead> 
@@ -6,6 +7,7 @@
       <th width="70">Състояние</th> 
       <th>Тип</th> 
       <th>Кога?</th>
+      <th>Време</th>
       <th>Информация</th>
       <th>Още</th> 
       <th></th>
@@ -17,6 +19,7 @@
         <td><%= log.status %></td>
         <td><%= log.job_type %></td>
         <td><abbr title="<%= l log.created_at, :format => :long %>"><%= time_ago_in_words log.created_at %></abbr></td>
+        <td><%= log.time %></td>
         <td><%= log.info %></td>
         <td><%= log.error_code %></td>
         <td><%= link_to "<span>Изтрий</span>".html_safe, log_backend_jobs_path(:id => log), :confirm => 'Are you sure you want to remove this log?', :method => :delete, :class => "icon-link icon-sprite-remove" %></td>

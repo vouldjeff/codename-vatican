@@ -10,7 +10,7 @@
   <tbody> 
     <% @types.each do |type| %>
       <tr>
-        <td><a href="<%= namespace_type_path @namespace, type %>"><span class="entity-link"><%= type.name %></span></td>
+        <td><a href="<%= namespace_type_path @namespace, type %>"><span class="entity-link"><%= type.name %></span></a></td>
         <td><%= (!type.comment.nil?) ? type.comment[0..300] + "..." : "..." %></td>
       </tr>
     <% end %>

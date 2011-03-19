@@ -449,41 +449,45 @@ background-color: #8dbdd8;
 
 
  
-#sidebar {
-height:400px;
-padding: 20px 0;
+.menu-container {
+height:300px;
+padding: 0px;
 overflow:hidden;
 position:relative;
+border-left: 1px solid #ddd;
+padding-left: 5px;
 }	
  
-#menu {
+.menu-slider {
 width:100%;
 list-style:none;
-padding:0;
 margin:0;
+padding: 0px;
 top:0;
 position:relative;
 height:100%;
 }
  
-#menu li {
-padding:15px 0;
+.menu-slider li {
+padding:1px;
 display:block;
 overflow:hidden;
 cursor:hand;
 cursor:pointer;
 }
  
-#menu li a {
-background:#1f1f1f;
-color:#ddd;
-font-weight:900;
-display:inline;
-padding:20px 20px 5px 8px;
+.menu-slider li a {
+background:#ddd;
+color:#1f1f1f;
+font-weight:bold;
+font-size: 16px;
+display:inline-block;
+padding:10px 20px 8px 8px;
 text-decoration:none;
+width: 150px;
 }
  
-#menu li span {
+.menu-slider li span {
 font-size:9px;
 color:#464646;
 }

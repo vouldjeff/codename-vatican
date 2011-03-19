@@ -1,0 +1,76 @@
+<% title "Начало" %>
+
+<div class="menu-container">
+<ul class="menu-slider">
+    <% @namespaces.each do |namespace| %>
+      <li><a href="<%= url_for namespace %>"><%= namespace.get_name %></a></li>
+    <% end %>
+</ul>
+</div>
+
+<script type="text/javascript"> 
+$(document).ready(function() {	
+ 
+	//Background color, mouseover and mouseout
+	var colorOver = '#31b8da';
+	var colorOut = '#ddd';
+ 
+	//Padding, mouseover
+	var padLeft = '20px';
+	var padRight = '20px';
+	
+	//Default Padding
+	var defpadLeft = $('.menu-slider:first li a').css('paddingLeft');
+	var defpadRight = $('.menu-slider:first li a').css('paddingRight');
+		
+	//Animate the LI on mouse over, mouse out
+	$('.menu-slider li').click(function () {	
+		//Make LI clickable
+		window.location = $(this).find('a').attr('href');
+		
+	}).mouseover(function (){
+		
+		//mouse over LI and look for A element for transition
+		$(this).find('a')
+		.animate( { paddingLeft: padLeft, paddingRight: padRight}, { queue:false, duration:100 } )
+		.animate( { backgroundColor: colorOver }, { queue:false, duration:200 });
+ 
+	}).mouseout(function () {
+	
+		//mouse oout LI and look for A element and discard the mouse over transition
+		$(this).find('a')
+		.animate( { paddingLeft: defpadLeft, paddingRight: defpadRight}, { queue:false, duration:100 } )
+		.animate( { backgroundColor: colorOut }, { queue:false, duration:200 });
+	});	
+	
+	$(function(){
+    //Get our elements for faster access and set overlay width
+    var div = $('div.menu-container'),
+                 ul = $('ul.menu-slider'),
+                 // unordered list's left margin
+                 ulPadding = 10;
+
+    //Get menu width
+    var divHeight = div.height();
+
+    //Remove scrollbars
+    div.css({overflow: 'hidden'});
+
+    //Find last image container
+    var lastLi = ul.find('li:last-child');
+
+    //When user move mouse over menu
+    div.mousemove(function(e){
+
+      //As images are loaded ul width increases,
+      //so we recalculate it each time
+      var ulHeight = lastLi[0].offsetTop + lastLi.outerHeight() + ulPadding;
+
+      var top = (e.pageY - div.offset().top) * (ulHeight-divHeight) / divHeight;
+      div.scrollTop(top);
+    });
+});
+ 
+	
+});
+</script> 

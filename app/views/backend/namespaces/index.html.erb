@@ -1,0 +1,31 @@
+<% title "Типове" %>
+
+<%= link_to "Назад", "/backend" %>
+
+<table class="sorted-table"> 
+  <thead> 
+    <tr> 
+      <th>Име</th> 
+      <th width="100px"></th> 
+    </tr> 
+  </thead> 
+  <tbody> 
+    <% @namespaces.each do |namespace| %>
+      <tr>
+        <td><%= namespace.get_name %></td>
+        <td><%= link_to "<span>Промени</span>".html_safe, edit_backend_namespace_path(namespace), :class => "icon-link icon-sprite-edit"%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<script language="javascript">
+<!--
+$(document).ready(function() 
+    { 
+        $(".sorted-table").tablesorter(); 
+    } 
+); 
+//-->
+</script>

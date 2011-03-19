@@ -1,0 +1,18 @@
+<% title @title %>
+
+<%= form_for @namespace do |f| %>
+  <p>
+    <%= f.label :show, "Показвай в навигация" %>
+    <%= f.check_box :show %>
+  </p>
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name %>  
+  </p>
+  <p>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </p>
+  
+  <%= f.submit "Обнови" %>
+<% end %>
