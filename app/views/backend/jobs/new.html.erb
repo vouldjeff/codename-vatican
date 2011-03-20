@@ -3,7 +3,7 @@
 
 <%= form_for(:jobs, :url => backend_jobs_path) do |f| %>
   <p><%= f.label :translate, "Превод" %>
-  <%= f.check_box :translate %></p>
+  Да: <%= f.radio_button :translate, true %>, Не: <%= f.radio_button :translate, false %></p>
   
   <p><%= f.label :priority, "Приоритет" %>
   <%= f.text_field :priority %></p>
