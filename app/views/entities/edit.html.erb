@@ -1,4 +1,5 @@
-<% title @title %>
+<% title "Промяна на <span>#{@title}</span>".html_safe %>
+<%= link_to "назад", @entity, :class => "back" %>
 
 <% form_for @entity do |f| %>
   <% if @entity.errors.any? %>

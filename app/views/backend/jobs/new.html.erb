@@ -1,5 +1,5 @@
 <% title "Нова задача" %>
-
+<%= link_to "назад", queue_backend_jobs_path, :class => "back" %>
 
 <%= form_for(:jobs, :url => backend_jobs_path) do |f| %>
   <p><%= f.label :translate, "Превод" %>

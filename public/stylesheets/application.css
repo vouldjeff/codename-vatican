@@ -18,6 +18,22 @@ a:link, a:visited, a:active {
     outline: none;
 }
 
+a.back {
+  display: inline-block;
+  background: url("arrow.gif") no-repeat scroll 0 5px transparent;
+  color: #ccc;
+  margin-top: -50px;
+  outline: medium none;
+  padding-left: 10px;
+  position: absolute;
+  text-decoration: none;
+}
+
+a.back:hover {
+  text-decoration: none;
+  background-position: 2px 5px;
+}
+
 a:hover {
     text-decoration: underline;
 }
@@ -322,6 +338,10 @@ h1, h2 {
 h1.title {
   font-size: 20px;
   display: inline-block;
+}
+
+h1.title span {
+  color: #777;
 }
 
 h1 a, h2 a {

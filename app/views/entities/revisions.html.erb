@@ -1,5 +1,5 @@
-<% title @entity.title %>
-<%= link_to "назад", @entity %>
+<% title "Версии на <span>#{@entity.title}</span>".html_safe %>
+<%= link_to "назад", @entity, :class => "back" %>
 
 <table class="sorted-table"> 
   <thead> 
