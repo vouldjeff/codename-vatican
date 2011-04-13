@@ -1,9 +1,9 @@
 <% title "Задачи" %>
+<%= link_to "Назад", "/backend" %>
 
 <div id="admin-nav">
   <h2 class="first"><%= link_to "Лог", log_backend_jobs_path %></h2> | <h2><%= link_to "Опашка", queue_backend_jobs_path %></h2>
 </div>
-<%= link_to "Назад", "/backend" %>
 
 <p>
 На опашката чакат <strong><%= @counters[:queue] %></strong> задачи.
@@ -11,11 +11,11 @@
 <p>  
 Всичко на всичко има <strong><%= @counters[:logs][:all] %></strong> задачи.<br />
 <% if @counters[:logs][:failed] > 0 %>
-  <strong><%= @counters[:logs][:failed] %> (<%= @counters[:logs][:failed].to_f * 100 / @counters[:logs][:all] %>%) от тях са се провалили</strong>!<br />
+  <strong><%= @counters[:logs][:failed] %> (<%= (@counters[:logs][:failed].to_f * 100 / @counters[:logs][:all]).round(2) %>%) от тях са се провалили</strong>!<br />
   <% if @counters[:logs][:exception] == 0 %>
     Погледенте го от добрата страна - никоя от задачите не е хвърлила Exception!
   <% else %>
-    Като капак още <strong><%= @counters[:logs][:exception] %> (<%= @counters[:logs][:exception].to_f * 100 / @counters[:logs][:all] %>%) задачи са хвърлили Exception</strong>.
+    Като капак още <strong><%= @counters[:logs][:exception] %> (<%= (@counters[:logs][:exception].to_f * 100 / @counters[:logs][:all]).round(2) %>%) задачи са хвърлили Exception</strong>.
   <% end %>
   <br />
 <% else %>

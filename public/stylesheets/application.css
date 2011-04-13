@@ -23,32 +23,34 @@ a:hover {
 }
 
 #wrapper {
-    width: 960px;
+    background: url("bg-wrapper.png") no-repeat scroll 0 0 transparent;
     margin: 0 auto;
-    padding: 0px;
-    padding-bottom: 30px;
+    padding: 20px;
+    width: 930px;
 }
 
 #header {
-	height: 70px;
-	padding: 5px;
+	height: 82px;
   overflow: hidden;
-  background: #D8EAF9;
-  margin-bottom: 10px;
-  color: #2266bb;
-  border-bottom: #31B8DA solid 2px;
+  background: #f5f5f5 url('bg.gif') bottom left repeat-x;
+  border-top: #31b8da solid 5px;
+  border-bottom: #ddd solid 1px;
+  margin-bottom: 20px;
 }
 
-#header .header-inner {
-  margin: 10px;
-  width: auto;
+#header #header-inner {
+  border-bottom: #eee solid 1px;
+  height: 72px;
+  margin-top: 11px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
-#header .header-inner .left, #header .header-inner .right {
+#header #header-inner .left, #header #header-inner .right {
   display: inline-block;
 }
 
-#header .header-inner .right {
+#header #header-inner .right {
   float: right;
   width: auto;
 }
@@ -62,6 +64,7 @@ a:hover {
 }
 
 a.logo {
+  float: left;
   font-weight: bold;
   font-size: 15px;
   color: #fff;
@@ -120,6 +123,9 @@ h2 .fieldset-content-toggle {
 #flash_notice, #flash_error, #flash_alert {
   padding: 5px 8px;
   margin: 10px 0;
+  left: 550px;
+  position: absolute;
+  top: 0;
 }
 
 #flash_notice {
@@ -193,6 +199,7 @@ input {
 
 textarea {
   white-space: normal; 
+  width: 712px !important;
 }
 
 select {
@@ -200,9 +207,10 @@ select {
 }
 
 input[type="text"], input[type="password"], textarea, select {
-	width: 750px;
+	width: 710px;
 	display: block;
 	float: left;
+  margin: 2px;
 }
 
 .error-field input, .error-field textarea, .error-field select {
@@ -218,25 +226,18 @@ input[type="text"], input[type="password"], textarea, select {
 }
 
 input[type="submit"], input[type="button"] {
-	background: #eee;
-	padding: 4px 10px;
-}
-
-input[type="submit"]:active, input[type="button"]:active {
-	border-top: 2px solid #2266bb;
-	border-left: 2px solid #2266bb;
-	padding-top: 3px;
-	padding-left: 9px;
-}
-
-@-moz-document url-prefix() {
-    input[type="submit"], input[type="button"] {
-        padding: 3px 10px;
-    }
-    
-    input[type="submit"]:active, input[type="button"]:active {
-        padding-top: 2px;
-    }
+	padding: 0px 10px;
+  padding-bottom: 1px;
+  background: -moz-linear-gradient(center top , #F4F4F4, #ECECEC) repeat scroll 0 0 transparent;
+  border: 1px solid #D4D4D4;
+  border-radius: 3px 3px 3px 3px;
+  color: #333333;
+  display: inline-block;
+  font-family: Helvetica;
+  font-size: 11px;
+  font-weight: bold;
+  height: 23px;
+  text-shadow: 1px 1px 0 #FFFFFF;
 }
 
 textarea:hover, textarea:focus, input:hover, input:focus {
@@ -304,26 +305,28 @@ h1, h2 {
 }
 
 h1 {
-	font-size: 32px;
+	font-size: 26px;
 }
 
 h2 {
-	font-size: 24px;
+	font-size: 18px;
 }
 
 h1, h2 {
-	font-family: Georgia, serif;
+  font-family: Helvetica;
 	text-shadow:0 1px 1px rgba(64, 64, 64, 0.13);
 	font-weight: normal;
 	color:#222;
 }
 
+h1.title {
+  font-size: 20px;
+  display: inline-block;
+}
+
 h1 a, h2 a {
 	display: inline;
 	color: #2266bb;
-	font-family: Georgia, serif;
-	text-shadow:0 1px 1px rgba(64, 64, 64, 0.13);
-	font-weight: normal;
 }
 
 h1 a:hover, h2 a:hover {
@@ -516,6 +519,44 @@ font-size:9px;
 color:#464646;
 }
  
+.controls {
+  float: right;
+  background: none repeat scroll 0 0 #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  display: inline-block;
+  margin: 0;
+}
+
+.controls a {
+  padding: 5px 10px;
+  display: inline-block;
+  font-weight: bold;
+  float: left;
+}
+
+.controls a:hover {
+  background: #31B8DA;
+  overflow: visible;
+  color: #fff;
+  text-decoration: none;
+}
+
+.controls a.left {
+  border-right: 1px solid #ddd;
+}
+
+.controls a.left:hover {
+  border-radius: 3px 0 0 3px;
+}
+
+.controls a.right:hover {
+  border-radius: 0 3px 3px 0;
+}
+
+.controls a.one:hover {
+  border-radius: 3px;
+}
 
 .icon-link span {
     background: #fff;

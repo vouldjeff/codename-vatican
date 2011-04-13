@@ -9,9 +9,9 @@
 </head>
 <body>
 <div id="header">
-  <div class="header-inner">
+  <div id="header-inner">
     <div class="left">
-      <a href="/" class="logo"><img src="/images/logo.png" alt="allus.in" height="50px" /></a>
+      <a href="/" class="logo"><img src="/images/logo.png" alt="allus.in" /></a>
     </div>
     <div class="right">
       <div id="user_nav">
@@ -20,7 +20,7 @@
       <%= link_to "Изход", destroy_user_session_path %>
       <br />
     <% end %>
-    <%= link_to "Аутентикации", authentications_path %>
+    <%= link_to "Автентикация", authentications_path %>
   </div>
   </div>
 </div>
@@ -30,8 +30,8 @@
   <% flash.each do |name, msg| %>
     <%= content_tag :div, msg, :id => "flash_#{name}" %>
   <% end %>
-  
-  <%= (h1?) ? (content_tag :h1, (show_h1?) ? yield(:h1) : yield(:title)) : "" %>
+
+  <%= (h1?) ? (content_tag :h1, (show_h1?) ? yield(:h1) : yield(:title), :class => "title") : "" %>
   <%= yield %>
 </div>
 

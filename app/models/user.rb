@@ -1,7 +1,7 @@
 class User
   include MongoMapper::Document
   plugin MongoMapper::Devise
-  devise :registerable, :database_authenticatable, :recoverable, :rememberable, :validatable
+  devise :registerable, :database_authenticatable, :rememberable
 
   attr_accessible :email, :password, :password_confirmation, :remember_me
   many :authentications
@@ -12,6 +12,6 @@ class User
   end
 
   def password_required?
-    (authentications.empty? || !password.blank?) && super
+    authentications.empty? || !password.blank?
   end
 end
