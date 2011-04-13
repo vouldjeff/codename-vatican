@@ -1,6 +1,29 @@
 <% title @entity.title %>
+<%= link_to "назад", @entity %>
 
-
-<% @revisions.each do |revision| %>
-  <%= revision.revision %><br />
-<% end %>
+<table class="sorted-table"> 
+  <thead> 
+    <tr> 
+      <th width="100px">Версия</th> 
+      <th>Кога?</th>
+      <th>От</th>
+      <th>IP</th> 
+      <th>Променени в следваща версия</th>
+      <th>Добавки в следваща версия</th>
+      <th width="150px"></th> 
+    </tr> 
+  </thead> 
+  <tbody> 
+    <% @revisions.each do |revision| %>
+      <tr>
+        <td><%= revision.revision %></td>
+        <td><abbr title="<%= l revision.created_at, :format => :long %>"><%= time_ago_in_words revision.created_at %></abbr></td>
+        <td><%= (revision.by.to_i == 0) ? "нерегистриран" : User.find(revision.by).email %></td>
+        <td><%= revision.ip %></td>
+        <td><%= revision.edited.size %></td>
+        <td><%= revision.added.size %></td>
+        <td><%= link_to "<span>Върни към тази версия</span>".html_safe, revert_entity_path(@entity, :revision => revision.id), :confirm => 'Сигурни ли сте, че искате да се върнете към тази версия?', :method => :delete, :class => "icon-link icon-sprite-remove" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

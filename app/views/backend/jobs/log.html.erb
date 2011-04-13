@@ -22,7 +22,7 @@
         <td><%= log.time %></td>
         <td><%= log.info %></td>
         <td><%= log.error_code %></td>
-        <td><%= link_to "<span>Изтрий</span>".html_safe, log_backend_jobs_path(:id => log), :confirm => 'Are you sure you want to remove this log?', :method => :delete, :class => "icon-link icon-sprite-remove" %></td>
+        <td><%= link_to "<span>Изтрий</span>".html_safe, log_backend_jobs_path(:id => log), :confirm => 'Сигурни ли сте, че искате да премахнете този запис?', :method => :delete, :class => "icon-link icon-sprite-remove" %></td>
       </tr>
     <% end %>
   </tbody>

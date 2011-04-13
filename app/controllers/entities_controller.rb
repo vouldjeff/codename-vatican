@@ -32,6 +32,13 @@ class EntitiesController < ApplicationController
     
     respond_with @entity, @revisions
   end
+
+  def destroy_revision
+    EntityHistory.revert_to(params[:id], params[:revision])
+
+    flash[:notice] = "Успещно се върнахте към по-стара версия."
+    redirect_to entity_path(params[:id])
+  end
   
   def update
     @entity = Entity.one_by_key(params[:id])

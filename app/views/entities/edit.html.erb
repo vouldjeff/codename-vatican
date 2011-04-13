@@ -76,6 +76,9 @@
   <p>
     Последна редакция: <strong><%= @entity.updated_at || "Няма" %></strong>  
   </p>
+  <p>
+    Версия: <strong><%= @entity.revision || 1 %></strong>  
+  </p>
 </div>
 
 <script type="text/javascript">

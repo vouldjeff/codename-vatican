@@ -13,8 +13,9 @@ class EntityHistory
 
   LIST = ["_id", "revision", "created_at", "freebase", "updated_at", "key", "to_bg", "last_edited"]
 
-  def self.revert_to(history_id)
+  def self.revert_to(entity_id, history_id)
     point = find(history_id)
+    return unless entity_id == point.entity
     changes = where(:entity => point.entity).where(:revision.gt => point.revision).sort(:revision.desc)
 
     edited = nil
