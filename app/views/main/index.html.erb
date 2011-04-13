@@ -1,5 +1,10 @@
 <% title "Начало" %>
 <% h1(false) %>
+
+<div class="about-few">
+  Граф с данни за хора, филми, музика, места... И над <%= Entity.all.count %> записа!
+</div>
+
 <div class="menu-container">
   <ul class="menu-slider">
       <% @namespaces.each do |namespace| %>
@@ -15,6 +20,46 @@
   </div>
   <div class="inner-menu-context">
   </div>  
+</div>
+
+<div style="clear: both;"></div>
+
+<div class="info-boxes">
+  <div class="info-box">
+    <div class="wrapper" style="margin-left: 0;">
+      <h2>Какво е семантичен уеб?</h2>
+      <p>
+        <strong>Концепция</strong> представлява всеки ресурс да бъде представян освен във формат, разбираем за хората, и в такъв, понятен за компютрите!
+      </p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="wrapper">
+      <h2>Какво е allus.in?</h2>
+      <p>
+        <strong>Съвкупност</strong> от информация, представена чрез <strong>метаданни</strong>, като по този начин тя е достъпна и за <strong>машинна</strong> обработка.
+      </p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="wrapper">
+      <h2>Защо да се регистрирам?</h2>
+      <p>
+        text
+      </p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="wrapper" style="margin-right: 0;">
+      <h2>Друго</h2>
+      <p>
+        text
+      </p>
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript"> 

@@ -6,6 +6,7 @@ body {
     color: #333;
     padding: 0px;
     margin: 0px;
+    min-height: 100%;
 }
 
 a img {
@@ -19,7 +20,7 @@ a:link, a:visited, a:active {
 }
 
 a.back {
-  display: inline-block;
+  display: block;
   background: url("arrow.gif") no-repeat scroll 0 5px transparent;
   color: #ccc;
   margin-top: -50px;
@@ -43,6 +44,12 @@ a:hover {
     margin: 0 auto;
     padding: 20px;
     width: 930px;
+    overflow: hidden;
+}
+
+#footer {
+  padding: 40px;
+  text-align: center;
 }
 
 #header {
@@ -157,7 +164,7 @@ h2 .fieldset-content-toggle {
 
 .page-info {
   float: left;
-  width: 760px;
+  width: 750px;
 }
 
 .aliases {
@@ -245,6 +252,8 @@ input[type="submit"], input[type="button"] {
 	padding: 0px 10px;
   padding-bottom: 1px;
   background: -moz-linear-gradient(center top , #F4F4F4, #ECECEC) repeat scroll 0 0 transparent;
+  background: -webkit-gradient(linear, center top, center bottom, from(#F4F4F4), to(#ECECEC));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F4F4F4', endColorstr='#ECECEC');
   border: 1px solid #D4D4D4;
   border-radius: 3px 3px 3px 3px;
   color: #333333;
@@ -359,17 +368,26 @@ h1 a:hover, h2 a:hover {
 table.sorted-table {
   border-spacing: 1px;
 	font-family:arial;
-	background-color: #CDCDCD;
+	background-color: #ccc;
 	margin:10px 0pt 15px;
 	font-size: 8pt;
 	width: 100%;
 	text-align: left;
 }
+
+table.sorted-table thead tr {
+}
+
 table.sorted-table thead tr th, table.sorted-table tfoot tr th {
-	background-color: #e6EEEE;
-	border: 1px solid #FFF;
-	font-size: 8pt;
-	padding: 4px;
+	background: transparent;
+	font-size: 12px;
+	padding: 4px 10px;
+  color: #fff;
+  letter-spacing: 0;
+  font-weight: normal;
+  background: -moz-linear-gradient(center top , #50B7D1, #286DA3) repeat scroll 0 0 transparent;
+  background: -webkit-gradient(linear, center top, center bottom, from(#50B7D1), to(#286DA3));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#50B7D1', endColorstr='#286DA3');
 }
 table.sorted-table thead tr .header {
 	background-repeat: no-repeat;
@@ -383,7 +401,6 @@ table.sorted-table tbody td {
 	vertical-align: top;
 }
 table.sorted-table tbody tr.odd td {
-	background-color:#F0F0F6;
 }
 table.sorted-table thead tr .headerSortUp {
 	background-image: url(asc.gif);
@@ -392,7 +409,7 @@ table.sorted-table thead tr .headerSortDown {
 	background-image: url(desc.gif);
 }
 table.sorted-table thead tr .headerSortDown, table.sorted-table thead tr .headerSortUp {
-background-color: #8dbdd8;
+  font-weight: bold;
 }
 
 
@@ -619,4 +636,56 @@ color:#464646;
 
 .icon-sprite-participants {
     background-position: -80px 0;
+}
+
+
+.about-few {
+  background: -moz-linear-gradient(center top , #50B7D1, #286DA3) repeat scroll 0 0 transparent;
+  background: -webkit-gradient(linear, center top, center bottom, from(#50B7D1), to(#286DA3));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#50B7D1', endColorstr='#286DA3');
+  margin: -14px;
+  margin-top: -16px;
+  margin-bottom: 30px;
+  border-radius: 3px;
+  border-bottom: 2px solid #ddd;
+  padding: 15px 10px;
+  text-align: center;
+  font-size: 20px;
+  font-family: Helvetica;
+  text-shadow:2px 2px 2px rgba(64, 64, 64, 0.1);
+  letter-spacing: 0;
+  color: #fff;
+}
+
+.info-boxes {
+  margin-top: 30px;
+}
+
+.info-box {
+  float: left;
+  width: 25%;
+
+}
+
+.info-box .wrapper {
+  margin: 5px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 7px;
+}
+
+.info-box .wrapper h2 {
+  color: #000;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0;
+}
+
+.info-box .wrapper p {
+  color: #666;
+  line-height: 1.5em;
+}
+
+.info-box .wrapper p strong {
+  color: #000;
 }

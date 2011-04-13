@@ -1,6 +1,6 @@
 module LayoutHelper
   def title(page_title)
-    content_for(:title, page_title)
+    content_for(:title, strip_tags(page_title))
   end
   
   def h1(page_h1)

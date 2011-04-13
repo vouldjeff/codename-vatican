@@ -1,4 +1,4 @@
-<% title "Аутентикации" %>
+<% title "Автентикации" %>
 
 <% if @authentications %>
   <% unless @authentications.empty? %>
@@ -43,5 +43,5 @@
 
 <% unless user_signed_in? %>
   <strong>Не искате да ги използвате?</strong>
-  <%= link_to "Влезте", new_user_registration_path %> или се <%= link_to "регистрирайте", new_user_session_path %> с парола.
+  <%= link_to "Влезте", new_user_session_path %> или се <%= link_to "регистрирайте", new_user_registration_path %> с парола.
 <% end %>

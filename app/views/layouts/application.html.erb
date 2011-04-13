@@ -31,8 +31,12 @@
     <%= content_tag :div, msg, :id => "flash_#{name}" %>
   <% end %>
 
-  <%= (h1?) ? (content_tag :h1, (show_h1?) ? yield(:h1) : yield(:title), :class => "title") : "" %>
+  <%= (h1?) ? (content_tag :h1, (show_h1?) ? yield(:h1): yield(:title), :class => "title") : "" %>
   <%= yield %>
+</div>
+
+<div id="footer">
+  allus.in 2011
 </div>
 
 <script language="javascript">

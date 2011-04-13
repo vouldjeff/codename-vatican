@@ -1,4 +1,5 @@
 <% title "Вход" %>
+<%= link_to "назад", authentications_path, :class => "back" %>
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
   <p><%= f.label :email, "Имейл" %>
@@ -12,8 +13,6 @@
     <%= f.check_box :remember_me %></p>
   <% end %>
 <div style="clear: both;"></div>
+<br />
   <%= f.submit "Вход" %>
 <% end %>
-<br />
-<br />
-<%= render :partial => "devise/shared/links" %>
