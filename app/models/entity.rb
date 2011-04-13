@@ -4,6 +4,7 @@ class Entity
   timestamps!
   
   key :key, String, :required => true
+  key :revision, Integer, :default => 1, :required => true
   key :title, String, :required => true
   key :description, String
   key :properties, Hash, :default => {}
@@ -129,7 +130,7 @@ class Entity
   def to_param
     key
   end
-  
+
   def aliases_string
     self.aliases.join(", ")
   end

@@ -21,6 +21,8 @@ gem 'to_lang'
 gem 'ken'
 gem 'unidecode'
 gem 'chronic'
+gem 'imdb_party'
+gem 'twitter'
 group :test do
   gem "rspec-rails", "~> 2.0.1"
   gem 'factory_girl_rails'

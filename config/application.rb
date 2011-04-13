@@ -45,3 +45,5 @@ module Vatican
     config.filter_parameters += [:password, :password_confirmation]
   end
 end
+
+require File.expand_path('../../lib/hash_magic', __FILE__)

@@ -25,12 +25,27 @@ class EntitiesController < ApplicationController
     
     respond_with @entity
   end
+
+  def revisions
+    @entity = Entity.one_by_key(params[:id])
+    @revisions = EntityHistory.where(:entity => params[:id]).sort(:revision.desc)
+    
+    respond_with @entity, @revisions
+  end
   
   def update
     @entity = Entity.one_by_key(params[:id])
     @title = @entity.title
     
-    if @entity.update_attributes(params[:entity])  
+    @entity.attributes = params[:entity]
+    if @entity.valid?
+      revision = EntityHistory.track @entity
+      revision.ip = request.remote_ip
+      revision.by = (current_user.nil?) ? 0 : current_user.id
+      revision.save
+        
+      @entity.revision += 1
+      @entity.save
       flash[:notice] = "Успешно обновите ресурс."
     end
     respond_with @entity

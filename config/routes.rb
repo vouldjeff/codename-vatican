@@ -5,7 +5,11 @@ Vatican::Application.routes.draw do
   match 'entities/:id/rdf' => 'entities#rdf', :as => :rdf_entities
 
   resources :authentications
-  resources :entities  
+  resources :entities do
+    member do
+      get :revisions
+    end
+  end
   resources :namespaces do
     resources :types
   end
