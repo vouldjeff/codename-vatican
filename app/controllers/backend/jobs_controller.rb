@@ -1,6 +1,7 @@
 class Backend::JobsController < ApplicationController
-  # TODO: add administrator protection
   
+  before_filter :must_sign_in, :except => [:index, :log, :queue]
+
   def index
     @counters = {:queue => nil, :logs => {}}
     

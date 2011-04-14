@@ -2,7 +2,7 @@
 <% h1(false) %>
 
 <div class="about-few">
-  Граф с данни за хора, филми, музика, места... И над <%= Entity.all.count %> записа!
+  Граф с данни за хора, филми, музика, места... И над <%= Entity.where(:is_ok => true).count %> валидни записа!
 </div>
 
 <div class="menu-container">
@@ -47,7 +47,7 @@
     <div class="wrapper">
       <h2>Защо да се регистрирам?</h2>
       <p>
-        text
+        <strong>Регистрацията</strong> ви дава достъп до пълните възможности на платформата - <strong>редакция</strong> или <strong>извличане</strong> на нови ресурси, а също така и следене за коректност. Също така по този начин ние можем да събираме <strong>полезна</strong> информация за вас! 
       </p>
     </div>
   </div>
@@ -56,39 +56,39 @@
     <div class="wrapper" style="margin-right: 0;">
       <h2>Друго</h2>
       <p>
-        text
+        Ще се <strong>радваме</strong> да чуем вашето мнение или предложения! Моля не се колебайте да се свържете и така да допринесете за първото българско <strong>Семантично</strong> приложение.
       </p>
     </div>
   </div>
 </div>
 
 <script type="text/javascript"> 
-  $(document).ready(function() {	
+  $(document).ready(function() {  
     hideContext();
     
-  	var colorOver = '#31b8da';
-  	var padLeft = '20px';
-  	var padRight = '20px';
-  		
-  	//Animate the LI on mouse over, mouse out
-  	//$('.menu-slider li').click(function(){ return false; });
-  	$('.menu-slider li').click(function(){
-  	  hideContext();
-  		showContext();
-  	  
-  	  //window.location = $(this).find('a').attr('href');
-  	})
-  	.live("mouseover", function(){
-  		$(this).find('a')
-  		.animate( { paddingLeft: padLeft, paddingRight: padRight}, { queue:false, duration:100 } )
-  		.animate( { backgroundColor: colorOver }, { queue:false, duration:200 });
-  	})
-  	.live("mouseout", function(){
-  		$(this).find('a')
-  		.animate( { paddingLeft: $(this).find('a').attr("data-add"), paddingRight: $(this).find('a').attr("data-add")}, { queue:false, duration:100 } )
-  		.animate( { backgroundColor: $(this).find('a').attr("data-color") }, { queue:false, duration:200 });
-  	});	
-  	
+    var colorOver = '#31b8da';
+    var padLeft = '20px';
+    var padRight = '20px';
+      
+    //Animate the LI on mouse over, mouse out
+    //$('.menu-slider li').click(function(){ return false; });
+    $('.menu-slider li').click(function(){
+      hideContext();
+      showContext();
+      
+      //window.location = $(this).find('a').attr('href');
+    })
+    .live("mouseover", function(){
+      $(this).find('a')
+      .animate( { paddingLeft: padLeft, paddingRight: padRight}, { queue:false, duration:100 } )
+      .animate( { backgroundColor: colorOver }, { queue:false, duration:200 });
+    })
+    .live("mouseout", function(){
+      $(this).find('a')
+      .animate( { paddingLeft: $(this).find('a').attr("data-add"), paddingRight: $(this).find('a').attr("data-add")}, { queue:false, duration:100 } )
+      .animate( { backgroundColor: $(this).find('a').attr("data-color") }, { queue:false, duration:200 });
+    }); 
+    
     var ulPadding = 10;
     $('div.menu-container').css({overflow: 'hidden'});
   

@@ -49,6 +49,19 @@
       <% @entity.properties.each do |type, value| %>
         <fieldset name="type" class="entity-type-info">
           <legend><h3><%= value["name"] %></h3></legend>
+          <% split = type.split("/"); properties = {}; value["type_properties"].each{|e| properties[e["key"]] = e["values"]}; type = Type.one_by_key(split[0], split[1]); %>
+          <% type.type_properties.each do |property| %>
+            <div class="type-property">
+              <h4><%= property.label %></h4>
+              <% if property.unique? %>
+                <%= render :partial => 'property_value', :locals => {:expected_type => property.expected_type, :value => properties[property.key]} %>
+              <% else %>
+                <% (properties[property.key] || []).each do |value| %>
+                  <%= render :partial => 'property_value', :locals => {:expected_type => property.expected_type, :value => value} %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
         </fieldset>
       <% end %>
     </div>

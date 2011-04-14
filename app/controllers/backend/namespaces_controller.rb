@@ -1,6 +1,7 @@
 class Backend::NamespacesController < ApplicationController
-  # TODO: add administrator protection
   
+  before_filter :must_sign_in, :except => [:index]
+
   def index
     @namespaces = Namespace.all
   end

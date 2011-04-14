@@ -1,5 +1,7 @@
 class EntitiesController < ApplicationController
   respond_to :html
+
+  before_filter :must_sign_in, :only => [:edit, :update, :revisions, :revert]
   
   def show
     @entity = Entity.one_by_key(params[:id])
@@ -33,7 +35,7 @@ class EntitiesController < ApplicationController
     respond_with @entity, @revisions
   end
 
-  def destroy_revision
+  def revert
     EntityHistory.revert_to(params[:id], params[:revision])
 
     flash[:notice] = "Успещно се върнахте към по-стара версия."

@@ -8,7 +8,7 @@ Vatican::Application.routes.draw do
   resources :entities do
     member do
       get :revisions
-      delete :revert, :action => :destroy_revision
+      delete :revert, :action => :revert
     end
   end
   resources :namespaces do

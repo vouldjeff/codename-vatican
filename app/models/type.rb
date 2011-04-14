@@ -13,6 +13,7 @@ class Type
   key :checked, Boolean, :default => false
   
   key :freebase, String
+  key :group, String, :default => 0
   
   many :type_properties
   validates_associated :type_properties
