@@ -1,4 +1,13 @@
 <p>
 	<label>Стойност</label>
-	<input type="text" name="" value="<%= value %>" />
+  <% if value.class != HashWithIndifferentAccess %>
+    <input type="text" name="" value="<%= value %>" />
+	<% elsif value["type"] == "ref" %>
+    <input type="text" name="" value="<%= value["value"] %>" />
+    <input type="text" name="" value="<%= value["key"] %>" />
+  <% elsif value["type"] == "date" %>
+    <%= date_select "", value["value"] %>
+  <% else %>
+    <input type="text" name="" value="<%= value["value"] %>" />
+  <% end %>
 </p>

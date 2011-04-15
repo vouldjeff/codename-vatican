@@ -53,7 +53,7 @@
           <% type.type_properties.each do |property| %>
             <div class="type-property">
               <h4><%= property.label %></h4>
-              <% if property.unique? %>
+              <% if property.unique? and !properties[property.key].class == Array %>
                 <%= render :partial => 'property_value', :locals => {:expected_type => property.expected_type, :value => properties[property.key]} %>
               <% else %>
                 <% (properties[property.key] || []).each do |value| %>

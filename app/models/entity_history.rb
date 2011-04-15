@@ -27,7 +27,12 @@ class EntityHistory
 
       edited.merge! r.edited
     end
-    edited.merge! point.edited unless edited.nil?
+
+    unless edited.nil?
+      edited.merge! point.edited
+    else
+      edited = point.edited
+    end
 
     rm = {}
     changes.collect{|c| c.added }.flatten.uniq.each do |e|

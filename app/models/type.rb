@@ -25,7 +25,7 @@ class Type
   
   def self.one_by_key(namespace, key, only = nil)
     response = where(:namespace => namespace, :key => key).limit(1)
-    response = response.only(:name, :comment, :namespace, :key, "type_properties.label".to_sym, "type_properties.key", "type_properties.expected_type", "type_properties.mediator")
+    response = response.only(:name, :comment, :namespace, :key, "type_properties.label".to_sym, "type_properties.key", "type_properties.expected_type", "type_properties.mediator", "type_properties.unique")
     response = response.first
     raise MongoMapper::DocumentNotFound if response.nil?
     
