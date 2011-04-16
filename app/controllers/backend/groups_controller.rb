@@ -19,7 +19,7 @@ class Backend::GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        backend_groups_path
+        redirect_to backend_groups_path
       else
         render :action => :edit
       end
