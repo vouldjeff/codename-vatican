@@ -28,7 +28,7 @@ class Namespace
   private
   def check_key_format
     unless key.nil?
-      self.key = KeyGenerator.generate_from_string(key) 
+      self.key = KeyGenerator.generate_from_string(name) 
     end
   end
 end

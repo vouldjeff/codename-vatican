@@ -1,0 +1,5 @@
+$(".fill-me-up").html("");
+
+<% @types.each do |type| %>
+  $(".fill-me-up").append("<li><a href=\"<%= namespace_type_path type.namespace, type %>\"><%= type.name %></a></li>");
+<% end %>

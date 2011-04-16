@@ -479,41 +479,28 @@ table.sorted-table thead tr .headerSortDown, table.sorted-table thead tr .header
 
  
 .menu-container {
-width: 190px;
-height: 300px;
+width: 200px;
 padding: 0px;
 overflow:hidden;
 position:relative;
-border-left: 1px solid #ddd;
-padding-left: 5px;
 float: left;
 }
 
 .menu-context-container {
-  border: 1px solid #31b8da;
-  border-right: 0;
-  width: 500px;
+  width: 480px;
+  height: 290px;
   float: left;
   padding: 5px;
-  height: 287px;
   overflow: hidden;
+  background: #fff;
+  border-radius: 3px;
 }
 
 .inner-menu-context {
   float: left;
-  width: 490px;
+  width: 480px;
   margin-left: 20px;
 }
-
-.menu-context-description {
-  
-}
-
-.menu-context-container .menu-container {
-  border: 0px;
-  padding: 0px;
-  height: 288px;
-}	
  
 .menu-slider {
 width:100%;
@@ -533,22 +520,34 @@ cursor:hand;
 cursor:pointer;
 }
  
-.menu-slider li a {
-background:#eee;
+.menu-slider li a, .menu-slider li a:visited {
+background:#fff;
+border-radius: 3px;
 color:#1f1f1f;
-font-weight:bold;
 font-size: 16px;
 display:inline-block;
 padding:10px 10px 8px 10px;
 text-decoration:none;
-width: 150px;
+width: 170px;
+font-weight: Arial;
+}
+
+.menu-slider li:hover a {
+  color: #fff;
+  background: -moz-linear-gradient(center top , #50B7D1, #286DA3) repeat scroll 0 0 transparent;
+  background: -webkit-gradient(linear, center top, center bottom, from(#50B7D1), to(#286DA3));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#50B7D1', endColorstr='#286DA3');
 }
 
 .menu-context-container .menu-slider li a {
-  background: #fff;
   border: 1px solid #eee;
   padding: 5px;
   font-size: 14px;
+    width: 466px;
+}
+
+.menu-context-container .menu-container {
+  width: 100%;
 }
  
 .menu-slider li span {
@@ -657,6 +656,16 @@ color:#464646;
   color: #fff;
 }
 
+.main-box {
+  border-radius: 3px;
+  border: 2px solid #eee;
+  background: #f5f5f5;
+  overflow: hidden;
+  width: 690px;
+  height: 300px;
+  float: left;
+}
+
 .info-boxes {
   margin-top: 30px;
 }
@@ -667,6 +676,15 @@ color:#464646;
 
 }
 
+.main-right-box {
+  margin-left: 10px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  float: left;
+  width: 214px;
+  padding: 5px;
+}
+
 .info-box .wrapper {
   margin: 5px;
   border: 1px solid #eee;
@@ -674,14 +692,14 @@ color:#464646;
   padding: 7px;
 }
 
-.info-box .wrapper h2 {
+.info-box .wrapper h2, .main-right-box h2 {
   color: #000;
   font-size: 16px;
   font-weight: bold;
   letter-spacing: 0;
 }
 
-.info-box .wrapper p {
+.info-box .wrapper p, .main-right-box p {
   color: #666;
   line-height: 1.5em;
 }

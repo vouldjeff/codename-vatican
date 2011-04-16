@@ -1,0 +1,23 @@
+<%= form_for(@type, :url => url) do |f| %>
+  <% if @type.errors.any? %>
+  <fieldset id="save-errors">  
+    <legend><h2>Грешки</h2></legend>
+  <ul>
+      <% @type.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+    </fieldset>
+  <% end %>
+
+  <p>
+    <%= f.label :name, "Име" %>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :group, "Група" %>
+    <%= f.collection_select :group, Group.all, :key, :name %>
+  </p>
+  <div style="clear:both;"></div>
+  <%= f.submit "Обнови" %>
+<% end %>

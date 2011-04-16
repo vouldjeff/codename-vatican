@@ -1,0 +1,4 @@
+<% title "Промяна на тип" %>
+<%= link_to 'назад', backend_types_path, :class => "back" %>
+
+<%= render :partial => 'form', :locals => {:url => backend_type_path(:id => @type._id)} %>

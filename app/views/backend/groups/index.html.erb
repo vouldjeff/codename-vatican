@@ -1,0 +1,25 @@
+<% title "Категории" %>
+<%= link_to 'назад', "/backend", :class => "back" %>
+
+<div class="controls">
+  <%= link_to "<span>Нова група</span>".html_safe, new_backend_group_path, :class => "full" %>
+</div>
+
+<table class="sorted-table">
+  <thead>
+    <tr>
+      <th>Име</th>
+      <th width="100px"></th>
+      <th width="100px"></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @groups.each do |group| %>
+    <tr>
+      <td><%= group.name %></td>
+      <td><%= link_to "<span>Промени</span>".html_safe, edit_backend_group_path(group), :class => "icon-link icon-sprite-edit" %></td>
+      <td><%= link_to "<span>Изтрии</span>".html_safe, backend_group_path(group), :confirm => 'Are you sure?', :method => :delete, :class => "icon-link icon-sprite-remove" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

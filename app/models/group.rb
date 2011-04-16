@@ -5,7 +5,7 @@ class Group
   key :name, String, :required => true
   
   validates_uniqueness_of :key
-  before_validation :check_key_format
+  before_validation :create_key, :on => :create
   
   def self.one_by_key(key)
     response = where(:key => key).limit(1).first
@@ -19,9 +19,9 @@ class Group
   end
   
   private
-  def check_key_format
-    unless key.nil?
-      self.key = KeyGenerator.generate_from_string(key) 
+  def create_key
+    if key.nil?
+      self.key = KeyGenerator.generate_from_string(name) 
     end
   end
 end

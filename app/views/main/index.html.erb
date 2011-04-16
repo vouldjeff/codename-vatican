@@ -5,21 +5,37 @@
   Граф с данни за хора, филми, музика, места... И над <%= Entity.where(:is_ok => true).count %> валидни записа!
 </div>
 
-<div class="menu-container">
-  <ul class="menu-slider">
-      <% @namespaces.each do |namespace| %>
-        <li><a data-remote="true" data-add="10" data-color="#eee" href="<%= url_for namespace %>"><%= namespace.get_name %></a></li>
-      <% end %>
-  </ul>
-</div>
-
-<div class="menu-context-container">
+<div class="main-box">
   <div class="menu-container">
-    <ul class="menu-slider fill-me-up">
+    <ul class="menu-slider">
+      <% @groups.each do |group| %>
+         <li><a data-remote="true" href="<%= url_for group %>"><%= group.name %></a></li>
+      <% end %>
     </ul>
   </div>
-  <div class="inner-menu-context">
-  </div>  
+
+  <div class="menu-context-container">
+    <div class="menu-container">
+      <ul class="menu-slider fill-me-up">
+      </ul>
+    </div>
+    <div class="inner-menu-context">
+    </div>  
+  </div>
+</div>
+<div class="main-right-box">
+  <h2>Структура</h2>
+  <p>
+    <strong>Типът</strong> представлява съвкупност от свойства, които описват даден <strong>обект</strong> от реалния свят.
+  </p>
+  <p>
+    <strong>Групите</strong> са съвкупност от няколко <strong>типа</strong> със сходна идея.</strong>
+  </p>
+
+  <h2>Какво виждам тук</h2>
+  <p>
+    Вие виждате <strong>специално</strong> избрани типове, групирани в категории, които нямат нищо общо с истинките групи.
+  </p>
 </div>
 
 <div style="clear: both;"></div>
@@ -61,61 +77,3 @@
     </div>
   </div>
 </div>
-
-<script type="text/javascript"> 
-  $(document).ready(function() {  
-    hideContext();
-    
-    var colorOver = '#31b8da';
-    var padLeft = '20px';
-    var padRight = '20px';
-      
-    //Animate the LI on mouse over, mouse out
-    //$('.menu-slider li').click(function(){ return false; });
-    $('.menu-slider li').click(function(){
-      hideContext();
-      showContext();
-      
-      //window.location = $(this).find('a').attr('href');
-    })
-    .live("mouseover", function(){
-      $(this).find('a')
-      .animate( { paddingLeft: padLeft, paddingRight: padRight}, { queue:false, duration:100 } )
-      .animate( { backgroundColor: colorOver }, { queue:false, duration:200 });
-    })
-    .live("mouseout", function(){
-      $(this).find('a')
-      .animate( { paddingLeft: $(this).find('a').attr("data-add"), paddingRight: $(this).find('a').attr("data-add")}, { queue:false, duration:100 } )
-      .animate( { backgroundColor: $(this).find('a').attr("data-color") }, { queue:false, duration:200 });
-    }); 
-    
-    var ulPadding = 10;
-    $('div.menu-container').css({overflow: 'hidden'});
-  
-    $('div.menu-container').mousemove(function(e){
-      var lastLi = $(this).children("ul.menu-slider:first").children("li:last-child");
-      var ulHeight = lastLi[0].offsetTop + lastLi.outerHeight() + ulPadding;
-  
-      var top = (e.pageY - $(this).offset().top) * (ulHeight-$(this).height()) / $(this).height();
-      $(this).scrollTop(top);
-    });
-  });
-  
-  var hideContext = function(){  
-    $('.menu-context-container').stop(true); 
-    $(".menu-context-container").hide().css("width", "0px").css("height", "1px").css("margin-top", "143px").css("padding", "0px");
-    $(".inner-menu-context").hide(); 
-  }
-  
-  var showContext = function(){
-    $(".menu-context-container").show().animate({marginTop: "1px", height: "287px"}, {duration: 1000, complete: function(){ 
-      $(".menu-context-container").animate({padding: "5px"}, {duration: 100, complete: function(){
-        $(".menu-context-container").animate({ width: "710px"}, {duration: 2000, complete: function(){
-          $(".inner-menu-context").fadeIn();
-        }
-      });
-      }
-    });
-  }});
-  }
-</script> 

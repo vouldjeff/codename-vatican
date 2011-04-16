@@ -11,6 +11,7 @@ Vatican::Application.routes.draw do
       delete :revert, :action => :revert
     end
   end
+  resources :groups
   resources :namespaces do
     resources :types
   end
@@ -19,6 +20,9 @@ Vatican::Application.routes.draw do
   end
   
   namespace :backend do
+    resources :groups
+    resources :types
+
     resources :jobs do
       collection do
         get :queue

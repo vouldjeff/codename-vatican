@@ -21,7 +21,7 @@ class Type
   before_validation :create_key, :on => :create
   validate :check_unique
   
-  attr_accessible :nil
+  attr_accessible :name, :group
   
   def self.one_by_key(namespace, key, only = nil)
     response = where(:namespace => namespace, :key => key).limit(1)
