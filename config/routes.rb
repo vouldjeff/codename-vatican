@@ -6,6 +6,7 @@ Vatican::Application.routes.draw do
 
   resources :authentications
   resources :entities do
+    get :autocomplete_entity_title, :on => :collection
     member do
       get :revisions
       delete :revert, :action => :revert

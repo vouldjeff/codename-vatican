@@ -46,19 +46,23 @@
   <fieldset name="types">
     <legend><h2><a href="#" class="fieldset-content-toggle">(покажи)</a> Онтологии</h2></legend>
     <div class="content-toggle">
-      <% @entity.properties.each do |type, value| %>
+      <% @entity.properties.each do |type0, value| %>
+      <% @i = 0 %>
         <fieldset name="type" class="entity-type-info">
-          <legend><h3><%= value["name"] %></h3></legend>
-          <% split = type.split("/"); properties = {}; value["type_properties"].each{|e| properties[e["key"]] = e["values"]}; type = Type.one_by_key(split[0], split[1]); %>
+          <% split = type0.split("/"); properties = {}; (value["type_properties"] || []).each{|e| properties[e["key"]] = e["values"]}; type = Type.one_by_key(split[0], split[1]); %>
+          <legend><h3><%= type.name %></h3></legend>
+          <input type="hidden" name="entity[properties][<%= type0 %>][name]" value="<%= type.name %>" />
           <% type.type_properties.each do |property| %>
             <div class="type-property">
               <h4><%= property.label %></h4>
-              <% if property.unique? and !properties[property.key].class == Array %>
-                <%= render :partial => 'property_value', :locals => {:expected_type => property.expected_type, :value => properties[property.key]} %>
-              <% else %>
+              <input type="hidden" name="entity[properties][<%= type0 %>][type_properties][][label]" value="<%= property.label %>" />
+              <input type="hidden" name="entity[properties][<%= type0 %>][type_properties][][key]" value="<%= property.key %>" />
+              <% if !property.unique? and properties[property.key].class == Array %>
                 <% (properties[property.key] || []).each do |value| %>
-                  <%= render :partial => 'property_value', :locals => {:expected_type => property.expected_type, :value => value} %>
+                  <%= render :partial => 'property_value', :locals => {:expected_type => property.expected_type, :value => value, :name => "entity[properties][#{type0}][type_properties][][values][]"} %>
                 <% end %>
+              <% else %>
+                <%= render :partial => 'property_value', :locals => {:expected_type => property.expected_type, :value => properties[property.key], :name => "entity[properties][#{type0}][type_properties][][values]"} %>
               <% end %>
             </div>
           <% end %>
@@ -111,5 +115,7 @@
     $("#toggle-entity-info").click(function(){
       $("#entity-info").slideToggle();
     });
+
+    $(".datepicker").datepicker();
   });
 </script>

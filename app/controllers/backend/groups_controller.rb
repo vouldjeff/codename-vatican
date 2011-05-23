@@ -11,39 +11,33 @@ class Backend::GroupsController < ApplicationController
   end
 
   def edit
-    @group = Group.find(params[:id])
+    @group = Group.one_by_key(params[:id])
   end
 
   def create
     @group = Group.new(params[:group])
 
-    respond_to do |format|
-      if @group.save
-        redirect_to backend_groups_path
-      else
-        render :action => :edit
-      end
+    if @group.save
+      redirect_to backend_groups_path
+    else
+      render :action => :edit
     end
   end
 
   def update
-    @group = Group.find(params[:id])
+    @group = Group.one_by_key(params[:id])
 
-    respond_to do |format|
-      if @group.update_attributes(params[:group])
-        backend_groups_path
-      else
-        render :action => :edit
-      end
+    if @group.update_attributes(params[:group])
+      redirect_to backend_groups_path
+    else
+      render :action => :edit
     end
   end
 
   def destroy
-    @group = Group.find(params[:id])
+    @group = Group.one_by_key(params[:id])
     @group.destroy
 
-    respond_to do |format|
-      backend_groups_path
-    end
+    redirect_to backend_groups_path
   end
 end

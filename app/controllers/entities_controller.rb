@@ -1,7 +1,8 @@
 class EntitiesController < ApplicationController
   respond_to :html
+  autocomplete :entity, :title, :extra_data => [:key]
 
-  before_filter :must_sign_in, :only => [:edit, :update, :revisions, :revert]
+  before_filter :must_sign_in, :only => [:edit, :update, :revisions, :revert, :autocomplete_entity_title]
   
   def show
     @entity = Entity.one_by_key(params[:id])
@@ -45,7 +46,7 @@ class EntitiesController < ApplicationController
   def update
     @entity = Entity.one_by_key(params[:id])
     @title = @entity.title
-    
+
     @entity.attributes = params[:entity]
     if @entity.valid?
       revision = EntityHistory.track @entity

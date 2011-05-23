@@ -43,7 +43,7 @@
           <div class="type">
             <h3><%= link_to type["name"], namespace_type_path(:namespace_id => ns.key, :id => type["key"]) %></h3>
             <div class="type-properties">
-              <% type["type_properties"].each do |property| %>
+              <% (type["type_properties"] || []).each do |property| %>
                 <div class="type-property">
                   <div class="property-label">
                     <strong><%= property["label"] %>:</strong>

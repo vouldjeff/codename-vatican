@@ -23,8 +23,12 @@ class Entity
   
   validates_uniqueness_of :key, :allow_nil => false
   
-  attr_accessible :title, :description, :image, :aliases_string, :checked
+  attr_accessible :title, :description, :image, :aliases_string, :checked, :properties
   
+  def autocomplete_value
+    title + "(#{key})"
+  end
+
   def self.one_by_key(key)
     response = where(:key => key).limit(1).first
     raise MongoMapper::DocumentNotFound if response.nil?
@@ -44,7 +48,7 @@ class Entity
     end
     
     properties.each do |type_key, type|
-      type["type_properties"].each do |property|
+      (type["type_properties"] || []).each do |property|
         unless property["values"].kind_of? Array
           triples.add(property["key"], property["values"], :bp => APP_CONFIG.domain, :br => APP_CONFIG.domain)
         else

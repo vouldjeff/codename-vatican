@@ -7,6 +7,7 @@ gem 'mongo_mapper', :branch => 'rails3', :git => 'git://github.com/jnunemaker/mo
 gem 'bson_ext', '1.1'
 gem 'bson', '1.1'
 gem 'jquery-rails', '>= 0.2.6'
+gem 'rails3-jquery-autocomplete'
 
 gem 'devise'
 gem 'omniauth'

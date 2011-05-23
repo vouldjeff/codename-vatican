@@ -3,7 +3,7 @@
 <head>
   <title><%= content_for(:title) || "allus.in" %></title>
   <%= stylesheet_link_tag :all, :cache => true %>
-  <%= javascript_include_tag :defaults, 'jquery.tablesorter.min.js', 'jquery.easing.1.3.js', 'jquery.color.js', :cache => true, :concat => true %>
+  <%= javascript_include_tag 'jquery.min', 'jquery-ui.min', 'rails', 'autocomplete-rails' %>
   <%= csrf_meta_tag %>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
@@ -17,10 +17,17 @@
       <div id="user_nav">
     <% if user_signed_in? %>
       Влязли сте като <%= current_user.email %>.
-      <%= link_to "Изход", destroy_user_session_path %>
+<br />
+      <div class="controls">
+        <%= link_to "Настройки", authentications_path, :class => "left" %>
+        <%= link_to "Изход", destroy_user_session_path, :class => "right" %>
+      </div>
       <br />
+    <% else %>
+      <div class="controls">
+        <%= link_to "Вход", authentications_path, :class => "one" %>
+      </div>
     <% end %>
-    <%= link_to "Автентикация", authentications_path %>
   </div>
   </div>
 </div>
