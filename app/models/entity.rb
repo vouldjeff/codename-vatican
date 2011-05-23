@@ -10,7 +10,7 @@ class Entity
   key :properties, Hash, :default => {}
   key :aliases, Array, :default => []
   key :image, String
-  key :same_as, Array, :default => []
+  key :same_as
   
   key :to_bg, Boolean, :default => false
   key :is_ok, Boolean, :default => false

@@ -1,7 +1,23 @@
 class Extractor  
+  KEYS = {
+    "NEW YORK TIMES" => "nyt",
+    "OFFICIAL SITE" => "website",
+    "OFFICIAL WEBSITE" => "website",
+    "TWITTER PAGE" => "twitter",
+    "TWITTER" => "twitter",
+    "FACEBOOK PAGE" => "facebook",
+    "FACEBOOK" => "facebook",
+    "BULGARIAN WIKIPEDIA" => "bgwiki",
+    "ENGLISH WIKIPEDIA" => "enwiki",
+    "IMDB" => "imdb",
+    "IMDB PROFILE" => "imdb",
+    "IMDB PAGE" => "imdb",
+    "IMDB TITLE PAGE" => "imdb",
+    "LAST.FM" => "lastfm"
+  }
+
   ToLang.start(APP_CONFIG.google_maps_api)
   
-  # Initializes the extraction proccess itself
   def run(opts = {})
     opts[:translate] ||= false
     
@@ -20,9 +36,19 @@ class Extractor
       end
       
       {:description= => :description, :aliases= => :aliases, 
-        :image= => :thumbnail, :freebase= => :id, :same_as= => :webpages}.each do |to, from|
+        :image= => :thumbnail, :freebase= => :id}.each do |to, from|
         @entity.send(to, @resource.send(from))
       end
+
+      @entity.same_as = {}
+      @resource.webpages.each do |page|
+        _key = KEYS[webpage["text"].upcase]
+        next if _key.nil?
+        _value = webpage["url"]
+        _value.tr!("http://twitter.com/", "") if _key == "twitter"
+        @entity.same_as[_key] = _value
+      end
+
       raise ExtractError, [:first_save_invalid, @entity.errors] unless @entity.save
     end
     
