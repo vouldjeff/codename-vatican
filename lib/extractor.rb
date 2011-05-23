@@ -45,7 +45,7 @@ class Extractor
         _key = KEYS[webpage["text"].upcase]
         next if _key.nil?
         _value = webpage["url"]
-        _value.tr!("http://twitter.com/", "") if _key == "twitter"
+        _value = _value.from(19) if _key == "twitter"
         @entity.same_as[_key] = _value
       end
 
