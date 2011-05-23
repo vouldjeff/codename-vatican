@@ -41,7 +41,7 @@ class Extractor
       end
 
       @entity.same_as = {}
-      @resource.webpages.each do |page|
+      @resource.webpages.each do |webpage|
         _key = KEYS[webpage["text"].upcase]
         next if _key.nil?
         _value = webpage["url"]
