@@ -7,14 +7,14 @@ class TypeProperty
   key :unique, Boolean, :default => false
   key :mediator, Boolean, :default => false
   key :expected_type
-  key :values, Hash, :default => {}
+  key :values
   
   validates_presence_of :expected_type
   
   embedded_in :type
   
   before_validation :generate_key, :on => :create
-  before_create lambda { value = [] unless unique }
+  before_create lambda { unique? ? values = {} : values = [] }
 
   attr_accessible :nil
 

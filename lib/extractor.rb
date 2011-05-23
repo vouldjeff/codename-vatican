@@ -16,6 +16,16 @@ class Extractor
     "LAST.FM" => "lastfm"
   }
 
+  KEYS_REV = {
+    "nyt" => "Ню Йорк Таймс профил",
+    "website" => "Официален уебсайт",
+    "twitter" => "Twitter страница",
+    "facebook" => "Facebook страница",
+    "bgwiki" => "Уикипедия",
+    "imdb" => "IMDb страница",
+    "lastfm" => "Last.fm страница"
+  }
+
   ToLang.start(APP_CONFIG.google_maps_api)
   
   def run(opts = {})
@@ -46,6 +56,7 @@ class Extractor
         next if _key.nil?
         _value = webpage["url"]
         _value = _value.from(19) if _key == "twitter"
+        _value = _value.to(_value.length - 2).split("/").last if _key == "imdb"
         @entity.same_as[_key] = _value
       end
 

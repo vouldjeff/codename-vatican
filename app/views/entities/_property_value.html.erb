@@ -1,18 +1,17 @@
 <p>
 	<label>Стойност</label>
-  <% if value.class != HashWithIndifferentAccess and value.class != Hash %>
-    <input type="text" name="<%= name %>" value="<%= value %>" />
-	<% elsif value["type"] == "ref" %>
-    <input type="hidden" name="<%= name %>[type]" value="<%= value["type"] %>" />
+  <% if expected_type == "/type/integer" or expected_type == "/type/float" %>
+    <input type="text" name="<%= name %>" value="<%= value["value"] %>" />
+  <% elsif expected_type == "/type/datetime" %>
+    <input type="hidden" name="<%= name %>[type]" value="date" />
+    <input type="text" name="<%= name %>[value]" value="<%= (value.nil?) ? "" : value["value"] %>" class="datepicker" />
+  <% elsif expected_type[0] != "/" %>
+    <input type="hidden" name="<%= name %>[type]" value="ref" />
 
-    <%= autocomplete_field_tag "#{name}[value]", value["value"], autocomplete_entity_title_entities_path, :update_elements => {:key => "#key-#{@i}"} %>
-    <input type="hidden" name="<%= name %>[key]" id="key-<%= @i %>" value="<%= value["key"] %>" />
-  <% elsif value["type"] == "date" %>
-    <input type="hidden" name="<%= name %>[type]" value="<%= value["type"] %>" />
-    <input type="text" name="<%= name %>[value]" value="<%= value["value"] %>" class="datepicker" />
+    <%= autocomplete_field_tag "#{name}[value]", (value.class == HashWithIndifferentAccess) ? value["value"] : "", autocomplete_entity_title_entities_path, :update_elements => {:key => "#key-#{@i}"} %>
+    <input type="hidden" name="<%= name %>[key]" id="key-<%= @i %>" value="<%= (value.class == HashWithIndifferentAccess) ? value["key"] : "" %>" />  
   <% else %>
-  <input type="hidden" name="<%= name %>[type]" value="<%= value["type"] %>" />
-  <input type="text" name="<%= name %>[value]" value="<%= value["value"] %>" />
+    <input type="text" name="<%= name %>" value="<%= value %>" />
   <% end %>
 </p>
 

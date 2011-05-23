@@ -64,7 +64,58 @@
       </fieldset>
     <% end %>
   </div>
-  
+
+  <div class="sidebar">
+    <fieldset class="namespace">
+      <legend><h2>Още</h2></legend>
+      <ul>
+        <% @entity.same_as.each do |key, value| %>
+          <li class="<%= key %>-icon"><a href="<%= value["url"] || "#" %>" target="_blank"><%= Extractor::KEYS_REV[key] %></a></li>
+        <% end %>
+      </ul>
+    </fieldset>
+
+    <% unless @entity.same_as["twitter"].nil? %>
+      <script src="http://widgets.twimg.com/j/2/widget.js"></script>
+      <script>
+      new TWTR.Widget({
+        version: 2,
+        type: 'profile',
+        rpp: 5,
+        interval: 6000,
+        width: 'auto',
+        height: 300,
+        theme: {
+          shell: {
+            background: '#dddddd',
+            color: '#000000'
+          },
+          tweets: {
+            background: '#ffffff',
+            color: '#333333',
+            links: '#2267bb'
+          }
+        },
+        features: {
+          scrollbar: true,
+          loop: false,
+          live: true,
+          hashtags: true,
+          timestamp: true,
+          avatars: false,
+          behavior: 'all'
+        }
+      }).render().setUser('<%= @entity.same_as["twitter"] %>').start();
+      </script>
+    <% end %>
+
+    <br />
+    <br />
+
+    <iframe src="http://www.facebook.com/plugins/like.php?href=http://allus.in/entities/<%= @entity.key %>&amp;send=true&amp;layout=standard&amp;width=200&amp;show_faces=true&amp;action=like&amp;colorscheme=light&amp;font&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:80px;" allowTransparency="true"></iframe>
+
+  </div>
+  <div style="clear:both;"></div>
   <a href="<%= rdf_entities_path %>" class="rdf-link">RDF тройки</a>
   
 <% end %>

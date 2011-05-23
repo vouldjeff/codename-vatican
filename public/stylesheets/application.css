@@ -208,6 +208,49 @@ a.rdf-link:hover {
 
 .namespaces {
   margin-top: 30px;
+  float: left;
+  width: 700px;
+}
+
+.sidebar {
+  width: 200px;
+  float: right;
+  margin-top: 30px;
+}
+
+.sidebar fieldset {
+  padding: 10px;
+}
+
+.sidebar ul {
+  margin: 0px;
+  margin-top: -10px;
+  padding-left: 0px;
+}
+
+.sidebar li {
+  list-style-position: inside;
+  margin-bottom: 5px;
+}
+
+.sidebar li.twitter-icon {
+  list-style-image: url(../images/twitter-ico.gif);
+}
+
+.sidebar li.nyt-icon {
+  list-style-image: url(../images/nyt-ico.png);
+}
+
+.sidebar li.bgwiki-icon {
+  list-style-image: url(../images/wikipedia-ico.png);
+}
+
+.sidebar li.imdb-icon {
+  list-style-image: url(../images/imdb-ico.png);
+}
+
+.sidebar li.facebook-icon {
+  list-style-image: url(../images/facebook-ico.gif);
 }
 
 textarea, input, select {

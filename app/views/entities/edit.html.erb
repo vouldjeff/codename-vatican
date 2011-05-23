@@ -57,12 +57,13 @@
               <h4><%= property.label %></h4>
               <input type="hidden" name="entity[properties][<%= type0 %>][type_properties][][label]" value="<%= property.label %>" />
               <input type="hidden" name="entity[properties][<%= type0 %>][type_properties][][key]" value="<%= property.key %>" />
-              <% if !property.unique? and properties[property.key].class == Array %>
-                <% (properties[property.key] || []).each do |value| %>
+              <% if (property.unique? and properties[property.key].class != Array) or properties[property.key].class == HashWithIndifferentAccess %>
+                
+                <%= render :partial => 'property_value', :locals => {:expected_type => property.expected_type, :value => properties[property.key], :name => "entity[properties][#{type0}][type_properties][][values]"} %>
+              <% else %>
+              <% (properties[property.key] || []).each do |value| %>
                   <%= render :partial => 'property_value', :locals => {:expected_type => property.expected_type, :value => value, :name => "entity[properties][#{type0}][type_properties][][values][]"} %>
                 <% end %>
-              <% else %>
-                <%= render :partial => 'property_value', :locals => {:expected_type => property.expected_type, :value => properties[property.key], :name => "entity[properties][#{type0}][type_properties][][values]"} %>
               <% end %>
             </div>
           <% end %>
