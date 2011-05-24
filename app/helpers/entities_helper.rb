@@ -4,7 +4,7 @@ module EntitiesHelper
     if field["type"] != "ref"
       return field["value"]
     elsif !field["key"].nil?
-      return field["key"].length < 1
+      return if field["key"].length < 1
       link_to field["value"], entity_path(:id => field["key"])
     end
   end
