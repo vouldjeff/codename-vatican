@@ -70,7 +70,13 @@
       <legend><h2>Още</h2></legend>
       <ul>
         <% @entity.same_as.each do |key, value| %>
-          <li class="<%= key %>-icon"><a href="<%= value["url"] || "#" %>" target="_blank"><%= Extractor::KEYS_REV[key] %></a></li>
+          <% url = case key
+            when "twitter" then "http://twitter.com/#{value}"
+            when "imdb" then "http://imdb.com/titles/#{value}" # FIX... FIX!!!
+            else value
+          end
+          %>
+          <li class="<%= key %>-icon"><a href="<%= url %>" target="_blank"><%= Extractor::KEYS_REV[key] %></a></li>
         <% end %>
       </ul>
     </fieldset>
