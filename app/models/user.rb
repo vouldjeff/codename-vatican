@@ -3,6 +3,7 @@ class User
   plugin MongoMapper::Devise
   devise :registerable, :database_authenticatable, :rememberable
 
+  key :is_admin, Boolean, :default => false
   attr_accessible :email, :password, :password_confirmation, :remember_me
   many :authentications
 

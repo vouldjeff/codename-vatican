@@ -47,7 +47,10 @@ class EntitiesController < ApplicationController
     @entity = Entity.one_by_key(params[:id])
     @title = @entity.title
 
+    same_as = @entity.same_as
+    same_as["twitter"] = params[:entity][:same_as][:twitter]
     @entity.attributes = params[:entity]
+    @entity.same_as = same_as
     if @entity.valid?
       revision = EntityHistory.track @entity
       revision.ip = request.remote_ip

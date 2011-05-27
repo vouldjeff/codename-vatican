@@ -235,6 +235,3 @@ DEPENDENCIES
   to_lang
   twitter
   unidecode
-
-METADATA
-  version: 1.0.6

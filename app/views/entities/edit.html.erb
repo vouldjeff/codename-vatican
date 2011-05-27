@@ -40,7 +40,13 @@
         <%= f.label :image %>
         <%= f.text_field :image %>
       </p>
-    </div>
+
+      <p>
+        <label for="entity[same_as][twitter]">Twitter</label> 
+        <input name="entity[same_as][twitter]" value="<%= @entity.same_as["twitter"] %>" />
+      </p> 
+
+   </div>
   </fieldset>
     
   <fieldset name="types">

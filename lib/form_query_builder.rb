@@ -3,7 +3,7 @@ class FormQueryBuilder
   
   def initialize(opts_hash)
     opts = (opts_hash.nil?) ? {} : opts_hash.dup 
-    @query = Entity.where(:is_ok => true)
+    @query = Entity.where(:is_ok => true).sort(:title)
     
     opts.each do |key, value|
       proccess_param key, value
